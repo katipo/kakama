@@ -1,0 +1,73 @@
+<div class="rostered_display selected_staff">
+  <h3>Staff selected to fill the roles above</h3>
+
+  <% Role.all.each do |role| %>
+    <% rosterings = @event.active_rosterings_for(role) %>
+    <% next if @event.amount_needed_for(role) == 0 && rosterings.size == 0 %>
+    <div class="role_container <%= role.name.downcase.gsub(/\s/, '_') %>">
+      <div class="role_name">
+        <%= role.name %>
+        (<%= rosterings.size %>/<%= @event.amount_needed_for(role) %>)
+        <% if @event.editable? %>
+          <span class="controls">
+            (<%= link_to 'add', search_rosterings_path(:event_id => @event, :role_id => role) %>)
+          </span>
+        <% end %>
+      </div>
+      <% unless @event.filled_spots_for?(role) %>
+        <small class="insufficient">Insufficient available staff for this role.</small>
+      <% end %>
+      <% if rosterings.size > 0 %>
+        <div class="selected_staff">
+          <ul>
+            <% rosterings.each do |rostering| %>
+            <li>
+              <small>
+              <%= link_to rostering.staff.full_name, rostering.staff %>
+              <% if @event.not_started? %>
+                <% if rostering.confirmed? %>
+                  (
+                    confirmed
+                    <span class="controls">
+                      | <%= link_to 'cancel', cancel_rostering_path(rostering) %>
+                    </span>
+                  )
+                <% else %>
+                  <span class="controls">
+                    (
+                      <%= link_to 'approve', approve_rostering_path(rostering), :method => :put,
+                                  :confirm => 'If you approve this staff member, they will be sent an email with details about this event. Are you sure?' %>
+                      <% if @event.working? %>
+                        | <%= link_to 'reject', reject_rostering_path(rostering), :method => :put, :confirm => 'Are you sure?' %>
+                        | <%= link_to 'deroster', deroster_rostering_path(rostering), :method => :delete, :confirm => 'Are you sure?' %>
+                      <% else %>
+                        | <%= link_to 'cancel', cancel_rostering_path(rostering) %>
+                      <% end %>
+                    )
+                  </span>
+                <% end %>
+              <% elsif @event.finished? %>
+                (
+                  <% if rostering.no_show? %>
+                    no show
+                    <span class="controls">
+                      | <%= link_to 'did show up?', undo_no_show_rostering_path(rostering), :method => :put %>
+                    </span>
+                  <% else %>
+                    attended
+                    <span class="controls">
+                      | <%= link_to 'no show?', mark_no_show_rostering_path(rostering), :method => :put %>
+                    </span>
+                  <% end %>
+                )
+              <% end %>
+              </small>
+            </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  <div style="clear:both;"></div>
+</div>

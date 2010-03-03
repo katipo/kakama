@@ -1,0 +1,37 @@
+<div id="role_required_counts">
+  <% if !@event.editable? %>
+    <h3>How many of each role were needed</h3>
+  <% else %>
+    <h3>Select how many of each role is needed</h3>
+  <% end %>
+
+  <% form_for @event do |f| %>
+    <div class="role_text_fields">
+      <% Role.all.each do |role| %>
+        <div class="role_text_field">
+          <%= f.text_field :roles, :id => "event_roles_#{role.id}", :name => "event[roles][#{role.id}]",
+                           :value => @event.amount_needed_for(role), :size => 2,
+                           :disabled => !@event.editable? %>
+          <label for="event_roles_<%= role.id %>">
+            <%= role.name %>
+          </label>
+          <% if @event.editable? %>
+            (<%= role.staff_available_for(@event).size %>)
+          <% end %>
+        </div>
+      <% end %>
+      <div style="clear:both;"></div>
+    </div>
+    <% if @event.editable? %>
+      <%= f.hidden_field :clear_unconfirmed_rosterings, :value => true %>
+      <%= f.hidden_field :ignore_event_conflicts, :value => true %>
+      <% if @event.roles.blank? %>
+        <%= f.submit 'Generate Staff Lists to fill required roles' %>
+      <% elsif @event.working? %>
+        <%= f.submit 'Regenerate Staff Lists below' %>
+      <% else %>
+        <%= f.submit 'Update Staff Lists Below' %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

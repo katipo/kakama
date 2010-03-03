@@ -1,0 +1,9 @@
+<div id="event_actions">
+  <h3>Actions</h3>
+
+  <% form_for event do |f| %>
+    <%= f.hidden_field :state, :value => Event::States[:approved] %>
+    <%= f.hidden_field :ignore_event_conflicts, :value => true %>
+    <%= submit_tag 'Finalize Roster for this Event' %>
+  <% end %>
+</div>

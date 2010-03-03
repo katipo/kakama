@@ -1,0 +1,18 @@
+<% title "Edit Settings" %>
+
+<% form_tag({}, { :class => 'formtastic' }) do %>
+  <fieldset class='inputs'>
+    <ol>
+    <% Setting.all.keys.sort.each do |key| %>
+      <li>
+        <label for="settings_<%= key %>" class="wide_label"><%= key.humanize %>:</label>
+        <%= text_field_tag "settings[#{key}]", setting_value_for(key) %>
+        <small class="note"><%= setting_description_for(key) %></small>
+      </li>
+    <% end %>
+    </ol>
+  </fieldset>
+  <div style="width: 200px; margin: 0 auto;">
+    <%= submit_tag 'Save Settings', :style => "width: 200px;" %>
+  </div>
+<% end %>

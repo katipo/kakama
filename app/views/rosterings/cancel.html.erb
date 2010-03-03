@@ -1,0 +1,22 @@
+<% title "Tell #{@staff.full_name} why they have been cancelled from this event." %>
+
+<p>Leaving both fields blank will make it so no emails are sent to <%= @staff.full_name %></p>
+
+<% form_tag({ :action => 'cancel' }, { :method => :put }) do %>
+  <p>
+    Either select a preset response: <br />
+    <% values = [ [''],
+      ["Too many people have been assigned to this event."],
+      ["Your task as a #{@role.name} are no longer required."]
+    ] %>
+    <%= select_tag :cancel_reason_preset, options_for_select(values) %>
+  </p>
+  <p>
+    Or write your own: <br />
+    <%= text_area_tag :cancel_reason_custom, nil, :rows => 5, :cols => 30 %>
+  </p>
+  <p>
+    <%= submit_tag "Cancel staff members involvement." %>
+    or <%= link_to 'back to event', event_path(@event) %>
+  </p>
+<% end %>

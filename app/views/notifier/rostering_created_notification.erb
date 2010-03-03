@@ -1,0 +1,23 @@
+<p>You have been scheduled to work at a new event as an <%= @role.name %>.</p>
+
+<% @response_deadline = @event.time_response_required_by %>
+<%= render 'event_details' %>
+
+<p>
+  <strong>*</strong> you have till such time to either accept or decline this
+  event, before the system automatically marks your rostering as declined.
+</p>
+
+<p>
+  You can accept or decline this event by visiting your dashboard
+  at <%= link_to Setting.site_url, Setting.site_url %> (simply
+  login and click <%= link_to 'My Dashboard', dashboard_url %>
+  in the header)
+</p>
+
+<p>
+  If you do not respond within the required time,
+  you will automatically be moved to the declined list.
+</p>
+
+<%= render 'footer' %>

@@ -1,0 +1,6 @@
+<% title "Are you sure you want to approve #{@staff.full_name} position as a #{@role.name} at this event?" %>
+
+<% form_tag({ :action => 'approve' }, { :method => :put }) do %>
+  <%= submit_tag "Yes, I'm sure." %>
+  or <%= link_to 'back to event', event_path(@event) %>
+<% end %>

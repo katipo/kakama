@@ -1,0 +1,38 @@
+<% div_id ||= ''
+   events = collect_event_and_rosterings_for(events, @staff) %>
+
+<div id="<%= div_id %>">
+  <% unless events.blank? %>
+  <table>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Location</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th>Your Role</th>
+      <th></th>
+    </tr>
+  <% events.each do |event, rosterings| %>
+    <% rosterings.each do |rostering| %>
+    <tr>
+      <td>
+        <% if rostering.unconfirmed? %>
+          <% @has_unconfirmed_rosterings = true %>
+          <%= content_tag('span', "<em class='astrix'>*</em>", :class => 'unconfirmed') %>
+        <% end %>
+      </td>
+      <td><%= link_to h(event.name), event %></td>
+      <td><%= h(event.description) %></td>
+      <td><%= link_to h(event.venue.name), event.venue %></td>
+      <td><%= event.start_datetime.to_s(:long_with_day) %></td>
+      <td><%= event.end_datetime.to_s(:long_with_day) %></td>
+      <td><%= rostering.role.name %></td>
+      <td><%= render 'events/current_staff_actions', :event => event, :rostering => rostering %></td>
+    </tr>
+    <% end %>
+  <% end %>
+  </table>
+  <% end %>
+</div>

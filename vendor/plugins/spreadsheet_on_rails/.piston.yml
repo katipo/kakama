@@ -1,0 +1,8 @@
+--- 
+format: 1
+handler: 
+  commit: 0889da7d97bc7edd5fc2d421737a718631d39cd5
+  branch: master
+lock: false
+repository_class: Piston::Git::Repository
+repository_url: git://github.com/10to1/spreadsheet_on_rails.git

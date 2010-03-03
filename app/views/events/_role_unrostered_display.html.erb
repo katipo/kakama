@@ -1,0 +1,26 @@
+<div class="rostered_display <%= type %>_staff">
+  <% verb = @event.finished? ? 'were' : 'are' %>
+  <h3>Staff that <%= verb %> <%= type.humanize.downcase %></h3>
+
+  <% Role.all.each do |role| %>
+    <% rosterings = @event.send("#{type}_staff_for", role) %>
+    <% next if rosterings.size == 0 %>
+
+    <div class="role_container <%= role.name.downcase.gsub(/\s/, '_') %>">
+      <div class="role_name"><%= role.name %> (<%= rosterings.size %>)</div>
+      <div class="selected_staff">
+        <ul>
+          <% rosterings.each do |rostering| %>
+          <li>
+            <small>
+              <%= link_to rostering.staff.full_name, rostering.staff %>
+              ( <%= link_to 'deroster', deroster_rostering_path(rostering), :method => :delete %> )
+            </small>
+          </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+  <div style="clear:both;"></div>
+</div>

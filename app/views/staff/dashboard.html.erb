@@ -1,0 +1,21 @@
+<% title "Dashboard" %>
+
+<p>Below you can find any currently happening, upcoming,
+  or past events you are/have been involved with.</p>
+
+<h4>Current Events</h4>
+<%= render 'events_listing', :events => @staff.events.approved.current, :div_id => 'current_events' %>
+
+<h4>Upcoming Events</h4>
+<%= render 'events_listing', :events => @staff.events.approved.future, :div_id => 'upcoming_events' %>
+
+<h4>Past Events</h4>
+<%= render 'events_listing', :events => @staff.events.approved.finished, :div_id => 'past_events' %>
+
+<% if @has_unconfirmed_rosterings %>
+<div class="unconfirmed note">
+  <em class="astrix">*</em> indicates that you have neither accepted
+  nor declined participation at the event yet. Go to
+  the event in order to do so.
+</div>
+<% end %>

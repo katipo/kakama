@@ -1,0 +1,14 @@
+<% title "Are you sure you want to roster this user?" %>
+
+<p>This user is not available at the events time, or they are already rostered to another event at the same time.</p>
+
+<p>Would you like to ignore this fact and roster them regardless?</p>
+
+<% form_tag({ :action => 'add' }, { :method => :post }) do %>
+  <%= hidden_field_tag :staff_id, params[:staff_id] %>
+  <%= hidden_field_tag :event_id, params[:event_id] %>
+  <%= hidden_field_tag :role_id, params[:role_id] %>
+  <%= hidden_field_tag :ignore_unavailability, true %>
+  <%= submit_tag 'Ignore this Staff Members Unavailability' %>
+  or <%= link_to 'Search for another staff member', search_rosterings_path(:event_id => params[:event_id], :role_id => params[:role_id]) %>
+<% end %>

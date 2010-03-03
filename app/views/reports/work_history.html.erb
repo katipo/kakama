@@ -1,0 +1,41 @@
+<% if @staff %>
+
+  <% title "Work history for #{@staff.full_name}" %>
+
+  <h3>Staff Info</h3>
+
+  <p>
+    <strong>Weeks Employed:</strong>
+    <%= ((Time.now.to_date - @staff.start_date).to_f / 7.0).floor %>
+  </p>
+
+  <h3>No Show Information</h3>
+
+  <p>
+    <strong>Total No Shows:</strong>
+    <%= @staff.rosterings.no_show.count %>
+  </p>
+
+  <h3>Events Information</h3>
+
+  <p>
+    <strong>Events declined by employee:</strong>
+    <%= @staff.rosterings.non_system_flagged.declined.count %>
+  </p>
+
+  <p>
+    <strong>Events rejected by administrator:</strong>
+    <%= @staff.rosterings.rejected.count %>
+  </p>
+
+  <p>
+    <strong>Events rejected by system for taking too long to reply:</strong>
+    <%= @staff.rosterings.system_flagged.declined.count %>
+  </p>
+
+<% else %>
+
+  <% title "Search for members work history" %>
+  <%= render 'staff/staff_list_and_search', :search_for_work_history => true %>
+
+<% end %>

@@ -1,0 +1,13 @@
+<%
+with_close ||= false
+start_time ||= ''
+finish_time ||= ''
+comment ||= ''
+%>
+
+<div class='start_finish_comment_editor'>
+  Start: <%= hour_selector "availability[hours][#{day.to_s}][][start]", start_time %>
+  Finish: <%= hour_selector "availability[hours][#{day.to_s}][][finish]", finish_time %>
+  Comment: <%= text_field_tag "availability[hours][#{day.to_s}][][comment]", comment %>
+  <%= link_to_function '[remove]', "this.up('div').remove();" if with_close %>
+</div>

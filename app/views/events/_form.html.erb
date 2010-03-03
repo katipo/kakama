@@ -1,0 +1,62 @@
+<% if @event.conflicts_with_another_event? %>
+  <div id="errorExplanation" class="errorExplanation">
+    <h2>Conflicting Events</h2>
+    <p>The following events were found at this venue at the same time.</p>
+    <ul>
+    <% @event.other_events_at_this_place_and_time.each_with_index do |conflict, index| %>
+      <li><%= link_to h(conflict.name), conflict, :id => "event_conflict_#{index}" %></li>
+    <% end %>
+    </ul>
+  </div>
+  <%= form.hidden_field :ignore_event_conflicts, :value => true %>
+<% end %>
+
+<% if @event.unavailable_staff_rosterings? %>
+  <div id="errorExplanation" class="errorExplanation">
+    <h2>Staff Unavailable for event time</h2>
+    <p>Some staff are not able to attend this event at the time specified,
+      either because they are scheduled at another event, or they are
+      unavailable at this time.</p>
+    <p>You have three options to proceed:</p>
+    <ol>
+      <li>You can save this event again, which will ignore the conflicts.
+        You will then need to manually contact staff to sort things out.</li>
+      <li>(recommended) You can cancel their involvement with this event from
+        the event by choosing the appropriate button below, keeping only the
+        staff members who are available for the new event time.</li>
+      <li>You can cancel the entire event, and recreate a new one with the new
+        times. This will cancel the involvement of all staff involved, even
+        those available to attend the event at it's new time.</li>
+    </ol>
+  </div>
+  <%= form.hidden_field :ignore_event_conflicts, :value => true %>
+<% end %>
+
+<div class="required"><%= required_astrix %> denotes a required field</div>
+
+<% form.inputs :name => "Event Details" do %>
+  <%= form.input :name %>
+
+  <%= form.input :venue, :input_html => { :name => 'event[venue_id]' } %>
+
+  <%= form.input :description, :as => :text, :required => false,
+                 :input_html => { :rows => 8, :cols => 44 } %>
+<% end %>
+
+<% form.inputs :name => "Event Start and End Times" do %>
+  <li id="event_start_datetime_input" class="string required">
+    <%= form.label :start_datetime, "Event Reporting Time #{required_astrix}" %>
+    <script type='text/javascript'>
+      document.write("<%= escape_javascript form.calendar_date_select(:start_datetime, :time => true, :buttons => false, :valid_date_check => "date > (new Date()).stripTime()", :year_range => 0.years.ago..10.years.from_now) %> <small>(click to select date)</small>");
+    </script>
+    <noscript><%= form.datetime_select :start_datetime, :order => [:day, :month, :year], :include_blank => true %></noscript>
+  </li>
+
+  <li id="event_start_datetime_input" class="string required">
+    <%= form.label :end_datetime, "Event end #{required_astrix}" %>
+    <script type='text/javascript'>
+      document.write("<%= escape_javascript form.calendar_date_select(:end_datetime, :time => true, :buttons => false, :valid_date_check => "date > (new Date()).stripTime()", :year_range => 0.years.ago..10.years.from_now) %> <small>(click to select date)</small>");
+    </script>
+    <noscript><%= form.datetime_select :end_datetime, :order => [:day, :month, :year], :include_blank => true %></noscript>
+  </li>
+<% end %>

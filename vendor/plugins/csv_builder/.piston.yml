@@ -1,0 +1,8 @@
+--- 
+format: 1
+handler: 
+  commit: 8ffabf990a4927ccc5eb70affe2d923747ee2b45
+  branch: master
+lock: false
+repository_class: Piston::Git::Repository
+repository_url: git://github.com/econsultancy/csv_builder.git

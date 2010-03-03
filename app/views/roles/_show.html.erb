@@ -1,0 +1,25 @@
+<h4><%= active_scaffold_config.show.label -%></h4>
+
+<%= render :partial => 'show_columns', :locals => {:columns => active_scaffold_config.show.columns} -%>
+
+<div style='clear:both;'></div>
+
+<div class="assigned_staff">
+  <h5>Assigned Staff</h5>
+  <% if @record.assigned_to_staff? %>
+  <ul>
+    <% @record.staff.each do |staff| %>
+    <li><%=link_to staff.full_name, staff %></li>
+    <% end %>
+  </ul>
+  <% else %>
+  <h6>No staff assigned to this role.</h6>
+  <% end %>
+</div>
+
+<% unless params[:adapter].blank? %>
+<p class="form-footer">
+  <%= link_to as_(:close), params_for(:controller => params[:parent_controller] ? params[:parent_controller] : params[:controller], :action => 'list'), :class => 'cancel' %>
+  <%= loading_indicator_tag(:action => :create, :id => params[:id]) %>
+</p>
+<% end %>

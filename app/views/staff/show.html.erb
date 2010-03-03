@@ -1,0 +1,75 @@
+<% title "Viewing profile of #{@staff.full_name}" %>
+
+<h4>Staff Details</h2>
+
+<% if admin? %>
+<p>
+  <b>Username:</b>
+  <%=h @staff.username %>
+</p>
+<% end %>
+
+<p>
+  <b>Full name:</b>
+  <%=h @staff.full_name %>
+</p>
+
+<h4>Contact Details</h4>
+
+<p>
+  <b>Email:</b>
+  <%=mail_to @staff.email %>
+</p>
+
+<% DetailType.all.each do |detail_type| %>
+<% next unless @staff.contact_details[detail_type.id] %>
+<p>
+  <b><%= detail_type.name %>:</b>
+  <%=simple_format @staff.contact_details[detail_type.id] %>
+</p>
+<% end %>
+
+<h4>Administrator Fields</h4>
+
+<p>
+  <b>Staff type:</b>
+  <%=h @staff.type_label %>
+</p>
+
+<% unless @staff.roles.blank? %>
+<p>
+  <b>Roles:</b>
+  <ul>
+  <% @staff.roles.each do |role| %>
+    <li><%= role.name %></li>
+  <% end %>
+  </ul>
+</p>
+<% end %>
+
+<p>
+  <b>Start date:</b>
+  <%=h @staff.start_date.to_s(:long_with_day) %>
+</p>
+
+<% if admin? && !@staff.admin_notes.blank? %>
+<p>
+  <b>Admin notes:</b>
+  <%=h @staff.admin_notes %>
+</p>
+<% end %>
+
+<% content_for(:tools) do %>
+<ul>
+  <% if admin? %>
+    <li><%= link_to 'Edit Staff Member', edit_staff_path(@staff) %></li>
+    <% unless @staff.email.blank? %>
+      <li><%= link_to "Contact Staff Member", contact_staff_path(@staff) %></li>
+    <% end %>
+    <li><%= link_to 'View Staff Availability', staff_availabilities_path(@staff) %></li>
+    <li><%= link_to 'Return to Staff List', staffs_path %></li>
+  <% else %>
+    <li><%= link_to 'Edit Your Details', edit_staff_path(@staff) %></li>
+  <% end %>
+</ul>
+<% end %>

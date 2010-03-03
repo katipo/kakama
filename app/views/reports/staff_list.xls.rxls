@@ -1,0 +1,29 @@
+sheet1 = workbook.create_worksheet :name => 'Staff List'
+
+# Columns
+sheet1.column(0).width = 20
+sheet1.column(1).width = 20
+@detail_types.each_with_index do |detail_type, index|
+  width = (detail_type.field_type == 'string') ? 15 : 30
+  sheet1.column(index + 2).width = width
+end
+
+# Headers
+sheet1.row(0).push 'Full Name'
+sheet1.row(0).push 'Email'
+@detail_types.each_with_index do |detail_type, index|
+  sheet1.row(0).push detail_type.name
+end
+
+# Rows
+@staff.each_with_index do |staff, index|
+  sheet1.row(index + 1).push staff.full_name
+  sheet1.row(index + 1).push staff.email
+  @detail_types.each do |detail_type|
+    sheet1.row(index + 1).push staff.detail_types_hash[detail_type.id]
+  end
+end
+
+# Styling
+heading = Spreadsheet::Format.new :weight => :bold
+sheet1.row(0).default_format = heading

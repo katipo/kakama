@@ -1,0 +1,8 @@
+--- 
+format: 1
+handler: 
+  commit: 8e1b72202fd54064fee3142d7bf8a1fc45833649
+  branch: master
+lock: false
+repository_url: git://github.com/activescaffold/active_scaffold.git
+repository_class: Piston::Git::Repository

@@ -1,0 +1,28 @@
+<% title "Staff List" %>
+
+<table id="index_table">
+  <tr>
+    <th>Full Name</th>
+    <th>Email</th>
+    <% @detail_types.each do |detail_type| %>
+      <th><%= detail_type.name %></th>
+    <% end %>
+  </tr>
+  <% @staff.each do |staff| %>
+  <tr>
+    <td><%= staff.full_name %></td>
+    <td><%= staff.email %></td>
+    <% @detail_types.each do |detail_type| %>
+      <td><%= staff.detail_types_hash[detail_type.id] %></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+<% content_for(:tools) do %>
+  <ul>
+    <li><%=link_to 'Save Staff List (csv)', staff_list_reports_path(:format => :csv) %></li>
+    <li><%=link_to 'Save Staff List (xls)', staff_list_reports_path(:format => :xls) %></li>
+    <li><%=link_to 'Save Staff List (xml)', staff_list_reports_path(:format => :xml) %></li>
+  </ul>
+<% end %>

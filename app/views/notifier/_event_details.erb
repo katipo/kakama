@@ -1,0 +1,37 @@
+<ul>
+  <li>
+    <strong>Name:</strong>
+    <%= @event.name %>
+  </li>
+  <li>
+    <strong>Venue:</strong>
+    <%= @event.venue.name %>
+  </li>
+  <% unless @event.description.blank? %>
+  <li>
+    <strong>Description:</strong>
+    <%= @event.description %>
+  </li>
+  <% end %>
+  <li>
+    <strong>Event Reporting Time:</strong>
+    <%= @event.start_datetime.to_s(:long_with_day) %>
+  </li>
+  <li>
+    <strong>Event end:</strong>
+    <%= @event.end_datetime.to_s(:long_with_day) %>
+  </li>
+  <% if @role %>
+  <li>
+    <strong>Role:</strong>
+    <%= @role.name %>
+  </li>
+  <% end %>
+  <% if @response_deadline %>
+  <li>
+    <strong>Response Deadline: *</strong>
+    <%= @response_deadline.to_s(:long_with_day) %>
+    (~<%= distance_of_time_in_words(Time.now, @response_deadline) %> from now)
+  </li>
+  <% end %>
+</ul>

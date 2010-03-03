@@ -1,0 +1,8 @@
+<% title "Are you sure you want to cancel #{@event.name}?" %>
+
+<% semantic_form_for(@event, :url => { :action => 'cancel' }, :html => { :method => :delete }) do |form| %>
+  <%= form.error_messages %>
+  <% form.buttons do %>
+    <%= form.commit_button :button_html => { :value => "Yes, I'm sure." } %>
+  <% end %>
+<% end %>

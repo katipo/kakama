@@ -1,0 +1,40 @@
+<% title "Viewing event details for: #{@event.name}" %>
+<%= display_notices_and_errors %>
+
+<p>
+  <b>Name:</b> <%=h @event.name %> <br />
+  <b>Venue:</b> <%= link_to @event.venue.name, @event.venue %> <br />
+  <% unless @event.description.blank? %>
+    <b>Description:</b> <%=h @event.description %> <br />
+  <% end %>
+  <b>Event Reporting Time:</b> <%= @event.start_datetime.to_s(:long_with_day) %> <br />
+  <b>Event end:</b> <%= @event.end_datetime.to_s(:long_with_day) %>
+</p>
+
+<% rosterings = current_staff.active_rosterings_at(@event) %>
+<% rosterings.each do |rostering| %>
+  <%= render 'current_staff_actions', :event => @event, :rostering => rostering, :with_role_name => (rosterings.size > 1) %>
+<% end %>
+
+<% if admin? %>
+  <%= render 'role_required_counts' %>
+  <%= render 'role_rostered_display' unless @event.roles.blank? %>
+  <%= render 'role_unrostered_display', :type => 'rejected' if @event.any_rejected_staff? %>
+  <%= render 'role_unrostered_display', :type => 'declined' if @event.any_declined_staff? %>
+  <%= render 'role_unrostered_display', :type => 'cancelled' if @event.any_cancelled_staff? %>
+  <% if @event.working? && !@event.finished? && !@event.cancelled? && !@event.roles.blank? %>
+    <%= render 'finalize_event_roster', :event => @event %>
+  <% end %>
+
+  <% content_for(:tools) do %>
+    <ul>
+      <% unless @event.finished? || @event.cancelled? %>
+        <li><%= link_to 'Contact Staff Involved', contact_staff_event_path %></li>
+      <% end %>
+      <% if @event.editable? %>
+        <li><%= link_to 'Edit Event', edit_event_path(@event) %></li>
+      <% end %>
+      <li><%= link_to 'Return to Events List', events_path %></li>
+    </ul>
+  <% end %>
+<% end %>

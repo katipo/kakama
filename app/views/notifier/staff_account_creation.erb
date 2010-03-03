@@ -1,0 +1,14 @@
+<p>An account has been setup for you at <%= link_to Setting.site_url, Setting.site_url %>.</p>
+
+<p>You can login with the following credentials:</p>
+
+<p>
+  Username: <%= @recipient.username %><br />
+  Password: <%= @recipient.password %>
+</p>
+
+<p>This is the only time your password will be sent to you in plain text. Save it locally.</p>
+
+<p>If you forget your password, you will have to have it reset.</p>
+
+<%= render 'footer' %>

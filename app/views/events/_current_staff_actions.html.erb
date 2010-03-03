@@ -1,0 +1,17 @@
+<% with_role_name ||= false %>
+<% if !event.passed_cut_off_date? && rostering %>
+  <% if rostering.unconfirmed? %>
+    <%= "Role as #{rostering.role.name}:" if with_role_name %>
+    <%= link_to "Accept", accept_rostering_path(rostering),
+                :method => :put, :confirm => confirmation_message_for('confirmed') %>
+    | <%= link_to "Decline", decline_rostering_path(rostering),
+                  :method => :put, :confirm => confirmation_message_for('declined') %>
+  <% elsif rostering.confirmed? %>
+    <%= "Role as #{rostering.role.name}:" if with_role_name %>
+    (confirmed)
+  <% elsif rostering.rejected? %>
+    <%= "Role as #{rostering.role.name}:" if with_role_name %>
+    (rejected)
+  <% end %>
+<% end %>
+<br />

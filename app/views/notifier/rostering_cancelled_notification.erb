@@ -1,0 +1,11 @@
+<p>
+  Your involvement as a <%= @role.name %> at the event
+  '<%= @event.name %>' has been cancelled by an administrator.
+  Therefore, you are no longer needing to attend the event.
+</p>
+
+<p>They gave the following reason as to why:</p>
+
+<blockquote><%= @reason %></blockquote>
+
+<%= render 'footer' %>

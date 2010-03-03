@@ -1,0 +1,13 @@
+# Headers
+row1 = Array.new
+row1 += [ 'Full Name', 'Email' ]
+row1 += @detail_types.collect { |detail_type| detail_type.name }
+csv << row1
+
+# Rows
+@staff.each_with_index do |staff, index|
+  data = Array.new
+  data += [ staff.full_name, staff.email ]
+  data += @detail_types.collect { |detail_type| staff.detail_types_hash[detail_type.id] }
+  csv << data
+end

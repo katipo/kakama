@@ -1,0 +1,45 @@
+<% search_for_rostering ||= false %>
+<% search_for_work_history ||= false %>
+
+<%= will_paginate @staffs %>
+
+<div id="staff_search">
+  <% form_tag({}, { :method => :get }) do %>
+    <% if search_for_rostering %>
+      <%= hidden_field_tag :event_id, params[:event_id] %>
+      <%= hidden_field_tag :role_id, params[:role_id] %>
+      <%= hidden_field_tag :show_all_staff, params[:show_all_staff] %>
+    <% end %>
+    <%= text_field_tag :search_text, params[:search_text] %>
+    <%= submit_tag 'Search Members' %>
+  <% end %>
+</div>
+
+<table id="index_table">
+  <tr>
+    <th>Full Name (username)</th>
+    <th>Staff type</th>
+    <th>Email</th>
+  </tr>
+
+<% @staffs.each do |staff| %>
+  <tr>
+    <td class="full_name">
+      <% if search_for_rostering %>
+        <% location = add_rosterings_path(:staff_id => staff.id, :event_id => params[:event_id], :role_id => params[:role_id]) %>
+        <%= link_to h(staff.full_name), location, :method => :post %> (<%=h staff.username %>)
+      <% elsif search_for_work_history %>
+        <%= link_to h(staff.full_name), :id => staff.id %> (<%=h staff.username %>)
+      <% else %>
+        <%= link_to h(staff.full_name), staff %> (<%=h staff.username %>)
+      <% end %>
+    </td>
+    <td class="staff_type"><%=h staff.type_label %></td>
+    <td class="email"><%=mail_to staff.email %></td>
+    <% unless search_for_rostering || search_for_work_history %>
+    <td class="control"><%= link_to 'Edit', edit_staff_path(staff) %></td>
+    <td class="control"><%= link_to 'Delete', destroy_staff_path(staff), :confirm => 'Are you sure?', :method => :delete %></td>
+    <% end %>
+  </tr>
+<% end %>
+</table>

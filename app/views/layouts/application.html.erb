@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+  <head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=<%= Setting.character_set %>" />
+
+    <title><%= page_title(yield(:title)) %></title>
+    <% bundle do %>
+      <%= stylesheet_link_tag 'application', 'weekly', :media => 'screen' %>
+      <%= javascript_include_tag :defaults %>
+      <%= calendar_date_select_includes "default" %>
+      <%= active_scaffold_includes %>
+    <% end %>
+    <%= stylesheet_link_tag 'print', :media => 'print' %>
+
+  </head>
+
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+        <div id="user_nav">
+          <% if current_staff %>
+            Welcome <strong><%= current_staff.full_name %></strong> |
+            <%= link_to "My Dashboard", dashboard_path %> |
+            <%= link_to "My Profile", staff_path(:current) %> |
+            <%= link_to "My Availability", staff_availabilities_path(:current) %> |
+            <%= link_to "Logout", logout_path %>
+          <% end %>
+        </div>
+        <div id="banner">
+          <h1><%= link_to Setting.site_name, root_path %></h1>
+          <%= content_tag('h2', Setting.site_description) unless Setting.site_description.blank? %>
+        </div>
+      </div>
+
+      <%= display_flash_contents %>
+
+      <% if admin? || !yield(:tools).blank? %>
+      <div id="tools">
+        <% if admin? %>
+        <ul>
+          <li class="<%= current_section_if(:staff) %>"><%= link_to 'Staff Members', staffs_path %></li>
+          <li class="<%= current_section_if(:events) %>"><%= link_to 'Events', events_path %></li>
+          <li class="<%= current_section_if(:venues) %>"><%= link_to 'Venues', venues_path %></li>
+          <li class="<%= current_section_if(:reports) %>"><%= link_to 'Reports', reports_path %></li>
+          <li class="<%= current_section_if(:roles) %>"><%= link_to 'Staff Roles', roles_path %></li>
+          <li class="<%= current_section_if(:detail_types) %>"><%= link_to 'Staff Detail Types', detail_types_path %></li>
+          <li class="<%= current_section_if(:email_logs) %>"><%= link_to 'Email Logs', email_logs_path %></li>
+          <li class="last <%= current_section_if(:settings) %>"><%= link_to 'Site Settings', settings_path %></li>
+        </ul>
+        <div class="divider"></div>
+        <% end %>
+        <%= yield(:tools) %>
+        <div style="clear:both;"></div>
+      </div>
+      <% end %>
+
+      <div id="content">
+        <% unless yield(:title).blank? %>
+          <h3 class="page_title"><%= yield(:title) %></h3>
+        <% end %>
+        <%= yield %>
+      </div>
+
+      <div id="footer">
+        Front of House Rostering, &copy;2009 Katipo Communications Ltd.<br />
+        <%= "Site powered by #{powered_by}" unless powered_by.blank? %>
+      </div>
+
+    </div>
+
+  </body>
+
+</html>

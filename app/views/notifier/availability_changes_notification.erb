@@ -1,0 +1,11 @@
+<p>The availability of <%= @availability.staff.full_name %> has been altered.</p>
+
+<% if @availability.notification_comment %>
+<p>The following comment was added to the changes.</p>
+<blockquote><%= @availability.notification_comment %></blockquote>
+<% end %>
+
+<%= link_to 'View the new availability',
+            staff_availabilities_path(@availability.staff, :start_date => @availability.start_date) %>
+
+<%= render 'footer' %>

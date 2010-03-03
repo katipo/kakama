@@ -1,0 +1,15 @@
+<% title "New staff member" %>
+
+<% semantic_form_for(@staff) do |form| %>
+  <%= form.error_messages %>
+  <%= render 'form', :form => form %>
+  <% form.buttons do %>
+    <%= form.commit_button %>
+  <% end %>
+<% end %>
+
+<% content_for(:tools) do %>
+  <ul>
+    <li><%= link_to 'Return to Staff List', staffs_path %></li>
+  </ul>
+<% end %>

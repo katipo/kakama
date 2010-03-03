@@ -1,0 +1,17 @@
+<% title "Search for member to roster" %>
+
+<% if params[:show_all_staff] %>
+  Viewing all staff members.
+  <%= link_to 'View only available staff members', search_rosterings_path(params.merge(:show_all_staff => false)) %>
+<% else %>
+  Viewing all available staff members.
+  <%= link_to 'View all staff members', search_rosterings_path(params.merge(:show_all_staff => true)) %>
+<% end %>
+
+<%= render 'staff/staff_list_and_search', :search_for_rostering => true %>
+
+<% content_for(:tools) do %>
+  <ul>
+    <li><%= link_to 'Return to Event', @event %></li>
+  </ul>
+<% end %>

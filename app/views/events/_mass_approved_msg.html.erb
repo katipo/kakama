@@ -1,0 +1,3 @@
+Some events have passed the response cut off date, so staff will need to be contacted manually.
+<br />
+Affected Events: <%= events.collect { |e| link_to h(e.name), e }.join(', ') %>

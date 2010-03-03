@@ -1,0 +1,88 @@
+<% semantic_form_for(@availability, :url => availability_form_url) do |form| %>
+  <%= form.error_messages %>
+
+  <% if @availability.conflicts_with_another_availability? %>
+    <div id="errorExplanation" class="errorExplanation">
+      <h2>Conflicting Availability</h2>
+      <p>The following conflicting availability was found.</p>
+      <ul>
+      <% @availability.other_availabilities_overlapping_this_time.each_with_index do |conflict, index| %>
+        <li><%= link_to "#{conflict.start_date} - #{conflict.end_date}", edit_staff_availability_path(@staff, conflict), :id => "availability_conflict_#{index}" %></li>
+      <% end %>
+      </ul>
+    </div>
+    <%= form.hidden_field :ignore_availability_conflicts, :value => true if admin? %>
+  <% end %>
+
+  <% form.inputs :name => "Availability Details" do %>
+    <li class="string required">
+      <%= form.label :start_date, "Start date #{required_astrix}" %>
+      <script type='text/javascript'>
+        document.write("<%= escape_javascript form.calendar_date_select(:start_date, :time => false) %> <small>(click to select date)</small>");
+      </script>
+      <noscript><%= form.date_select :start_date, :order => [:day, :month, :year], :include_blank => true %></noscript>
+    </li>
+
+    <li class="string required">
+      <%= form.label :end_date, "End date #{required_astrix}" %>
+      <script type='text/javascript'>
+        document.write("<%= escape_javascript form.calendar_date_select(:end_date, :time => false) %> <small>(click to select date)</small>");
+      </script>
+      <noscript><%= form.date_select :end_date, :order => [:day, :month, :year], :include_blank => true %></noscript>
+    </li>
+  <% end %>
+
+  <% form.inputs :name => "Select Hours of Availability Each Day" do %>
+    <li class="string required">
+      <%= label_tag 'All Days' %>
+      Start: <%= hour_selector 'availability[hours][all][start]' %>
+      Finish: <%= hour_selector 'availability[hours][all][finish]' %>
+    </li>
+
+    <li class="separator">OR</li>
+
+    <% Availability::Days.each do |day,label| %>
+      <li class="string required">
+        <%= label_tag label %>
+        <div id="<%= day %>_start_finish_comment_editors" class="start_finish_comment_editors">
+          <% if @availability && @availability.hours[day] %>
+            <% @availability.hours[day].each_with_index do |data, index| %>
+              <%= render 'start_finish_comment', :day => day,
+                         :with_close => (index != 0), :start_time => data[:start],
+                         :finish_time => data[:finish], :comment => data[:comment] %>
+            <% end %>
+          <% else %>
+            <%= render 'start_finish_comment', :day => day %>
+          <% end %>
+        </div>
+        <div id='<%= day %>_start_finish_comment_controls' class="start_finish_comment_controls">
+          <%= add_start_finish_comment_link_for(day) %>
+        </div>
+      </li>
+    <% end %>
+  <% end %>
+
+  <% unless (admin? && changing_own_availability?) || @staff.email.blank? %>
+    <% form.inputs :name => "Additional Information" do %>
+      <%= form.input :notification_comment, :as => :text, :required => false,
+                     :input_html => { :rows => 8, :cols => 44 } %>
+    <% end %>
+  <% end %>
+
+  <% if admin? && !changing_own_availability? %>
+    <% form.inputs :name => "Administrative Actions" do %>
+      <li class="boolean optional" id="availability_admin_locked_input">
+        <%= label_tag 'availability_admin_locked', 'Lock this Availability?' %>
+        <%= form.check_box :admin_locked %>
+      </li>
+    <% end %>
+  <% end %>
+
+  <% form.buttons do %>
+    <% label = !@availability.conflicts_with_another_availability? || !admin? ? nil :
+                (@availability.new_record? ?
+                  'Ignore Conflicts and Create Availability' :
+                  'Ignore Conflicts and Save Availability') %>
+    <%= form.commit_button label %>
+  <% end %>
+<% end %>

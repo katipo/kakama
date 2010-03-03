@@ -1,0 +1,18 @@
+# Put any settings that tests rely on here
+# They will overwrite whatever is in config/settings.yml during test mode
+
+site_name: Kakama Test
+site_url: http://localhost:3000
+site_description: Kakama Testing Setup
+session_timeout: 15
+notifier_email: no-reply@kakama.org
+site_administrator_emails: ['admin@kakama.org']
+character_set: utf-8
+company_name: Katipo Communications Ltd.
+company_url: http://katipo.co.nz
+full_names_in_mails_headers: true
+event_cut_off: 3
+response_time: 5
+administrators_can_be_rostered: false
+administrators_get_special_emails: true
+attachment_limit: false

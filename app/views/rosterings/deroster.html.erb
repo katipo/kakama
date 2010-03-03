@@ -1,0 +1,6 @@
+<% title "Are you sure you want to deroster #{@staff.full_name} from this event?" %>
+
+<% form_tag({ :action => 'deroster' }, { :method => :delete }) do %>
+  <%= submit_tag "Yes, I'm sure." %>
+  or <%= link_to 'back to event', event_path(@event) %>
+<% end %>

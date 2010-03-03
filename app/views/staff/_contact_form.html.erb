@@ -1,0 +1,9 @@
+<p>
+  <label for="subject"><strong>Subject:</strong></label> <br />
+  <%= text_field_tag :subject, params[:subject], :size => 46 %>
+</p>
+
+<p>
+  <label for="body"><strong>Email body:</strong></label> <br />
+  <%= text_area_tag :body, params[:body], :rows => 10, :cols => 40 %>
+</p>

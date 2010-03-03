@@ -1,0 +1,26 @@
+<p>
+  The time of the event '<%= @event.name %>' that you are
+  rostered as a <%= @role.name %> for has had it's start
+  or end dates changed.
+</p>
+
+<p>
+  The new details are as follows:
+</p>
+
+<%= render 'event_details' %>
+
+<% if @is_available %>
+  <p>
+    The system shows that you are available to work at this new
+    time, which is why you have been emailed about this change.
+  </p>
+<% else %>
+  <p>
+    The system shows that you are not available to work at this
+    new time. Please contact the administrator to sort out why
+    you are unable to attend, and cancel your rostering if needed.
+  </p>
+<% end %>
+
+<%= render 'footer' %>

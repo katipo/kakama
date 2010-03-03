@@ -1,0 +1,6 @@
+<% title "Are you sure you want to decline the position of #{@role.name} at the the event '#{@event.name}'" %>
+
+<% form_tag({ :action => 'decline' }, { :method => :put }) do %>
+  <%= submit_tag "Yes, I'm sure." %>
+  or <%= link_to 'Back to dashboard', dashboard_path %>
+<% end %>

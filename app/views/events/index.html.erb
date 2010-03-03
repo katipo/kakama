@@ -1,0 +1,37 @@
+<% if params[:type].blank? %>
+  <% title "Current and Upcoming Events" %>
+
+  <h4>Current Events</h4>
+  <%= render 'events_list', :events => @current_events %>
+
+  <h4>Upcoming Events</h4>
+  <%= render 'events_list', :events => @upcoming_events %>
+<% end %>
+
+<% if params[:type] == 'past' %>
+  <% title "Past Events" %>
+  <%= render 'events_list', :events => @past_events %>
+<% end %>
+
+<% if params[:type] == 'working' %>
+  <% title "Working Events" %>
+  <% form_tag({:action => 'mass_approve'}, {:method => :post}) do %>
+    <%= render 'events_list', :events => @working_events, :show_finalize_button => true %>
+    <%= submit_tag 'Mass Approve Event Rosters' %>
+  <% end %>
+<% end %>
+
+<% if params[:type] == 'cancelled' %>
+  <% title "Cancelled Events" %>
+  <%= render 'events_list', :events => @cancelled_events %>
+<% end %>
+
+<% content_for(:tools) do %>
+  <ul>
+    <li><%= link_to 'Add Event', new_event_path %></li>
+    <li><%= link_to 'Current and Upcoming Events', :type => nil %></li>
+    <li><%= link_to 'Past Events', :type => 'past' %></li>
+    <li><%= link_to 'Working Events', :type => 'working' %></li>
+    <li><%= link_to 'Cancelled Events', :type => 'cancelled' %></li>
+  </ul>
+<% end %>

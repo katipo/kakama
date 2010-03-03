@@ -1,0 +1,17 @@
+<% title "Editing staff member: #{h(@staff.full_name)}" %>
+
+<% semantic_form_for(@staff) do |form| %>
+  <%= form.error_messages %>
+  <%= render 'form', :form => form %>
+  <% form.buttons do %>
+    <%= form.commit_button :button_html => { :value => 'Save' } %>
+  <% end %>
+<% end %>
+
+<% if admin? %>
+  <% content_for(:tools) do %>
+    <ul>
+      <li><%= link_to 'Return to Staff Profile', @staff %></li>
+    </ul>
+  <% end %>
+<% end %>

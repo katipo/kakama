@@ -1,0 +1,16 @@
+<% title "New event" %>
+
+<% semantic_form_for(@event) do |form| %>
+  <%= form.error_messages %>
+  <%= render 'form', :form => form %>
+  <% form.buttons do %>
+    <% label = (@event.conflicts_with_another_event? ? 'Ignore Conflicts and Create Event' : 'Create Event') %>
+    <%= form.commit_button label %>
+  <% end %>
+<% end %>
+
+<% content_for(:tools) do %>
+  <ul>
+    <li><%= link_to 'Return to Events List', events_path %></li>
+  </ul>
+<% end %>

@@ -1,0 +1,34 @@
+<% show_finalize_button ||= false %>
+<%= will_paginate events %>
+
+<table class="events_list">
+  <tr>
+    <th class="checkbox"></th>
+    <th>Name</th>
+    <th>Venue</th>
+    <th>Event Times</th>
+    <th class="controls" colspan="3"></th>
+  </tr>
+
+<% events.each do |event| %>
+  <tr>
+    <td class="checkbox">
+      <% if show_finalize_button && event.working? %>
+        <%= check_box_tag 'approve_event_ids[]', event.id, false, :id => "approve_event_ids_#{event.id}" %>
+      <% end %>
+    </td>
+    <td><%=link_to h(event.name), event %></td>
+    <td><%=link_to h(event.venue.name), event.venue %></td>
+    <td><%=h event.start_datetime.to_s(:short) %> - <%=h event.end_datetime.to_s(:short) %></td>
+    <td class="control">
+      <%= link_to 'Edit', edit_event_path(event) if event.editable? %>
+    </td>
+    <td class="control">
+      <%= link_to 'Delete', destroy_event_path(event), :confirm => 'Are you sure?', :method => :delete if event.deletable? %>
+    </td>
+    <td class="control">
+      <%= link_to 'Cancel', cancel_event_path(event), :confirm => 'Are you sure?', :method => :delete if event.cancelable? %>
+    </td>
+  </tr>
+<% end %>
+</table>
