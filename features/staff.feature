@@ -6,19 +6,11 @@ Feature: Staff
   I want to be able to update my own information
 
   Background:
-    Given a staff member "Joe" exists
-
-  Scenario: Add Staff as Administrator without email
     Given I am logged in as "admin"
-    When I go to add a new staff member
-    And I fill in details for "Jack"
-    And I press "Create Staff"
-    Then I should see "Staff was successfully created. This user must be notified manually that their account has been created."
-    And I should see "Viewing profile of Jack"
+    And a staff member "Joe" exists
 
-  Scenario: Add Staff as Administrator with email
-    Given I am logged in as "admin"
-    And no emails have been sent
+  Scenario: Add Staff with email
+    Given no emails have been sent
     When I go to add a new staff member
     And I fill in details for "Jack"
     And I fill in "Email" with "jack@example.com"
@@ -29,45 +21,20 @@ Feature: Staff
     When they open the email
     Then they should see /An account has been created for you/ in the email subject
 
+  Scenario: Add Staff without email
+    Given no emails have been sent
+    When I go to add a new staff member
+    And I fill in details for "Jack"
+    And I press "Create Staff"
+    Then I should see "Staff was successfully created. This user must be notified manually that their account has been created."
+    And I should see "Viewing profile of Jack"
+
   Scenario: Edit Staff as Administrator
-    Given I am logged in as "admin"
     When I go to edit the staff member "Joe"
     And I fill in "Full name" with "Jim"
     And I press "Save"
     Then I should see "Staff was successfully updated."
     And I should see "Viewing profile of Jim"
-
-  Scenario: Delete Staff without rosterings as Administrator works
-    Given I am logged in as "admin"
-    When I go to delete the staff member "Joe"
-    And I press "Yes, I'm sure."
-    Then I should see "Staff was successfully destroyed."
-
-  Scenario: Delete Staff with active rosterings as Administrator rejected
-    Given I am logged in as "admin"
-    And "Joe" is "confirmed" for the event "Big Concert" as an "Usher"
-    When I go to delete the staff member "Joe"
-    And I press "Yes, I'm sure."
-    Then I should see "Unable to delete the staff member Joe."
-    And I should see "They are currently unconfirmed or confirmed at one or more events."
-    And I should see "They need to be removed from these events before they can be deleted."
-
-  Scenario: Delete Staff with inactive rosterings as Administrator works
-    Given I am logged in as "admin"
-    And "Joe" was "declined" for the event "Big Concert" as an "Usher"
-    When I go to delete the staff member "Joe"
-    And I press "Yes, I'm sure."
-    Then I should see "Staff was successfully destroyed."
-
-  Scenario: Change Password as Administrator
-    Given I am logged in as "admin"
-    When I go to edit the staff member "Joe"
-    And I fill in "Password" with "newpass"
-    And I fill in "Password Confirmation" with "newpass"
-    And I press "Save"
-    Then I should see "Staff was successfully updated."
-    When I go to logout
-    Then I should be able to login as "joe:newpass"
 
   Scenario: Edit Details as Staff Member
     Given I am logged in as "joe"
@@ -76,6 +43,34 @@ Feature: Staff
     And I press "Save"
     Then I should see "Staff was successfully updated."
     And I should see "Viewing profile of Jim"
+
+  Scenario: Delete Staff without rosterings works
+    When I go to delete the staff member "Joe"
+    And I press "Yes, I'm sure."
+    Then I should see "Staff was successfully destroyed."
+
+  Scenario: Delete Staff with active rosterings rejected
+    Given "Joe" is "confirmed" for the event "Big Concert" as an "Usher"
+    When I go to delete the staff member "Joe"
+    And I press "Yes, I'm sure."
+    Then I should see "Unable to delete the staff member Joe."
+    And I should see "They are currently unconfirmed or confirmed at one or more events."
+    And I should see "They need to be removed from these events before they can be deleted."
+
+  Scenario: Delete Staff with inactive rosterings works
+    Given "Joe" was "declined" for the event "Big Concert" as an "Usher"
+    When I go to delete the staff member "Joe"
+    And I press "Yes, I'm sure."
+    Then I should see "Staff was successfully destroyed."
+
+  Scenario: Change Password as Administrator
+    When I go to edit the staff member "Joe"
+    And I fill in "Password" with "newpass"
+    And I fill in "Password Confirmation" with "newpass"
+    And I press "Save"
+    Then I should see "Staff was successfully updated."
+    When I go to logout
+    Then I should be able to login as "joe:newpass"
 
   Scenario: Change Password as Staff Member without current password set
     Given I am logged in as "joe"
@@ -97,8 +92,7 @@ Feature: Staff
     Then I should be able to login as "joe:newpass"
 
   Scenario: Search for Staff Members
-    Given I am logged in as "admin"
-    And a staff member "Busy Bee" exists
+    Given a staff member "Busy Bee" exists
     And a staff member "Flat Tack" exists
     When I go to the staff list
     Then I should see "Busy Bee"
@@ -143,8 +137,7 @@ Feature: Staff
     And I should not see "Big Concert 4" within "#upcoming_events"
 
   Scenario: Send a personal email to a user with an email
-    Given I am logged in as "admin"
-    And no emails have been sent
+    Given no emails have been sent
 
     When I go to send "Joe" an email
     And I fill in "Subject" with "Hello"
@@ -166,8 +159,7 @@ Feature: Staff
     Then I should see "You cannot send Jill an email because they have no email set."
 
   Scenario: Sending out email to all staff members
-    Given I am logged in as "admin"
-    And a staff member "Jill" exists
+    Given a staff member "Jill" exists
     And no emails have been sent
 
     When I send an email to everyone
@@ -176,8 +168,7 @@ Feature: Staff
     And the staff member "Jill" should receive the email I just sent
 
   Scenario: Sending out email to all staff members CCs admins
-    Given I am logged in as "admin"
-    And a staff member "Jill" exists
+    Given a staff member "Jill" exists
     And no emails have been sent
     And administrators get all emails
 
@@ -185,8 +176,7 @@ Feature: Staff
     Then all administrators should receive an email
 
   Scenario: Sending out email to all staff members keeps an email log
-    Given I am logged in as "admin"
-    And a staff member "Jill" exists
+    Given a staff member "Jill" exists
     And no emails have been sent
 
     When I send an email to everyone
@@ -194,8 +184,7 @@ Feature: Staff
     And there should be an email log for "Jill" about the email I sent to everyone
 
   Scenario: Sending out email to all staff members, where staff haven't got an email, sends pdfs to admins
-    Given I am logged in as "admin"
-    And a staff member "Sally" exists without an email
+    Given a staff member "Sally" exists without an email
     And a staff member "Jim" exists without an email
     And no emails have been sent
     And administrators dont get all emails
