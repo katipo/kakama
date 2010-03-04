@@ -54,3 +54,10 @@ Then /^"([^\"]*)" should receive an email containing details about their new ros
   Then 'they should see /You have been scheduled to work at a new event/ in the email subject'
   And 'they should see "accept or decline this event by visiting your dashboard" in the email body'
 end
+
+Then /^the rostering for "([^\"]*)" at the event should be "([^\"]*)"(\sby the system)?$/ do |full_name, state, by_system|
+  staff = Staff.find_by_full_name!(full_name)
+  rostering = staff.rosterings_at(@event).first
+  assert rostering.declined?
+  assert rostering.system_flagged? if by_system
+end

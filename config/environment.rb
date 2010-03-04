@@ -16,7 +16,7 @@ Rails::Initializer.run do |config|
 
   # Specify gems that this application depends on and have them installed with rake gems:install
   %w{ calendar_date_select chronic searchlogic daemons authlogic
-      spreadsheet fastercsv formtastic will_paginate delayed_job
+      spreadsheet fastercsv formtastic will_paginate
       validates_as_email_address }.each do |gem|
     config.gem gem
   end
@@ -28,6 +28,9 @@ Rails::Initializer.run do |config|
 
   # Some gems have different lib names compared to gem names
   config.gem 'mimetype-fu', :lib => 'mimetype_fu'
+
+  # The API for DelayedJob has changed, so rely on a set version until we can upgrade
+  config.gem 'delayed_job', :version => '1.8.4'
 
   # The API for Prawn is constantly changing, so rely on set versions for some gems we know work
   config.gem 'prawn', :version => '0.7.2'

@@ -12,6 +12,26 @@ Then /^all administrators should receive ([^\"]*) emails?$/ do |amount|
   end
 end
 
+Then /^show me the unread emails for "([^\"]*)"$/ do |email_or_full_name|
+  unread_emails_for(parse_email(email_or_full_name)).each { |e| puts "\n#{e.subject.inspect}\n#{e.body.inspect}\n\n" }
+end
+
+Then /^show me the email inbox for "([^\"]*)"$/ do |full_name|
+  mailbox_for(parse_email(email_or_full_name)).each { |e| puts "\n#{e.subject.inspect}\n#{e.body.inspect}\n\n" }
+end
+
+Given /^it is currently (.+)$/ do |time|
+  Timecop.travel(parse_time(time))
+end
+
+Given /^(?:I|we) return to the present$/ do
+  Timecop.return
+end
+
+Given /^all delayed jobs have run$/ do
+  Delayed::Job.work_off
+end
+
 private
 
 # Takes a string and parses it into a time object via Rails time extensions
@@ -22,6 +42,17 @@ def parse_time(time)
   eval(time.split.join('.')) # "1 day from_now" -> eval("1.day.from_now")
 rescue
   nil
+end
+
+# Takes either an email or a staff name and converts it into an email string
+def parse_email(email_or_full_name)
+  if email_or_full_name =~ /@/
+    email_or_full_name
+  else
+    staff = Staff.find_by_full_name!(full_name)
+    raise "#{full_name} has no email, thus no unread emails to show." if staff.email.blank?
+    staff.email
+  end
 end
 
 # Method for filling in datetime select boxes provided by Rails

@@ -52,15 +52,3 @@ Then /^there should be an email log for "([^\"]*)" about the email I sent to eve
   end
   matching_logs.size.should == 1
 end
-
-Then /^show me the unread emails for "([^\"]*)"$/ do |full_name|
-  staff = Staff.find_by_full_name!(full_name)
-  raise "#{full_name} has no email, thus no unread emails to show." if staff.email.blank?
-  unread_emails_for(staff.email).each { |e| puts "\n#{e.subject.inspect}\n#{e.body.inspect}\n\n" }
-end
-
-Then /^show me the email inbox for "([^\"]*)"$/ do |full_name|
-  staff = Staff.find_by_full_name!(full_name)
-  raise "#{full_name} has no email, thus no email box to show." if staff.email.blank?
-  mailbox_for(staff.email).each { |e| puts "\n#{e.subject.inspect}\n#{e.body.inspect}\n\n" }
-end

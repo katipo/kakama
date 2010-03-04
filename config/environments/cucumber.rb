@@ -10,6 +10,7 @@ config.action_mailer.delivery_method                 = :test
 
 # dependencies
 config.gem 'email_spec'
+config.gem 'timecop'
 %w{ term-ansicolor treetop diff-lcs nokogiri
     builder factory_girl ruby-terminfo }.each do |gem|
   config.gem gem, :lib => false

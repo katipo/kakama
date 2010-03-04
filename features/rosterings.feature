@@ -216,13 +216,25 @@ Feature: Rosterings
     When they open the email
     Then they should see "The event named 'Big Concert 1' has been renamed as 'Something else'" in the email body
 
+  @wip
   Scenario: Editing Event Time without conflicts
-    Given no emails have been sent
 
+  @wip
   Scenario: Editing Event Time with conflicts
-    Given no emails have been sent
 
   Scenario: Rostering should become declined if user does not respond in time
+    Given it is currently 3 weeks ago
+    And I am logged in as "admin"
+    And an event "Event in the past" exists at "Someplace"
+    And that event starts in 21 days from now
+
+    When I go to view the event
+    And I update roles to require 1 "Usher"
+    And I finalize that events roster
+
+    Given we return to the present
+    And all delayed jobs have run
+    Then the rostering for "Robert" at the event should be "declined" by the system
 
   Scenario: Mass Approving Events sends grouped emails to rostered staff
     When I go to view the event
@@ -246,5 +258,30 @@ Feature: Rosterings
     And they should see "Big Concert 1" in the email body
     And I should see "Big Concert 2" in the email body
 
-  Scenario: Mass Approving various event types doesn't make delayed jobs that run right away causing double rosterings
+  Scenario: Mass Approving Events, where some staff don't have an email, should send pdfs to administrators for those staff members
+    Given a staff member "Sally" exists without an email
+    And "Sally" is not rostered to anything
+    And "Sally" is available from 20 days ago till 20 days from now
+    And "Sally" has the role "Usher"
 
+    When I go to view the event
+    And I update roles to require 2 "Usher"
+    And an event "Big Concert 2" exists at "Big Stadium 2"
+    And that event starts in 10 days from now
+    And I go to view the event
+    And I update roles to require 2 "Usher"
+
+    Given no emails have been sent
+
+    When I go to the working events list
+    And I check mass confirm box for "Big Concert 1"
+    And I check mass confirm box for "Big Concert 2"
+    And I press "Mass Approve Event Rosters"
+
+    Then I should see "selected events have now been approved"
+    And all administrators should receive an email
+    When they open the email
+    Then there should be an attachment named "multiple_rostering_created_notification_for_sally.pdf"
+
+  @wip
+  Scenario: Mass Approving various event types doesn't make delayed jobs that run right away causing double rosterings

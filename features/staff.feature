@@ -28,6 +28,9 @@ Feature: Staff
     And I press "Create Staff"
     Then I should see "Staff was successfully created. This user must be notified manually that their account has been created."
     And I should see "Viewing profile of Jack"
+    Then all administrators should receive an email
+    When they open the email
+    And there should be an attachment named "staff_account_creation_for_jack.pdf"
 
   Scenario: Edit Staff as Administrator
     When I go to edit the staff member "Joe"
@@ -183,7 +186,7 @@ Feature: Staff
     Then I should see "Email was sent to all staff members."
     And there should be an email log for "Jill" about the email I sent to everyone
 
-  Scenario: Sending out email to all staff members, where staff haven't got an email, sends pdfs to admins
+  Scenario: Sending out email to all staff members, where some staff don't have an email, should send pdfs to administrators for those staff members
     Given a staff member "Sally" exists without an email
     And a staff member "Jim" exists without an email
     And no emails have been sent
@@ -191,3 +194,6 @@ Feature: Staff
 
     When I send an email to everyone
     Then all administrators should receive an email
+    When they open the email
+    Then there should be an attachment named "email_to_all_staff_for_jim.pdf"
+    And there should be an attachment named "email_to_all_staff_for_sally.pdf"

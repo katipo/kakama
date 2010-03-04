@@ -12,3 +12,9 @@ silence_stream(STDOUT) do
   Rake::Task['db:reset'].execute(ENV)
   Rake::Task["db:seed_fu"].execute(ENV)
 end
+
+# After each test, return Time to
+# the present incase we forgot to
+After do
+  Timecop.return
+end

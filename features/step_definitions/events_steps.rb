@@ -31,6 +31,16 @@ Given /^that event starts in ([^\"]*)$/ do |time|
   })
 end
 
+Given /^that event ends in ([^\"]*)$/ do |time|
+  reload_event
+  time = parse_time(time)
+  @event.update_attributes!({
+    :end_datetime => time,
+    :allow_past_events => true,
+    :ignore_event_conflicts => true
+  })
+end
+
 Given /^that event is in progress$/ do
   reload_event
   @event.update_attributes!({

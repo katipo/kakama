@@ -295,6 +295,15 @@ Feature: Events
       Given that event has not started
       When I go to the working events list
       Then I should see "Big Concert 1"
+      When I go to the events list
+      Then I should not see "Big Concert 1"
+
+      Given that event starts in 5 hours from now
+      And that event ends in 8 hours from now
+      When I go to the working events list
+      Then I should see "Big Concert 1"
+      When I go to the events list
+      Then I should not see "Big Concert 1"
 
       Given that event is in progress
       When I go to the working events list
@@ -314,6 +323,11 @@ Feature: Events
       When I go to the events list
       Then I should see "Big Concert 2"
 
+      Given that event starts in 5 hours from now
+      And that event ends in 8 hours from now
+      When I go to the events list
+      Then I should see "Big Concert 2"
+
       Given that event is in progress
       When I go to the events list
       Then I should see "Big Concert 2"
@@ -329,13 +343,24 @@ Feature: Events
       Given that event has not started
       When I go to the cancelled events list
       Then I should see "Big Concert 3"
+      When I go to the events list
+      Then I should not see "Big Concert 2"
+
+      Given that event starts in 5 hours from now
+      And that event ends in 8 hours from now
+      When I go to the cancelled events list
+      Then I should see "Big Concert 3"
+      When I go to the events list
+      Then I should not see "Big Concert 2"
 
       Given that event is in progress
       When I go to the cancelled events list
       Then I should see "Big Concert 3"
+      When I go to the events list
+      Then I should not see "Big Concert 2"
 
       Given that event finished 1 month ago
       When I go to the cancelled events list
       Then I should see "Big Concert 3"
-
-  Scenario: Using named scopes to find events of different types looks based on UTC time, not another timezone
+      When I go to the events list
+      Then I should not see "Big Concert 2"
