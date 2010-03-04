@@ -26,7 +26,7 @@ When /^I send an email to everyone$/ do
   And 'I press "Send Email to all Staff Members"'
 end
 
-Then /^(?:(?:an|the) administrator|the staff member "([^\"]*)") should receive ([^\"]*) emails?$/ do |full_name, amount|
+Then /^the staff member "([^\"]*)" should receive ([^\"]*) emails?$/ do |full_name, amount|
   email = full_name ? Staff.find_by_full_name!(full_name).email : Setting.site_administrator_emails.first
   if email.blank?
     raise "ERROR: #{full_name} cannot receive emails because he/she has no email address." unless amount == 'no'

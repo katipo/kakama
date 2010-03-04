@@ -104,7 +104,7 @@ Feature: Availability
     And I mark 2009-08-31 till 2009-09-02 as available
     And I fill in "Notification Comment" with "The next few days availability"
     And I press "Create Availability"
-    Then the administrator should receive an email
+    Then all administrators should receive an email
     When they open the email
     Then they should see /Availability of Gerry has been changed/ in the email subject
     When they follow "View the new availability" in the email
@@ -130,14 +130,14 @@ Feature: Availability
     Then I should not see "Additional Information"
     When I mark 2009-08-31 till 2009-09-02 as available
     And I press "Create Availability"
-    Then the administrator should receive no emails
+    Then all administrators should receive no emails
 
   Scenario: When notification comment is empty, no emails should be sent
     Given no emails have been sent
     When I go to edit my current availability
     And I mark 2009-08-31 till 2009-09-02 as available
     And I press "Create Availability"
-    Then the administrator should receive no emails
+    Then all administrators should receive no emails
 
   Scenario: When the staff member is rostered to something, they can't make changes to that availability
     Given I am available from now till 6 days from now
