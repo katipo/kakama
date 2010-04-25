@@ -30,7 +30,7 @@ Rails::Initializer.run do |config|
   config.gem 'mimetype-fu', :lib => 'mimetype_fu'
 
   # The API for DelayedJob has changed, so rely on a set version until we can upgrade
-  config.gem 'delayed_job', :version => '1.8.4'
+  config.gem 'delayed_job', :version => '1.8.5'
 
   # The API for Prawn is constantly changing, so rely on set versions for some gems we know work
   config.gem 'prawn', :version => '0.7.2'
