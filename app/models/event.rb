@@ -327,7 +327,7 @@ class Event < ActiveRecord::Base
   end
 
   def ensure_staff_available_if_time_changed
-    return unless changes['start_datetime'].is_a?(Array) || changes['end_datetime'].is_a?(Array)
+    return unless start_datetime_changed? || end_datetime_changed?
     return if ignore_event_conflicts
 
     unavailable_staff_rosterings.each do |rostering|
@@ -380,17 +380,19 @@ class Event < ActiveRecord::Base
   end
 
   # Check if the start_datetime has changed. Since we don't deal with seconds,
-  # we want to make sure any changes are over a minute
+  # we want to make sure any changes are over a minute. Also, check against
+  # the time in UTC, as when the record saves, it'll be converted to UTC
   def start_datetime_changed?
     @changes && @changes['start_datetime'].is_a?(Array) &&
-    (@changes['start_datetime'].first - @changes['start_datetime'].second) > 60
+    (@changes['start_datetime'].first.utc - @changes['start_datetime'].second.utc) > 60
   end
 
   # Check if the end_datetime has changed. Since we don't deal with seconds,
-  # we want to make sure any changes are over a minute
+  # we want to make sure any changes are over a minute. Also, check against
+  # the time in UTC, as when the record saves, it'll be converted to UTC
   def end_datetime_changed?
     @changes && @changes['end_datetime'].is_a?(Array) &&
-    (@changes['end_datetime'].first - @changes['end_datetime'].second) > 60
+    (@changes['end_datetime'].first.utc - @changes['end_datetime'].second.utc) > 60
   end
 
   def just_approved?
