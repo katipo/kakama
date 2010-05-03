@@ -82,41 +82,48 @@ class Staff < ActiveRecord::Base
   end
 
   def availabilities_overlapping(start_date, end_date)
-    availability.overlapping(start_date, end_date).sort_by(&:start_date)
+    availability(true).overlapping(start_date, end_date).sort_by(&:start_date)
   end
 
+  # Does all the checks to see if this staff member can make it to an event
+  # Make sure we reload the staff members availabilities/events so that any
+  # changes made prior to this call are taken into account
   def available_for?(event, ignore_list=Array.new)
     event = Event.find(event) unless event.is_a?(Event)
-    availability.wrapping(event.start_datetime, event.end_datetime).within_hours_of?(event) &&
-    events.occuring_at(event.start_datetime, event.end_datetime).excluding(ignore_list).size == 0
+    availability(true).wrapping(event.start_datetime, event.end_datetime).within_hours_of?(event) &&
+    events(true).occuring_at(event.start_datetime, event.end_datetime).excluding(ignore_list).size == 0
   end
 
   def roster_to(event, role, ignore_unavailability=false, options={})
     event = Event.find(event) unless event.is_a?(Event)
     role = Role.find(role) unless role.is_a?(Role)
-    return false unless available_for?(event) || ignore_unavailability
+    return false unless ignore_unavailability || available_for?(event)
 
-    if !ignore_unavailability && rosterings.find_by_event_id_and_role_id(event.id, role.id)
-      raise "ERROR: Something has happened that allowed a member to be rostered twice."
+    # All rosterings are created in this method. We must prevent duplicate rosterings
+    # Incase something went wrong somewhere, this is the final check. Get all rosterings,
+    # passing in true to reload them, then check we don't already have a rostering for
+    # this event and role
+    if rosterings(true).find_by_event_id_and_role_id(event.id, role.id)
+      false
     else
       rostering = rosterings.create!(
         :event_id => event.id,
         :role_id => role.id,
         :state => (options[:state] || Rostering::States[:unconfirmed])
       )
+
+      rostering.notify_staff_and_queue_expiration if options[:send_notification_email]
+
+      true
     end
-
-    rostering.notify_staff_and_queue_expiration if options[:send_notification_email]
-
-    true
   end
 
   def rosterings_at(event)
-    rosterings.find_all_by_event_id(event)
+    rosterings(true).find_all_by_event_id(event)
   end
 
   def active_rosterings_at(event)
-    rosterings.active_state.find_all_by_event_id(event)
+    rosterings(true).active_state.find_all_by_event_id(event)
   end
 
   def email_with_name
@@ -152,7 +159,7 @@ class Staff < ActiveRecord::Base
   protected
 
   def ensure_staff_deletable
-    if rosterings.active_state.size > 0
+    if rosterings(true).active_state.size > 0
       errors.add_to_base("Unable to delete the staff member #{full_name}.
         They are currently unconfirmed or confirmed at one or more events.
         They need to be removed from these events before they can be deleted.")
