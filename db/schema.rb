@@ -21,9 +21,9 @@ ActiveRecord::Schema.define(:version => 20091001013852) do
     t.datetime "updated_at"
   end
 
+  add_index "availabilities", ["end_date"], :name => "index_availabilities_on_end_date"
   add_index "availabilities", ["staff_id"], :name => "index_availabilities_on_staff_id"
   add_index "availabilities", ["start_date"], :name => "index_availabilities_on_start_date"
-  add_index "availabilities", ["end_date"], :name => "index_availabilities_on_end_date"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -76,12 +76,12 @@ ActiveRecord::Schema.define(:version => 20091001013852) do
     t.integer  "approver_id"
   end
 
-  add_index "events", ["venue_id"], :name => "index_events_on_venue_id"
-  add_index "events", ["schedule_id"], :name => "index_events_on_schedule_id"
-  add_index "events", ["start_datetime"], :name => "index_events_on_start_datetime"
+  add_index "events", ["deleted_at"], :name => "index_events_on_deleted_at"
   add_index "events", ["end_datetime"], :name => "index_events_on_end_datetime"
   add_index "events", ["organiser_id"], :name => "index_events_on_organiser_id"
-  add_index "events", ["deleted_at"], :name => "index_events_on_deleted_at"
+  add_index "events", ["schedule_id"], :name => "index_events_on_schedule_id"
+  add_index "events", ["start_datetime"], :name => "index_events_on_start_datetime"
+  add_index "events", ["venue_id"], :name => "index_events_on_venue_id"
 
   create_table "roles", :force => true do |t|
     t.string   "name",        :null => false
@@ -103,9 +103,9 @@ ActiveRecord::Schema.define(:version => 20091001013852) do
     t.datetime "updated_at"
   end
 
-  add_index "rosterings", ["staff_id"], :name => "index_rosterings_on_staff_id"
   add_index "rosterings", ["event_id"], :name => "index_rosterings_on_event_id"
   add_index "rosterings", ["role_id"], :name => "index_rosterings_on_role_id"
+  add_index "rosterings", ["staff_id"], :name => "index_rosterings_on_staff_id"
 
   create_table "schedules", :force => true do |t|
     t.string   "name",       :null => false
@@ -124,8 +124,8 @@ ActiveRecord::Schema.define(:version => 20091001013852) do
     t.datetime "updated_at"
   end
 
-  add_index "staff_details", ["staff_id"], :name => "index_staff_details_on_staff_id"
   add_index "staff_details", ["detail_type_id"], :name => "index_staff_details_on_detail_type_id"
+  add_index "staff_details", ["staff_id"], :name => "index_staff_details_on_staff_id"
 
   create_table "staff_roles", :force => true do |t|
     t.integer  "staff_id",   :null => false
@@ -153,9 +153,9 @@ ActiveRecord::Schema.define(:version => 20091001013852) do
     t.datetime "last_request_at"
   end
 
-  add_index "staffs", ["username"], :name => "index_staffs_on_username"
   add_index "staffs", ["full_name"], :name => "index_staffs_on_full_name"
   add_index "staffs", ["start_date"], :name => "index_staffs_on_start_date"
+  add_index "staffs", ["username"], :name => "index_staffs_on_username"
 
   create_table "venues", :force => true do |t|
     t.string   "name",        :null => false
@@ -165,7 +165,7 @@ ActiveRecord::Schema.define(:version => 20091001013852) do
     t.datetime "updated_at"
   end
 
-  add_index "venues", ["name"], :name => "index_venues_on_name", :unique => true
   add_index "venues", ["deleted_at"], :name => "index_venues_on_deleted_at"
+  add_index "venues", ["name"], :name => "index_venues_on_name", :unique => true
 
 end
