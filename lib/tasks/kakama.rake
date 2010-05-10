@@ -52,7 +52,8 @@ task :setup_demo => :environment do
   staff_num = 1000 if staff_num > 1000
   staff_email = (ENV['STAFF_EMAIL'] || DEFAULT_STAFF_EMAIL)
 
-  [Availability, DetailType, EmailLog, Event, Role, Rostering, Schedule, Staff, StaffDetail, StaffRole, Venue].each do |model|
+  Rostering.all.each { |r| r.skip_staff_selections_callback = true; r.destroy }
+  [StaffDetail, StaffRole, Availability, EmailLog, DetailType, Event, Role, Staff, Venue, Schedule].each do |model|
     model.send(:with_exclusive_scope) { model.all.each { |s| s.respond_to?(:destroy!) ? s.destroy! : s.destroy } }
   end
 
