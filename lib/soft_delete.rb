@@ -20,7 +20,22 @@ module SoftDelete
     return false if with_callbacks && callback(:before_destroy) == false
     update_attribute(:deleted_at, Time.now)
     callback(:after_destroy) if with_callbacks
-    self
+
+    freeze
+  end
+
+  # Duplicate of Rails default destroy method, but with ! to imply
+  # it won't be soft-deleted
+  def destroy!
+    unless new_record?
+      connection.delete(
+        "DELETE FROM #{self.class.quoted_table_name} " +
+        "WHERE #{connection.quote_column_name(self.class.primary_key)} = #{quoted_id}",
+        "#{self.class.name} Destroy"
+      )
+    end
+
+    freeze
   end
 
   def restore
