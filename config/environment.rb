@@ -21,8 +21,10 @@ config.gem 'actionpack', :version => '2.3.5' #Dependency of formtastic 0.9.8
 config.gem 'formtastic', :version => '0.9.8'
 config.gem 'will_paginate', :version => '2.3.12'
 config.gem 'faker', :version => '0.3.1', :lib => false
-config.gem 'progressbar', :version => '0.9.0', :lib => false
+config.gem 'ruby-progressbar', :version => '0.0.10', :lib => false   #A later version of this gem may break tests
 config.gem 'factory_girl', :version => '1.2.4'
+config.gem 'chronic', :version => '0.2.3'
+config.gem 'whenever', :version => '0.4.2'
 
   %w{ chronic searchlogic daemons
       spreadsheet fastercsv
@@ -58,7 +60,7 @@ config.gem 'factory_girl', :version => '1.2.4'
 
   # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
   # Run "rake -D time" for a list of tasks for finding time zone names.
-  config.time_zone = 'Wellington'
+  config.time_zone = 'Paris'
 
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
