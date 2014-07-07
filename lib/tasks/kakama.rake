@@ -91,6 +91,8 @@ task :setup_demo => :environment do
         postal_address.id => ((Faker::Address.street_address + "\n" + Faker::Address.city + "\nNew Zealand") if (rand * 100).to_i < 70)
       },
       :role_ids => Role.all(:order => "rand()", :limit => (rand * Role.count).to_i).collect { |r| r.id }
+      #TODO: Implement this non-database-specific Rails 3+ solution when migrated to rails 3+
+      #:role_ids => Role.pluck(:id).shuffle
     )
 
     if (rand * 100) < 95
