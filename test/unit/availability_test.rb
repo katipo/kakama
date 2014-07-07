@@ -64,6 +64,8 @@ class AvailabilityTest < ActiveSupport::TestCase
   end
 
   test "assigning hours via all settings works as expected" do
+    #Avoid picking up the wrong record at the end of the test
+    @sally.availability.find_by_start_date(6.days.from_now).destroy
     @sally.availability.first.update_attributes(:hours => { :all => { :start => 0, :finish => 24 } })
     expected = {}
     Availability::Days.each { |key, label| expected[key] = [{:finish=>24, :start=>0, :comment=>nil}] }
@@ -71,6 +73,9 @@ class AvailabilityTest < ActiveSupport::TestCase
   end
 
   test "with_hours_of and within_hours_of? are returning correct results" do
+    #Remove the test record that doesn't apply to this test and was interfering with results
+    @sally.availability.find_by_start_date(6.days.from_now).destroy
+
     # One availability block on the day
     every_day_has([{ :start => 9, :finish => 17 }])
     test_availabilities_with([
@@ -144,7 +149,7 @@ class AvailabilityTest < ActiveSupport::TestCase
       )
       amount_available = @availabilities.with_hours_of(@event).size
       assert_equal amount_expected, amount_available,
-                   "#{start_time}-#{end_time} expected #{amount_expected} availabilities, got #{amount_available}"
+                   "#{start_time}-#{end_time} expected #{amount_expected} availabilities with exact hours, got #{amount_available}"
       assert_equal (amount_expected > 0), @availabilities.within_hours_of?(@event)
     end
   end
