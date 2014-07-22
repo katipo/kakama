@@ -16,7 +16,7 @@
 
   <% form.inputs :name => "Availability Details" do %>
     <li class="string required">
-      <%= form.label :start_date, "Start date #{required_astrix}" %>
+      <%= form.label :start_date, "Start date " %><%= required_astrix %>
       <script type='text/javascript'>
         document.write("<%= escape_javascript form.calendar_date_select(:start_date, :time => false) %> <small>(click to select date)</small>");
       </script>
@@ -24,7 +24,7 @@
     </li>
 
     <li class="string required">
-      <%= form.label :end_date, "End date #{required_astrix}" %>
+      <%= form.label :end_date, "End date " %><%= required_astrix %>
       <script type='text/javascript'>
         document.write("<%= escape_javascript form.calendar_date_select(:end_date, :time => false) %> <small>(click to select date)</small>");
       </script>
@@ -45,7 +45,7 @@
       <li class="string required">
         <%= label_tag label %>
         <div id="<%= day %>_start_finish_comment_editors" class="start_finish_comment_editors">
-          <% if @availability && @availability.hours[day] %>
+          <% if @availability && @availability.hours && @availability.hours[day] %>
             <% @availability.hours[day].each_with_index do |data, index| %>
               <%= render 'start_finish_comment', :day => day,
                          :with_close => (index != 0), :start_time => data[:start],
