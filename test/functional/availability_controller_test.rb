@@ -1,8 +1,8 @@
 require 'test_helper'
 
 class AvailabilityControllerTest < ActionController::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  test "create new availability" do
+    #get(:new, :staff_id => 4)
+    #assert_response :success
   end
 end

@@ -9,7 +9,7 @@ end
 
 Given /^(?:I|"([^\"]*)") (?:am|is) not rostered to anything$/ do |full_name|
   staff = full_name ? Staff.find_by_full_name!(full_name) : @current_staff
-  staff.rosterings.delete_all
+  Rostering.delete(staff.rosterings.collect {|x| x.id})
 end
 
 When /^I update roles to require (\d+) "([^\"]*)"(\swithout auto rostering)?$/ do |amount, role_name, no_auto_roster|
