@@ -1,6 +1,9 @@
-Given /^(?:I|"([^\"]*)") (?:am|is) available from ([^\"]*) till ([^\"]*)$/ do |full_name, start_date, end_date|
+Given /^(?:I|"([^\"]*)") (?:am|is) (also|only|) *available from ([^\"]*) till ([^\"]*)$/ do |full_name, exclusivity, start_date, end_date|
   staff = full_name ? Staff.find_by_full_name!(full_name) : @current_staff
   start_date, end_date = parse_time(start_date), parse_time(end_date)
+
+  Availability.delete(staff.availability.collect {|x| x.id}) if exclusivity == :only
+
   staff.availability << Availability.create!(
     :staff_id => staff.id,
     :start_date => start_date,
