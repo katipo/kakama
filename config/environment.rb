@@ -17,16 +17,20 @@ Rails::Initializer.run do |config|
   # Specify gems that this application depends on and have them installed with rake gems:install
 config.gem 'calendar_date_select', :version => '1.16.1'
 config.gem 'authlogic', :version => '2.1.3'
-config.gem 'actionpack', :version => '2.3.5' #Dependency of formtastic 0.9.8
-config.gem 'formtastic', :version => '0.9.8'
+config.gem 'actionpack', :version => '2.3.9' #Dependency of formtastic
+config.gem 'formtastic', :version => '1.1.0'
 config.gem 'will_paginate', :version => '2.3.12'
 config.gem 'faker', :version => '0.3.1', :lib => false
 config.gem 'ruby-progressbar', :version => '0.0.10', :lib => false
-config.gem 'factory_girl', :version => '1.2.4'
+config.gem 'factory_girl', :version => '1.3.3'
 config.gem 'chronic', :version => '0.2.3'
 config.gem 'whenever', :version => '0.4.2'
 config.gem 'ruby-prof', :version => '0.7.3', :lib => false
 config.gem 'rcov', :version => '1.0.0', :lib => false
+config.gem 'searchlogic', :version => '2.4.19'
+
+config.gem 'chronic', :version => '0.2.3'
+config.gem 'daemons', :version '1.0.10'
 
 #Cucumber and dependencies
 config.gem 'cucumber', :version => '0.6.4', :lib => false
@@ -40,8 +44,7 @@ config.gem 'webrat', :version => '0.7.3', :lib => false
 config.gem 'rspec', :version => '1.3.2', :lib => false
 config.gem 'rspec-rails', :version => '1.3.2', :lib => false
 
-%w{ chronic searchlogic daemons
-      spreadsheet fastercsv
+%w{ spreadsheet fastercsv
       validates_as_email_address }.each do |gem|
     config.gem gem
   end
