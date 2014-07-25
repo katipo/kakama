@@ -12,6 +12,7 @@ Given /^(?:I|"([^\"]*)") (?:am|is) (also|only|) *available from ([^\"]*) till ([
       :all => { :start => 0, :finish => 24 }
     }
   )
+  staff.availability
 end
 
 When /^I mark ([^\"]*) till ([^\"]*) as available$/ do |start_date, end_date|
@@ -30,7 +31,7 @@ When /^I split (my current\s)?availability (\d+\s)?at ([^\"]*)$/ do |current, po
   if !current.blank?
     When "I go to split my current availability"
   else
-    visit split_staff_availability_path(:current, @current_staff.availability[position.to_i - 1])
+    visit split_staff_availability_path(:current, current_staff_availability[position.to_i - 1])
   end
   split_date = parse_time(split_date)
   fill_in_datetime_with split_date, 'availability_split_date', true
@@ -38,7 +39,7 @@ When /^I split (my current\s)?availability (\d+\s)?at ([^\"]*)$/ do |current, po
 end
 
 When /^I delete availability (\d+)$/ do |position|
-  availability = @current_staff.availability[position.to_i - 1]
+  availability = current_staff_availability[position.to_i - 1]
   availability.destroy
 end
 
@@ -47,8 +48,12 @@ Then /^I should have (\d+) availabilit(?:y|ies)$/ do |amount|
   @current_staff.availability.size.should == amount.to_i
 end
 
+def current_staff_availability
+  @current_staff.availability.find(:all, :order => 'start_date ASC')
+end
+
 Then /^availability (\d+) should be from ([^\"]*) till ([^\"]*)$/ do |position, start_date, end_date|
-  availability = @current_staff.availability[position.to_i - 1]
+  availability = current_staff_availability[position.to_i - 1]
   availability.start_date.should == parse_time(start_date).to_date
   availability.end_date.should == parse_time(end_date).to_date
 end
