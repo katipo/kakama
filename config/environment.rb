@@ -14,37 +14,40 @@ Rails::Initializer.run do |config|
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
+  #For the moment we aren't going to be worried about locales
+  config.i18n.enforce_available_locales = false
+
   # Specify gems that this application depends on and have them installed with rake gems:install
-config.gem 'calendar_date_select', :version => '1.16.1'
-config.gem 'authlogic', :version => '2.1.3'
-config.gem 'actionpack', :version => '2.3.9' #Dependency of formtastic
-config.gem 'formtastic', :version => '1.1.0'
-config.gem 'will_paginate', :version => '2.3.12'
-config.gem 'faker', :version => '0.3.1', :lib => false
-config.gem 'ruby-progressbar', :version => '0.0.10', :lib => false
-config.gem 'factory_girl', :version => '1.3.3'
-config.gem 'chronic', :version => '0.2.3'
-config.gem 'whenever', :version => '0.4.2', :lib => false
-config.gem 'ruby-prof', :version => '0.7.3', :lib => false
-config.gem 'rcov', :version => '1.0.0', :lib => false
-config.gem 'searchlogic', :version => '2.4.19'
+  config.gem 'calendar_date_select', :version => '1.16.1'
+  config.gem 'authlogic', :version => '2.1.3'
+  config.gem 'actionpack', :version => '2.3.9' #Dependency of formtastic
+  config.gem 'formtastic', :version => '1.1.0'
+  config.gem 'will_paginate', :version => '2.3.12'
+  config.gem 'faker', :version => '0.3.1', :lib => false
+  config.gem 'ruby-progressbar', :version => '0.0.10', :lib => false
+  config.gem 'factory_girl', :version => '1.3.3'
+  config.gem 'chronic', :version => '0.2.3'
+  config.gem 'whenever', :version => '0.4.2', :lib => false
+  config.gem 'ruby-prof', :version => '0.7.3', :lib => false
+  config.gem 'rcov', :version => '1.0.0', :lib => false
+  config.gem 'searchlogic', :version => '2.4.19'
 
-config.gem 'chronic', :version => '0.2.3'
-config.gem 'daemons', :version => '1.0.10'
+  config.gem 'chronic', :version => '0.2.3'
+  config.gem 'daemons', :version => '1.0.10'
 
-#Cucumber and dependencies
-config.gem 'cucumber', :version => '0.6.4', :lib => false
-config.gem 'email_spec', :version => '0.6.2', :lib => false
-config.gem 'timecop', :version => '0.3.4', :lib => false
-config.gem 'nokogiri', :version => '1.4.1', :lib => false
-config.gem 'ruby-terminfo', :version => '0.1.1', :lib => false
-config.gem 'cucumber-rails', :version => '0.3.0', :lib => false
-config.gem 'database_cleaner', :version => '0.5.0', :lib => false
-config.gem 'webrat', :version => '0.7.3', :lib => false
-config.gem 'rspec', :version => '1.3.2', :lib => false
-config.gem 'rspec-rails', :version => '1.3.2', :lib => false
+  #Cucumber and dependencies
+  config.gem 'cucumber', :version => '0.6.4', :lib => false
+  config.gem 'email_spec', :version => '0.6.2', :lib => false
+  config.gem 'timecop', :version => '0.3.4', :lib => false
+  config.gem 'nokogiri', :version => '1.4.1', :lib => false
+  config.gem 'ruby-terminfo', :version => '0.1.1', :lib => false
+  config.gem 'cucumber-rails', :version => '0.3.0', :lib => false
+  config.gem 'database_cleaner', :version => '0.5.0', :lib => false
+  config.gem 'webrat', :version => '0.7.3', :lib => false
+  config.gem 'rspec', :version => '1.3.2', :lib => false
+  config.gem 'rspec-rails', :version => '1.3.2', :lib => false
 
-%w{ spreadsheet fastercsv
+  %w{ spreadsheet fastercsv
       validates_as_email_address }.each do |gem|
     config.gem gem
   end
