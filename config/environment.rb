@@ -24,13 +24,13 @@ config.gem 'faker', :version => '0.3.1', :lib => false
 config.gem 'ruby-progressbar', :version => '0.0.10', :lib => false
 config.gem 'factory_girl', :version => '1.3.3'
 config.gem 'chronic', :version => '0.2.3'
-config.gem 'whenever', :version => '0.4.2'
+config.gem 'whenever', :version => '0.4.2', :lib => false
 config.gem 'ruby-prof', :version => '0.7.3', :lib => false
 config.gem 'rcov', :version => '1.0.0', :lib => false
 config.gem 'searchlogic', :version => '2.4.19'
 
 config.gem 'chronic', :version => '0.2.3'
-config.gem 'daemons', :version '1.0.10'
+config.gem 'daemons', :version => '1.0.10'
 
 #Cucumber and dependencies
 config.gem 'cucumber', :version => '0.6.4', :lib => false
@@ -50,7 +50,7 @@ config.gem 'rspec-rails', :version => '1.3.2', :lib => false
   end
 
   # :lib => false for gems that aren't needed during run time, not used often, or used for development only
-  %w{ less whenever }.each do |gem|
+  %w{ less }.each do |gem|
     config.gem gem, :lib => false
   end
 
