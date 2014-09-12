@@ -6,6 +6,7 @@ end
 Given /^a staff member "([^\"]*)" (?:exists|has existed)(\swithout an email)?(?:\ssince\s)?(.*)$/ do |full_name, without_email, start_date|
   options = without_email ? { :email => '' } : {}
   options.store :start_date, parse_time(start_date) unless start_date.empty?
+  options.store :skip_current_password, true
   find_or_create_staff full_name, options
 end
 

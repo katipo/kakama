@@ -10,6 +10,7 @@ class Staff < ActiveRecord::Base
   validates_presence_of :username, :staff_type, :full_name, :start_date
   validates_uniqueness_of :username
   validates_as_email_address :email, :allow_blank => true
+  validate :validate_password, :on => :update
 
   after_save :setup_roles
   after_save :setup_contact_details
@@ -190,9 +191,10 @@ class Staff < ActiveRecord::Base
     end
   end
 
-  # Current password must be set if password is being changed
-  def validate_on_update
-    if !password.blank? && !skip_current_password
+  # Current password must be set if password is being changed.
+  # Doesn't apply to new records
+  def validate_password
+    if !new_record? && !password.blank? && !skip_current_password
       if current_password.blank?
         errors.add(:current_password, "must be set when changing the password.")
         return false
