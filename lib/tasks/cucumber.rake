@@ -20,6 +20,14 @@ begin
       t.profile = 'default'
     end
 
+    Cucumber::Rake::Task.new({:ok_coverage => 'db:test:prepare'}, 'Run features that should pass, with coverage report') do |t|
+      t.binary = vendored_cucumber_bin # If nil, the gem's binary is used.
+      t.fork = true # You may get faster startup if you set this to false
+      t.profile = 'default'
+      t.cucumber_opts = "--format pretty"
+      t.rcov = true
+    end
+
     Cucumber::Rake::Task.new({:wip => 'db:test:prepare'}, 'Run features that are being worked on') do |t|
       t.binary = vendored_cucumber_bin
       t.fork = true # You may get faster startup if you set this to false
