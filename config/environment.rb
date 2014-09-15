@@ -1,7 +1,7 @@
 # Be sure to restart your server when you modify this file
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.9' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '3.2.19' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -47,16 +47,10 @@ Rails::Initializer.run do |config|
   config.gem 'webrat', :version => '0.7.3', :lib => false
   config.gem 'rspec', :version => '1.3.2', :lib => false
   config.gem 'rspec-rails', :version => '1.3.2', :lib => false
-
-  %w(spreadsheet fastercsv
-      validates_as_email_address ).each do |gem|
-    config.gem gem
-  end
-
-  # :lib => false for gems that aren't needed during run time, not used often, or used for development only
-  %w(less).each do |gem|
-    config.gem gem, :lib => false
-  end
+  config.gem 'spreadsheet'
+  config.gem 'fastercsv'
+  config.gem 'validates_as_email_address'
+  config.gem 'less', :lib => false
 
   # Some gems have different lib names compared to gem names
   config.gem 'mimetype-fu', :lib => 'mimetype_fu'
