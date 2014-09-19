@@ -39,6 +39,8 @@ gem 'prawn-layout', '0.7.2', :require => 'prawn/layout'
 gem 'therubyracer', '~> 0.12.1'
 
 #Test group
+gem 'cucumber', '~> 1.3.8'
+gem 'cucumber-rails', '~> 1.3.0', :require => false
 gem 'term-ansicolor'
 gem 'treetop'
 gem 'diff-lcs'
