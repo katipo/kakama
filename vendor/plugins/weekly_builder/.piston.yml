@@ -1,8 +1,0 @@
---- 
-format: 1
-handler: 
-  commit: 043d32ec93ae3f578a8b2a340a1363e546401c0d
-  branch: master
-lock: false
-repository_class: Piston::Git::Repository
-repository_url: git://github.com/KieranP/weekly_builder.git

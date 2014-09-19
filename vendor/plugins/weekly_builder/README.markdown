@@ -1,71 +1,55 @@
-# Weekly Builder
+WeeklyBuilder
+==============
 
-A weekly calendar builder for Ruby on Rails.
+A weekly calendar builder for ruby on rails. Although there are countless monthly calendars on Github I couldn't find any with a weekly view, so I built my own.
 
-Although there are countless monthly calendars on Github, there wasn't any with a weekly view, so Dan McGrady built his own, inspired by P8s table_builder which he recommends for monthly calendars.
+The calendar is horizontally scrolling with a completely fluid CSS layout and an option for business/24 hours. Weekly views are useful because the events are plotted based on time and the width is determined by how long the event is scheduled for. So there is a visual representation of when the event is, not just a list.
 
-However, there were several bugs in the original implementation, so I've gone ahead and fixed these, and rewritten it nearly from scratch. The usage is now more precise, the code is easier to maintain (and eventually write tests for), and include several new changes that make the calendar easier to use (such as auto showing 24 hours when events exists outside business hours).
+The code is inspired by P8s table_builder which I recommend for monthly calendars.
 
-## About
+Example
+=======
 
-The calendar is horizontally scrolling with a completely fluid CSS layout. Weekly views are useful because the events are plotted based on time and the width is determined by how long the event is scheduled for. So there is a visual representation of when the event is, not just a list.
+Live demo: http://scheduler.integratehq.com
 
-## Example
+Install
+=======
+Install the plugin (rails 3):
 
-A live demo of the original implementation of this plugin are available at:
+    rails plugin install git://github.com/dmix/weekly_builder.git 
 
-[http://scheduler.integratehq.com](http://scheduler.integratehq.com)
+How to Use WeeklyBuilder
+=======
+Add the calendar builder to your view (examples are in HAML):
 
-While the backend was rewritten, the look and feel of the calendar haven't changed (so what you see there is very similar to the new implementation).
-
-## Install
-
-    script/plugin install git://github.com/KieranP/weekly_builder.git
-
-Then check the output if all images and stylesheets have been copied successfully.
-
-## Usage
-
-First, put this in your controller action:
-
-    @time = Chronic.parse(params[:start_date]) || Time.now.utc
-    start_date = Date.new(@time.year, @time.month, @time.day)
-    @events = Event.find(:all, :conditions => ['starts_at between ? and ?', start_date, start_date + 7])
-
-The calendar builder:
-
-    <% weekly_builder(@events, :time => @time) do |event|  %>
-      <%= event.starts_at.strftime('%I:%M%p')  %><br />
-      <%= link_to event.name, event_path(event)  %>
-    <% end -%>
+    = weekly_calendar(@events, :date => @date, :include_24_hours => true) do |w|
+      = w.week(:business_hours => params[:business_hours], :clickable_hours => true) do |event,truncate|
+        =  event.starts_at.strftime('%I:%M%p')
+        =  link_to truncate(event.name,truncate), event_path(event)
 
 The Next/Previous week links helper:
 
-    <%= weekly_links(@time) %>
+    = weekly_links(:date => @date)
 
-The event model only requires 2 attributes for the calendar system to work:
+In your controller:
 
-* `starts_at:datetime`
-* `ends_at:datetime`
+    @date = Time.parse("#{params[:start_date]} || Time.now.utc")
+    @start_date = Date.new(@date.year, @date.month, @date.day) 
+    @events = Event.find(:all, :conditions => ['starts_at between ? and ?', @start_date, @start_date + 7])
+  
+The event model only requires 2 attributes: starts_at:datetime and ends_at:datetime to calculate width and position on the calendar. In my demo app I ask the user for one date/time (starts_at) and estimated time to complete (for example 2hrs), it then calculates ends_at after it is submitted.
 
-Using these two, the plugin calculates width and position on the calendar.
+Include the weekly.css stylesheet:
+
+    = stylesheet_link_tag("weekly")
+
+UPDATE: Added a truncate_width method so that long event names are truncated in proportion to the width of the event, this is passed through the week block with |truncate|.
 
 ### Options available:
 
-* `:with_onclick`:
-  By default, events are clickable. They go to /events/[events_id]
-  If this is not the correct path, disable the onclick feature.
+* `:include_24_hours`
+  Default hours are 6am-8pm, if this set as "true" then an option to switch to a 24-hour schedule appears at the bottom
 
-## Todo
+2011 Dan McGrady http://dmix.ca, released under the MIT license
 
-* Provide a controller method to encapsulate Time parsing, date generation and events collection, and then remove the need to pass these to the `weekly_builder` and `weekly_links` view methods
-* Add the ability to change the default fields the calendar uses, for example, changing `starts_at` to `starting_time`
-* IE6 and IE7 Friendly (so far only tested on FF3 + Safari 4)
-* Localization/Internationalization
-* Add a proper test suite for as much as possible (will be limited until we can get around having to use Rails concat method)
-
-## Credits
-
-* Copyright (c) 2009 Dan McGrady [http://dmix.ca](http://dmix.ca), released under the MIT license.
-* Thanks to P8 [http://github.com/p8/table_builder](http://github.com/p8/table_builder) for the original implementations inspiration.
-* Rewrite completed by Kieran Pilkington ([http://github.com/KieranP](http://github.com/KieranP)
+Thanks to P8 http://github.com/p8/table_builder/
