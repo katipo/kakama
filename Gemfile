@@ -38,3 +38,12 @@ gem 'prawn-layout', '0.7.2', :require => 'prawn/layout'
 
 #Assets
 gem 'therubyracer', '~> 0.12.1'
+
+#Test group
+gem 'term-ansicolor'
+gem 'treetop'
+gem 'diff-lcs'
+gem 'builder'
+
+
+
