@@ -38,7 +38,7 @@ task :setup_demo => :environment do
   puts "    E.g. STAFF_EMAIL=you@home.com."
   puts "    Default: #{DEFAULT_STAFF_EMAIL ? DEFAULT_STAFF_EMAIL : 'none'}"
   puts ""
-  puts "This will ERASE all data on the #{RAILS_ENV} database."
+  puts "This will ERASE all data on the #{Rails.env} database."
   puts "Are you sure you want to do this?"
   puts ""
   puts "Press any key to continue, or Ctrl+C to abort.."
