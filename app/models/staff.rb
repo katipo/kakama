@@ -32,8 +32,8 @@ class Staff < ActiveRecord::Base
     ['Staff Member', 'staff']
   ]
 
-  named_scope :administrators, :conditions => { :staff_type => 'admin' }
-  named_scope :members, :conditions => { :staff_type => 'staff' }
+  scope :administrators, :conditions => { :staff_type => 'admin' }
+  scope :members, :conditions => { :staff_type => 'staff' }
 
   def self.available_for(event)
     all.select { |staff| staff.available_for?(event) }

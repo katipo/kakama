@@ -24,15 +24,15 @@ class Rostering < ActiveRecord::Base
     :no_show => 'no_show'
   }
 
-  named_scope :with_role, lambda { |role| { :conditions => { :role_id => role.id } } }
-  named_scope :with_state, lambda { |states| { :conditions => { :state => states } } }
-  named_scope :active_state, :conditions => { :state => [Rostering::States[:unconfirmed], Rostering::States[:confirmed]] }
-  named_scope :inactive_state, :conditions => { :state => [Rostering::States[:rejected], Rostering::States[:declined], Rostering::States[:cancelled]] }
-  named_scope :non_system_flagged, :conditions => { :system_flagged => false }
-  named_scope :system_flagged, :conditions => { :system_flagged => true }
+  scope :with_role, lambda { |role| { :conditions => { :role_id => role.id } } }
+  scope :with_state, lambda { |states| { :conditions => { :state => states } } }
+  scope :active_state, :conditions => { :state => [Rostering::States[:unconfirmed], Rostering::States[:confirmed]] }
+  scope :inactive_state, :conditions => { :state => [Rostering::States[:rejected], Rostering::States[:declined], Rostering::States[:cancelled]] }
+  scope :non_system_flagged, :conditions => { :system_flagged => false }
+  scope :system_flagged, :conditions => { :system_flagged => true }
 
   Rostering::States.each do |key,state_value|
-    named_scope key, :conditions => { :state => state_value }
+    scope key, :conditions => { :state => state_value }
     define_method "#{key.to_s}?" do
       state == state_value
     end

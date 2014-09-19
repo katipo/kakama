@@ -24,7 +24,7 @@ class Availability < ActiveRecord::Base
     [:sun, 'Sunday']
   ]
 
-  named_scope :overlapping, lambda { |start_date, end_date| { :conditions => [
+  scope :overlapping, lambda { |start_date, end_date| { :conditions => [
     "(:start_date >= availabilities.start_date AND :start_date <= availabilities.end_date) OR
      (:end_date >= availabilities.start_date AND :end_date <= availabilities.end_date) OR
      (availabilities.start_date >= :start_date AND availabilities.start_date <= :end_date) OR
@@ -32,7 +32,7 @@ class Availability < ActiveRecord::Base
     { :start_date => start_date.to_date.to_s, :end_date => end_date.to_date.to_s }
   ] } }
 
-  named_scope :wrapping, lambda { |start_date, end_date| { :conditions => [
+  scope :wrapping, lambda { |start_date, end_date| { :conditions => [
     "(availabilities.start_date <= :start_date AND availabilities.end_date >= :end_date)",
     { :start_date => start_date.to_date.to_s, :end_date => end_date.to_date.to_s }
   ] } }
