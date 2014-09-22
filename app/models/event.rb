@@ -71,17 +71,17 @@ class Event < ActiveRecord::Base
 
   default_scope :conditions => ['events.deleted_at IS ? AND events.state != ?', nil, Event::States[:cancelled]]
 
-  named_scope :not_deleted, lambda { { :conditions => ['events.deleted_at IS ?', nil] } }
-  named_scope :current, lambda { { :conditions => ['events.start_datetime <= :now AND events.end_datetime >= :now', { :now => Time.now.utc }], :order => "events.start_datetime ASC, events.end_datetime ASC" } }
-  named_scope :future, lambda { { :conditions => ['events.start_datetime > ?', Time.now.utc], :order => "events.start_datetime ASC, events.end_datetime ASC" } }
-  named_scope :finished, lambda { { :conditions => ['events.end_datetime < ?', Time.now.utc], :order => "events.start_datetime DESC, events.end_datetime DESC" } }
-  named_scope :finished_a_month_ago, lambda { { :conditions => ['events.end_datetime < ?', 1.month.ago.utc] } }
-  named_scope :occuring_at, lambda { |start_datetime, end_datetime| { :conditions => [Event.sql_between_query, { :event_start => start_datetime.dup.utc, :event_end => end_datetime.dup.utc }] } }
-  named_scope :between, lambda { |start_datetime, end_datetime| { :conditions => ['events.start_datetime >= :start_datetime AND events.end_datetime <= :end_datetime', { :start_datetime => start_datetime.dup.utc, :end_datetime => end_datetime.dup.utc }] } }
-  named_scope :excluding, lambda { |excludes| excludes.blank? ? {} : { :conditions => ['events.id NOT IN (?)', excludes.collect { |e| e.id }] } }
+  scope :not_deleted, lambda { { :conditions => ['events.deleted_at IS ?', nil] } }
+  scope :current, lambda { { :conditions => ['events.start_datetime <= :now AND events.end_datetime >= :now', { :now => Time.now.utc }], :order => "events.start_datetime ASC, events.end_datetime ASC" } }
+  scope :future, lambda { { :conditions => ['events.start_datetime > ?', Time.now.utc], :order => "events.start_datetime ASC, events.end_datetime ASC" } }
+  scope :finished, lambda { { :conditions => ['events.end_datetime < ?', Time.now.utc], :order => "events.start_datetime DESC, events.end_datetime DESC" } }
+  scope :finished_a_month_ago, lambda { { :conditions => ['events.end_datetime < ?', 1.month.ago.utc] } }
+  scope :occuring_at, lambda { |start_datetime, end_datetime| { :conditions => [Event.sql_between_query, { :event_start => start_datetime.dup.utc, :event_end => end_datetime.dup.utc }] } }
+  scope :between, lambda { |start_datetime, end_datetime| { :conditions => ['events.start_datetime >= :start_datetime AND events.end_datetime <= :end_datetime', { :start_datetime => start_datetime.dup.utc, :end_datetime => end_datetime.dup.utc }] } }
+  scope :excluding, lambda { |excludes| excludes.blank? ? {} : { :conditions => ['events.id NOT IN (?)', excludes.collect { |e| e.id }] } }
 
   Event::States.each do |key,state_value|
-    named_scope key, :conditions => { :state => state_value }
+    scope key, :conditions => { :state => state_value }
     define_method "#{key.to_s}?" do
       state == state_value
     end
