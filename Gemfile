@@ -29,14 +29,15 @@ gem 'rspec-rails', '1.3.2'
 gem 'spreadsheet'
 gem 'fastercsv'
 gem 'validates_as_email_address'
-gem 'less'
+gem 'less', '2.0.1'
 gem 'mimetype-fu', :require => 'mimetype_fu'
 gem 'delayed_job', '1.8.5'
 gem 'prawn', '0.7.2'
 gem 'prawn-layout', '0.7.2', :require => 'prawn/layout'
+gem 'pg'
 
 #Assets
-gem 'therubyracer', '~> 0.12.1'
+gem 'therubyracer', '~> 0.9.2'
 
 #Test group
 gem 'cucumber', '~> 1.3.8'
