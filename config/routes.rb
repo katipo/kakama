@@ -118,5 +118,5 @@ Kakama::Application.routes.draw do
 
   end
 
-  match '/' => 'staff_sessions#new'
+  root :to => 'staff_sessions#new'
 end
