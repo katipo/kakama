@@ -16,6 +16,13 @@ LESS
 
 LESS extends CSS with: variables, mixins, operations and nested rules. For more information, see [http://lesscss.org](http://lesscss.org).
 
+Upgrading from less-for-rails
+=======================================
+
+The old `less-for-rails` plugin looked for `.less` files in `public/stylesheets`. This plugin looks in `app/stylesheets`.
+
+To migrate, you can either set `Less::More.source_path = Rails.root + "/public/stylesheets"`, or move your `.less` files to `app/stylesheets`.
+
 
 Installation
 ============
@@ -60,27 +67,25 @@ If you prefix a file with an underscore, it is considered to be a partial, and w
 
 The example above will result in a single CSS file in `public/stylesheets/clients/screen.css`.
 
+Any `.css` file placed in `app/stylesheets` will be copied into `public/stylesheets` without being parsed through LESS.
+
 
 Configuration
 =============
 
-To set the source path (the location of your LESS files):
+Source path: the location of your LESS files (default: app/stylesheets)
 
-	Less::More.source_path = "/path/to/less/files"
+	Less::More.source_path = "public/stylesheets/less"
 	
-You can also set the destination path. Be careful with the formatting here, since this is in fact a route, and not a regular path.
+Destination Path: where the css goes (public/destination_path) (default: stylesheets)
 
 	Less::More.destination_path = "css"
 
-More can compress your files by removing extra line breaks. This is enabled by default in the `production` environment. To change this setting, set:
+More can compress your files by removing extra line breaks (default: true)
 
-	Less::More.compression = true
+	Less::More.compression = false
 
-If you're on a read-only file system, you can turn page caching off and use Cache-Control headers. This option is on by default on Heroku (see separate section).
-
-	Less::More.page_cache = false
-  
-More inserts headers in the generated CSS files, letting people know that the file is in fact generated and shouldn't be edited directly. This is by default only enabled in development mode. You can disable this behavior if you want to.
+More inserts headers in the generated CSS files, letting people know that the file is in fact generated and shouldn't be edited directly. (default: true)
 
 	Less::More.header = false
 
@@ -88,12 +93,6 @@ To configure More for a specific environment, add configuration options into the
 
 If you wish to apply the configuration to all environments, place them in `config/environment.rb`.
 
-Heroku
-======
-
-The plugin works out-of-the-box on Heroku.
-
-Heroku has a read-only file system, which means caching the generated CSS with page caching is not an option. Heroku supports caching with Varnish, though, which the plugin will leverage by setting Cache-Control headers so that generated CSS is cached for one month.
 
 Tasks
 =====
@@ -102,7 +101,7 @@ More provides a set of Rake tasks to help manage your CSS files.
 
 To parse all LESS files and save the resulting CSS files to the destination path, run:
 
-	$ rake more:parse
+	$ rake more:generate
 
 To delete all generated CSS files, run:
 
@@ -111,13 +110,10 @@ To delete all generated CSS files, run:
 This task will not delete any CSS files from the destination path, that does not have a corresponding LESS file in the source path.
 
 
-Git
-===
+Git / SVN
+=========
 
-If you are using git to version control your code and LESS for all your stylesheets, you can add this entry to your `.gitignore` file:
-
-	public/stylesheets
-
+Check in all the generated css(destination path), they are only generated in development
 
 Documentation
 =============
@@ -129,5 +125,6 @@ Contributors
 ============
 * August Lilleaas ([http://github.com/augustl](http://github.com/augustl))
 * Logan Raarup ([http://github.com/logandk](http://github.com/logandk))
+* Michael Grosser ([http://github.com/grosser](http://github.com/grosser))
 
 LESS is maintained by Alexis Sellier [http://github.com/cloudhead](http://github.com/cloudhead)
