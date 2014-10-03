@@ -3,9 +3,9 @@
 <% semantic_form_for(@event) do |form| %>
   <%= form.error_messages %>
   <%= render 'form', :form => form %>
-  <% form.buttons do %>
+  <% form.actions do %>
     <% label = (@event.conflicts_with_another_event? ? 'Ignore Conflicts and Create Event' : 'Create Event') %>
-    <%= form.commit_button label %>
+    <%= form.actions :submit, :label => label %>
   <% end %>
 <% end %>
 

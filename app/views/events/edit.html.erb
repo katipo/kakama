@@ -3,11 +3,11 @@
 <% semantic_form_for(@event) do |form| %>
   <%= form.error_messages %>
   <%= render 'form', :form => form %>
-  <% form.buttons do %>
+  <% form.actions do %>
     <li>
       <% label = (@event.conflicts_with_another_event? || @event.unavailable_staff_rosterings? ?
                  'Ignore Conflicts and Save Event' : 'Save Event') %>
-      <%= form.submit label %>
+      <%= form.action :submit, :label => label %>
       <% if @event.unavailable_staff_rosterings? %>
         OR &nbsp; <%= form.submit 'Cancel Unavailable Staff and Save Event', :name => 'event[cancel_unavailable_staff]' %>
       <% end %>

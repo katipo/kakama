@@ -78,11 +78,11 @@
     <% end %>
   <% end %>
 
-  <% form.buttons do %>
+  <% form.actions do %>
     <% label = !@availability.conflicts_with_another_availability? || !admin? ? nil :
                 (@availability.new_record? ?
                   'Ignore Conflicts and Create Availability' :
                   'Ignore Conflicts and Save Availability') %>
-    <%= form.commit_button label %>
+    <%= form.action :submit, :label => label %>
   <% end %>
 <% end %>
