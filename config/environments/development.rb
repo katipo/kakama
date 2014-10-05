@@ -1,6 +1,6 @@
 Kakama::Application.configure do
   config.cache_classes                                 = false
-  config.action_controller.consider_all_requests_local = true
+  config.consider_all_requests_local = true
   config.action_controller.perform_caching             = false
 
   if Gem::Version.new(Rails.version) >= Gem::Version.new('3.1.0')
