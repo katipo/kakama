@@ -167,10 +167,6 @@ class Notifier < ActionMailer::Base
   private
 
   def setup_email(email_type, subject_text, recipient, events=nil)
-    subject      format_subject(subject_text)
-    from         Setting.notifier_email_with_name
-    reply_to     Setting.notifier_email_with_name
-
     # returns a hash containing strings of emails in :to, :cc, and :bcc keys
     recipient = parse_recipients(recipient)
 
@@ -178,9 +174,15 @@ class Notifier < ActionMailer::Base
       raise "ERROR: Trying to send email without any recipients. #{email_type} - #{subject_text}"
     end
 
-    recipients recipient[:to] if recipient[:to].present?
-    cc         recipient[:cc] if recipient[:cc].present?
-    bcc        recipient[:bcc] if recipient[:bcc].present?
+    mail_options = {}
+    mail_options[:from] = Setting.notifier_email_with_name
+    mail_options[:reply_to] = Setting.notifier_email_with_name
+    mail_options[:subject] = format_subject(subject_text)
+    mail_options[:to] = recipient[:to] if recipient[:to].present?
+    mail_options[:cc] = recipient[:cc] if recipient[:cc].present?
+    mail_options[:bcc] = recipient[:bcc] if recipient[:bcc].present?
+
+    mail(mail_options)
 
     # create an email log of what got sent and to whom for any staff instances
     # that were found during the parsing of to/cc/bcc data
