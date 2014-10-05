@@ -2,9 +2,9 @@
 # This preamble is the current preamble for Rails 3 apps; edit as needed.
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.6'
+gem 'rails', '~> 3.2.0'
 gem 'rake', '0.9.1'
-gem 'active_scaffold', '~> 3.0.26'
+gem 'active_scaffold', '~> 3.3.0'
 
 gem 'calendar_date_select', '1.16.1'
 gem 'authlogic', '~> 3.2.0'
