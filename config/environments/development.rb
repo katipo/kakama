@@ -13,7 +13,6 @@ Kakama::Application.configure do
   config.whiny_nils                                    = true
 # config.action_mailer.delivery_method                 = :test
   config.action_mailer.raise_delivery_errors           = false
-  config.action_view.debug_rjs                         = true
 
 # Rails enables starttls when on Ruby 1.8.7, which doesn't always work
 # So instead, make a copy of Rails default settings, turning tls off

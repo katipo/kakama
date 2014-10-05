@@ -12,6 +12,5 @@ Kakama::Application.configure do
   config.whiny_nils                                    = true
   config.action_mailer.delivery_method                 = :test
 # config.action_mailer.raise_delivery_errors           = false
-# config.action_view.debug_rjs                         = true
 end
 
