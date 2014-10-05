@@ -36,6 +36,9 @@ gem 'delayed_job', '1.8.5'
 gem 'prawn', '0.7.2'
 gem 'prawn-layout', '0.7.2', :require => 'prawn/layout'
 gem 'pg'
+gem 'seed-fu', '~> 2.3.3'
+gem 'spreadsheet_on_rails', '~> 1.0.0'
+
 
 #Assets
 gem 'therubyracer', '~> 0.9.2'
