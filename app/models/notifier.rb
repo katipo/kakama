@@ -48,7 +48,7 @@ class Notifier < ActionMailer::Base
         Notifier.send("deliver_#{type.to_s}", recipients_with_emails, *args)
       else
         recipients_with_emails.each do |recipient|
-          Notifier.send("deliver_#{type.to_s}", recipient, *args)
+          Notifier.send("#{type.to_s}", recipient, *args).deliver
         end
       end
     end
