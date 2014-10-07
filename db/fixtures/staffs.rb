@@ -1,4 +1,4 @@
-Staff.seed(:username, true) do |u|
+Staff.seed(:username) do |u|
   u.username = 'admin'
   u.staff_type = 'admin'
   u.password = 'test'
