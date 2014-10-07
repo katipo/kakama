@@ -1,6 +1,6 @@
 class Notifier < ActionMailer::Base
   ActionMailer::Base.default_url_options[:host] = Setting.site_host
-  ActionMailer::Base.default_content_type = "text/html"
+  ActionMailer::Base.default :content_type => "text/html"
 
   # Create a method that allows us to send emails if email exists,
   # otherwise send the PDF equivelent to the administrator for testing
