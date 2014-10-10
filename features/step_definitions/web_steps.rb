@@ -141,7 +141,7 @@ end
 
 Then /^(?:|I )should see "([^\"]*)"$/ do |text|
   if defined?(Spec::Rails::Matchers)
-    response.should contain(text)
+    response.should have_content(text)
   else
     assert_contain text
   end
@@ -150,7 +150,7 @@ end
 Then /^(?:|I )should see "([^\"]*)" within "([^\"]*)"$/ do |text, selector|
   within(selector) do |content|
     if defined?(Spec::Rails::Matchers)
-      content.should contain(text)
+      content.should have_content(text)
     else
       hc = Webrat::Matchers::HasContent.new(text)
       assert hc.matches?(content), hc.failure_message
@@ -161,7 +161,7 @@ end
 Then /^(?:|I )should see \/([^\/]*)\/$/ do |regexp|
   regexp = Regexp.new(regexp)
   if defined?(Spec::Rails::Matchers)
-    response.should contain(regexp)
+    response.should have_content(regexp)
   else
     assert_match(regexp, response_body)
   end
@@ -171,7 +171,7 @@ Then /^(?:|I )should see \/([^\/]*)\/ within "([^\"]*)"$/ do |regexp, selector|
   within(selector) do |content|
     regexp = Regexp.new(regexp)
     if defined?(Spec::Rails::Matchers)
-      content.should contain(regexp)
+      content.should have_content(regexp)
     else
       assert_match(regexp, content)
     end
@@ -180,7 +180,7 @@ end
 
 Then /^(?:|I )should not see "([^\"]*)"$/ do |text|
   if defined?(Spec::Rails::Matchers)
-    response.should_not contain(text)
+    response.should_not have_content(text)
   else
     assert_not_contain(text)
   end
@@ -189,7 +189,7 @@ end
 Then /^(?:|I )should not see "([^\"]*)" within "([^\"]*)"$/ do |text, selector|
   within(selector) do |content|
     if defined?(Spec::Rails::Matchers)
-      content.should_not contain(text)
+      content.should_not have_content(text)
     else
       hc = Webrat::Matchers::HasContent.new(text)
       assert !hc.matches?(content), hc.negative_failure_message
@@ -200,7 +200,7 @@ end
 Then /^(?:|I )should not see \/([^\/]*)\/$/ do |regexp|
   regexp = Regexp.new(regexp)
   if defined?(Spec::Rails::Matchers)
-    response.should_not contain(regexp)
+    response.should_not have_content(regexp)
   else
     assert_not_contain(regexp)
   end
@@ -210,7 +210,7 @@ Then /^(?:|I )should not see \/([^\/]*)\/ within "([^\"]*)"$/ do |regexp, select
   within(selector) do |content|
     regexp = Regexp.new(regexp)
     if defined?(Spec::Rails::Matchers)
-      content.should_not contain(regexp)
+      content.should_not have_content(regexp)
     else
       assert_no_match(regexp, content)
     end
