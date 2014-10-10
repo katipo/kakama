@@ -11,6 +11,7 @@ Kakama::Application.configure do
   if Gem::Version.new(Rails.version) >= Gem::Version.new('3.1.0')
     warn "WARNING: Enable config.action_view.cache_template_loading for use in Rail >= 3.1"
   end
+
   #config.action_view.cache_template_loading            = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)

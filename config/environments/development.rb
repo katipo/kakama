@@ -13,6 +13,7 @@ Kakama::Application.configure do
   if Gem::Version.new(Rails.version) >= Gem::Version.new('3.1.0')
     warn "WARNING: Enable config.action_view.cache_template_loading for use in Rail >= 3.1"
   end
+
   #config.action_view.cache_template_loading            = false
 
   # config.action_controller.allow_forgery_protection    = false
@@ -49,4 +50,13 @@ Kakama::Application.configure do
       :domain               => 'localhost.localdomain',
       :enable_starttls_auto => false
   }
+
+  # Expands the lines which load the assets
+  # config.assets.debug = true
+
+  # config.assets.compress = false
+
+  # Use rails 3 asset pipeline to compress css and js
+  # config.assets.css_compressor = :yui
+  # config.assets.js_compressor = :uglify
 end

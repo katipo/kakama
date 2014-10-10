@@ -7,12 +7,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=<%= Setting.character_set %>" />
 
     <title><%= page_title(yield(:title)) %></title>
-    <% bundle do %>
-      <%= stylesheet_link_tag 'application', 'weekly', :media => 'screen' %>
-      <%= javascript_include_tag :defaults %>
-      <%= calendar_date_select_includes "default" %>
-      <%= active_scaffold_includes %>
-    <% end %>
+    <%= stylesheet_link_tag 'application', 'weekly', :media => 'screen' %>
+    <%= javascript_include_tag "prototype" %>
+    <%= javascript_include_tag "effects" %>
+    <%= javascript_include_tag "dragdrop" %>
+    <%= javascript_include_tag "controls" %>
+    <%= calendar_date_select_includes "default" %>
     <%= stylesheet_link_tag 'print', :media => 'print' %>
 
   </head>

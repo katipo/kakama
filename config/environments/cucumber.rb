@@ -12,5 +12,8 @@ Kakama::Application.configure do
   config.whiny_nils                                    = true
   config.action_mailer.delivery_method                 = :test
 # config.action_mailer.raise_delivery_errors           = false
-end
 
+  # Use rails 3 asset pipeline to compress css and js
+  # config.assets.css_compressor = :yui
+  # config.assets.js_compressor = :uglify
+end
