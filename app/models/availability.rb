@@ -187,7 +187,7 @@ class Availability < ActiveRecord::Base
     return if changing_own_availability && edited_by_administrator
     recipient = edited_by_administrator ? staff : Setting.site_administrator_emails
     return if notification_comment.blank? || recipient.blank? || (recipient.is_a?(Staff) && recipient.email.blank?)
-    Notifier.deliver_availability_changes_notification recipient, self
+    Notifier.availability_changes_notification(recipient, self).deliver
   end
 
   def ensure_availability_changeable

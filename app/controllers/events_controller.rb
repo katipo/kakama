@@ -115,14 +115,14 @@ class EventsController < ApplicationController
     # staff_event_mappings => { Staff => { Event => Role, Event => Role } }
     staff_event_mappings.each do |staff, events_and_roles|
       if staff.email.present?
-        Notifier.deliver_multiple_rostering_created_notification(staff, events_and_roles)
+        Notifier.multiple_rostering_created_notification(staff, events_and_roles).deliver
       else
         generator = PdfGenerator.create_multiple_rostering_created_notification(staff, events_and_roles)
         generator.filename = "multiple_rostering_created_notification_for_#{staff.username}.pdf"
         pdf_generators << generator.save
       end
     end
-    Notifier.deliver_collection_of_pdfs(pdf_generators) if pdf_generators.size > 0
+    Notifier.collection_of_pdfs(pdf_generators).deliver if pdf_generators.size > 0
 
     flash[:notice] = "All selected events have now been approved and all involved notified of the event."
     if events_past_cut_off.size > 0

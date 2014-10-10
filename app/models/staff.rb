@@ -73,7 +73,7 @@ class Staff < ActiveRecord::Base
   def deliver_password_reset_instructions!
     return false if email.blank?
     reset_perishable_token!
-    Notifier.deliver_password_reset_instructions self
+    Notifier.password_reset_instructions.deliver self
     true
   end
 
