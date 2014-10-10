@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   #  * it's a request other than html (csv, xls, xml)
   def store_last_location
     return if params[:controller] == 'staff_sessions' || !request.get? || request.format != 'text/html'
-    session[:return_to] = request.request_uri
+    session[:return_to] = request.url
   end
 
   # Get the current staff member based on the url.
