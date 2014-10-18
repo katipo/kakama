@@ -8,7 +8,7 @@ class StaffController < ApplicationController
   end
 
   def index
-    scope = Staff.username_or_full_name_like(params[:search_text]).ascend_by_full_name
+    scope = Staff.username_or_full_name_like(params[:search_text], :order_by => :full_name)
     @staffs = scope.paginate :page => params[:page]
   end
 
