@@ -19,7 +19,7 @@
         (
           <%= link_to 'edit', edit_staff_availability_path(@staff, availability) %> |
           <%= link_to 'split', split_staff_availability_path(@staff, availability) %> |
-          <%= link_to 'remove', destroy_staff_availability_path(@staff, availability), :confirm => 'Are you sure?', :method => :delete %>
+          <%= link_to 'remove', staff_availability_path(@staff, availability), :confirm => 'Are you sure?', :method => :delete %>
         )
         <%= "*" if @availabilities.include?(availability) %>
       <% end %>
