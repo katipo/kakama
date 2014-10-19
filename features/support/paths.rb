@@ -24,7 +24,7 @@ module NavigationHelpers
       staff_path(:current)
 
     when /^the staff list$/
-      staffs_path
+      staff_index_path
 
     when /^add a new staff member$/
       new_staff_path
@@ -42,7 +42,7 @@ module NavigationHelpers
       if $1
         contact_staff_path(Staff.find_by_full_name!($1))
       else
-        contact_all_staffs_path
+        contact_all_staffs_index_path
       end
 
     when /^enter my reset token$/

@@ -67,7 +67,7 @@
       <li><%= link_to "Contact Staff Member", contact_staff_path(@staff) %></li>
     <% end %>
     <li><%= link_to 'View Staff Availability', staff_availabilities_path(@staff) %></li>
-    <li><%= link_to 'Return to Staff List', staffs_path %></li>
+    <li><%= link_to 'Return to Staff List', staff_index_path %></li>
   <% else %>
     <li><%= link_to 'Edit Your Details', edit_staff_path(@staff) %></li>
   <% end %>

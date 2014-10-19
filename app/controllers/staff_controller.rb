@@ -87,7 +87,7 @@ class StaffController < ApplicationController
     if request.post?
       if Staff.contact_all(params)
         flash[:notice] = "Email was sent to all staff members."
-        redirect_to(staffs_path)
+        redirect_to(staff_index_path)
       else
         flash[:error] = "Please enter an subject and email body."
       end

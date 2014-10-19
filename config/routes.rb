@@ -2,6 +2,7 @@ Kakama::Application.routes.draw do
   match 'login' => 'staff_sessions#new', :as => :login
   match 'logout' => 'staff_sessions#destroy', :as => :logout
   match 'dashboard' => 'staff#dashboard', :as => :dashboard
+  
   resources :detail_types
   resources :venues
   resources :roles
@@ -9,6 +10,7 @@ Kakama::Application.routes.draw do
   resources :email_logs
   resources :password_resets
   resources :staff_sessions
+  
   resources :events do
     collection do
       post :mass_approve
@@ -52,33 +54,12 @@ Kakama::Application.routes.draw do
 
   end
 
-  resources :staffs do
+  resources :staffs, {:as => 'staff', :controller => 'staff'} do
     collection do
-      get :contact_all
+      get :contact_all, :as => 'contact_all'
       post :contact_all
     end
     member do
-      get :dashboard
-      get :contact
-      post :contact
-      get :destroy
-      delete :destroy
-    end
-    resources :availabilities do
-
-      member do
-        get :split
-        post :split
-        get :destroy
-        delete :destroy
-      end
-
-    end
-  end
-
-  resources :reports, :only => :index do
-    collection do
-      get :events
       get :dashboard
       get :contact
       post :contact
