@@ -4,7 +4,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '~> 3.2.0'
 gem 'rake', '0.9.1'
-gem 'active_scaffold', '~> 3.3.0'
+gem 'active_scaffold', '~> 3.4.7'
 
 gem 'calendar_date_select', '~> 2.0.0'
 gem 'authlogic', '~> 3.2.0'

@@ -14,8 +14,8 @@ GEM
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.2.1)
-    active_scaffold (3.3.3)
-      rails (~> 3.2.0)
+    active_scaffold (3.4.7)
+      rails (>= 3.2.18, < 5)
     activemodel (3.2.19)
       activesupport (= 3.2.19)
       builder (~> 3.0.0)
@@ -216,7 +216,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_scaffold (~> 3.3.0)
+  active_scaffold (~> 3.4.7)
   authlogic (~> 3.2.0)
   builder
   calendar_date_select (~> 2.0.0)
