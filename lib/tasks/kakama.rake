@@ -72,6 +72,8 @@ task :setup_demo => :environment do
   physical_address = DetailType.find_by_name('Physical Address')
   postal_address = DetailType.find_by_name('Postal Address')
 
+  role_limit = (rand * Role.count).to_i
+
   staff_num.times do |time|
     username, first_name, last_name = find_unused_names
     staff = Staff.create!(
@@ -90,9 +92,9 @@ task :setup_demo => :environment do
         physical_address.id => ((Faker::Address.street_address + "\n" + Faker::Address.city + "\nNew Zealand") if (rand * 100).to_i < 70),
         postal_address.id => ((Faker::Address.street_address + "\n" + Faker::Address.city + "\nNew Zealand") if (rand * 100).to_i < 70)
       },
-      :role_ids => Role.all(:order => "rand()", :limit => (rand * Role.count).to_i).collect { |r| r.id }
+      #:role_ids => Role.all(:order => "rand()", :limit => (rand * Role.count).to_i).collect { |r| r.id }
       #TODO: Implement this non-database-specific Rails 3+ solution when migrated to rails 3+
-      #:role_ids => Role.pluck(:id).shuffle
+      :role_ids => Role.pluck(:id).shuffle[0..role_limit]
     )
 
     if (rand * 100) < 95
