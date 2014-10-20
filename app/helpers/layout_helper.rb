@@ -9,7 +9,7 @@ module LayoutHelper
 
   def display_flash_contents
     flash.inject('') do |html, (name, msg)|
-      html += content_tag(:div, msg, :class => "flash_#{name}")
+      content_tag(:div, msg, :class => "flash_#{name}")
     end
   end
 
