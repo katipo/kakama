@@ -24,8 +24,6 @@ gem 'nokogiri'
 gem 'ruby-terminfo', '0.1.1'
 gem 'database_cleaner', '0.5.0'
 gem 'webrat', '0.7.3'
-gem 'rspec', '1.3.2'
-gem 'rspec-rails', '1.3.2'
 gem 'spreadsheet'
 gem 'fastercsv'
 gem 'csv_builder', '~> 2.1.1'
@@ -48,14 +46,23 @@ group :assets do
   gem 'prototype-rails', '~> 3.2.1'
 end
 
+group :development do
+  gem 'pry'
+end
 
 #Test group
-gem 'cucumber', '~> 1.3.8'
-gem 'cucumber-rails', '~> 1.3.0', :require => false
-gem 'term-ansicolor'
-gem 'treetop'
-gem 'diff-lcs'
-gem 'builder'
+group :test do
+  gem 'cucumber', '~> 1.3.8'
+  gem 'cucumber-rails', '~> 1.3.0', :require => false
+  gem 'term-ansicolor'
+  gem 'treetop'
+  gem 'diff-lcs'
+  gem 'builder'
+  gem 'rspec', '~> 3.1.0'
+  gem 'rspec-rails', '~> 3.1.0'
+  gem 'capybara', '~> 2.4.4'
+  
+end
 
 
 
