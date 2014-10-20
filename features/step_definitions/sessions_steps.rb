@@ -29,7 +29,7 @@ def do_login(details)
   fill_in "Username", :with => username
   fill_in "Password", :with => (password || 'test')
   click_button "Login"
-  response.should have_content('Successfully logged in.')
+  page.should have_content('Successfully logged in.')
   @current_staff = Staff.find_by_username!(username.downcase)
 end
 

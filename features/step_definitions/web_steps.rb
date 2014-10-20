@@ -140,8 +140,8 @@ When /^(?:|I )attach the file "([^\"]*)" to "([^\"]*)"$/ do |path, field|
 end
 
 Then /^(?:|I )should see "([^\"]*)"$/ do |text|
-  if defined?(Spec::Rails::Matchers)
-    response.should have_content(text)
+  if defined?(Capybara::RSpecMatchers)
+    page.should have_content(text)
   else
     assert_contain text
   end
@@ -149,7 +149,7 @@ end
 
 Then /^(?:|I )should see "([^\"]*)" within "([^\"]*)"$/ do |text, selector|
   within(selector) do |content|
-    if defined?(Spec::Rails::Matchers)
+    if defined?(Capybara::RSpecMatchers)
       content.should have_content(text)
     else
       hc = Webrat::Matchers::HasContent.new(text)
@@ -160,8 +160,8 @@ end
 
 Then /^(?:|I )should see \/([^\/]*)\/$/ do |regexp|
   regexp = Regexp.new(regexp)
-  if defined?(Spec::Rails::Matchers)
-    response.should have_content(regexp)
+  if defined?(Capybara::RSpecMatchers)
+    page.should have_content(regexp)
   else
     assert_match(regexp, response_body)
   end
@@ -170,7 +170,7 @@ end
 Then /^(?:|I )should see \/([^\/]*)\/ within "([^\"]*)"$/ do |regexp, selector|
   within(selector) do |content|
     regexp = Regexp.new(regexp)
-    if defined?(Spec::Rails::Matchers)
+    if defined?(Capybara::RSpecMatchers)
       content.should have_content(regexp)
     else
       assert_match(regexp, content)
@@ -179,8 +179,8 @@ Then /^(?:|I )should see \/([^\/]*)\/ within "([^\"]*)"$/ do |regexp, selector|
 end
 
 Then /^(?:|I )should not see "([^\"]*)"$/ do |text|
-  if defined?(Spec::Rails::Matchers)
-    response.should_not have_content(text)
+  if defined?(Capybara::RSpecMatchers)
+    page.should_not have_content(text)
   else
     assert_not_contain(text)
   end
@@ -188,7 +188,7 @@ end
 
 Then /^(?:|I )should not see "([^\"]*)" within "([^\"]*)"$/ do |text, selector|
   within(selector) do |content|
-    if defined?(Spec::Rails::Matchers)
+    if defined?(Capybara::RSpecMatchers)
       content.should_not have_content(text)
     else
       hc = Webrat::Matchers::HasContent.new(text)
@@ -199,8 +199,8 @@ end
 
 Then /^(?:|I )should not see \/([^\/]*)\/$/ do |regexp|
   regexp = Regexp.new(regexp)
-  if defined?(Spec::Rails::Matchers)
-    response.should_not have_content(regexp)
+  if defined?(Capybara::RSpecMatchers)
+    page.should_not have_content(regexp)
   else
     assert_not_contain(regexp)
   end
@@ -209,7 +209,7 @@ end
 Then /^(?:|I )should not see \/([^\/]*)\/ within "([^\"]*)"$/ do |regexp, selector|
   within(selector) do |content|
     regexp = Regexp.new(regexp)
-    if defined?(Spec::Rails::Matchers)
+    if defined?(Capybara::RSpecMatchers)
       content.should_not have_content(regexp)
     else
       assert_no_match(regexp, content)
@@ -218,7 +218,7 @@ Then /^(?:|I )should not see \/([^\/]*)\/ within "([^\"]*)"$/ do |regexp, select
 end
 
 Then /^the "([^\"]*)" field should contain "([^\"]*)"$/ do |field, value|
-  if defined?(Spec::Rails::Matchers)
+  if defined?(Capybara::DSL)
     field_labeled(field).value.should =~ /#{value}/
   else
     assert_match(/#{value}/, field_labeled(field).value)
@@ -226,7 +226,7 @@ Then /^the "([^\"]*)" field should contain "([^\"]*)"$/ do |field, value|
 end
 
 Then /^the "([^\"]*)" field should not contain "([^\"]*)"$/ do |field, value|
-  if defined?(Spec::Rails::Matchers)
+  if defined?(Capybara::DSL)
     field_labeled(field).value.should_not =~ /#{value}/
   else
     assert_no_match(/#{value}/, field_labeled(field).value)
@@ -234,7 +234,7 @@ Then /^the "([^\"]*)" field should not contain "([^\"]*)"$/ do |field, value|
 end
 
 Then /^the "([^\"]*)" checkbox should be checked$/ do |label|
-  if defined?(Spec::Rails::Matchers)
+  if defined?(RSpec::Matchers)
     field_labeled(label).should be_checked
   else
     assert field_labeled(label).checked?
@@ -242,7 +242,7 @@ Then /^the "([^\"]*)" checkbox should be checked$/ do |label|
 end
 
 Then /^the "([^\"]*)" checkbox should not be checked$/ do |label|
-  if defined?(Spec::Rails::Matchers)
+  if defined?(RSpec::Matchers)
     field_labeled(label).should_not be_checked
   else
     assert !field_labeled(label).checked?
@@ -250,7 +250,7 @@ Then /^the "([^\"]*)" checkbox should not be checked$/ do |label|
 end
 
 Then /^(?:|I )should be on (.+)$/ do |page_name|
-  if defined?(Spec::Rails::Matchers)
+  if defined?(RSpec::Matchers)
     URI.parse(current_url).path.should == path_to(page_name)
   else
     assert_equal path_to(page_name), URI.parse(current_url).path
@@ -261,7 +261,7 @@ Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
   actual_params   = CGI.parse(URI.parse(current_url).query)
   expected_params = Hash[expected_pairs.rows_hash.map{|k,v| [k,[v]]}]
 
-  if defined?(Spec::Rails::Matchers)
+  if defined?(RSpec)
     actual_params.should == expected_params
   else
     assert_equal expected_params, actual_params
