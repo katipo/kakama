@@ -21,8 +21,6 @@ Kakama::Application.routes.draw do
       delete :cancel
       get :contact_staff
       post :contact_staff
-      get :destroy
-      delete :destroy
     end
 
   end
@@ -64,16 +62,12 @@ Kakama::Application.routes.draw do
       get :dashboard
       get :contact
       post :contact
-      get :destroy
-      delete :destroy
     end
     resources :availabilities do
 
       member do
         get :split
         post :split
-        get :destroy
-        delete :destroy
       end
 
     end
