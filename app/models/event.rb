@@ -74,6 +74,7 @@ class Event < ActiveRecord::Base
   scope :not_deleted, lambda { { :conditions => ['events.deleted_at IS ?', nil] } }
   scope :current, lambda { { :conditions => ['events.start_datetime <= :now AND events.end_datetime >= :now', { :now => Time.now.utc }], :order => "events.start_datetime ASC, events.end_datetime ASC" } }
   scope :future, lambda { { :conditions => ['events.start_datetime > ?', Time.now.utc], :order => "events.start_datetime ASC, events.end_datetime ASC" } }
+  scope :current_or_future, lambda { { :conditions => ['events.end_datetime >= ?', Time.now.utc], :order => "events.start_datetime ASC, events.end_datetime ASC" } }
   scope :finished, lambda { { :conditions => ['events.end_datetime < ?', Time.now.utc], :order => "events.start_datetime DESC, events.end_datetime DESC" } }
   scope :finished_a_month_ago, lambda { { :conditions => ['events.end_datetime < ?', 1.month.ago.utc] } }
   scope :occuring_at, lambda { |start_datetime, end_datetime| { :conditions => [Event.sql_between_query, { :event_start => start_datetime.dup.utc, :event_end => end_datetime.dup.utc }] } }
