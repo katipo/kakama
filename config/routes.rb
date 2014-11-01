@@ -3,11 +3,12 @@ Kakama::Application.routes.draw do
   match 'logout' => 'staff_sessions#destroy', :as => :logout
   match 'dashboard' => 'staff#dashboard', :as => :dashboard
   
-  resources :detail_types
-  resources :venues
-  resources :roles
-  resources :schedules
-  resources :email_logs
+  resources :detail_types do as_routes end
+  resources :venues do as_routes end
+  resources :roles do as_routes end
+  resources :schedules do as_routes end
+  resources :email_logs do as_routes end
+  
   resources :password_resets
   resources :staff_sessions
   
