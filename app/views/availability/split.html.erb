@@ -1,7 +1,7 @@
 <% title "Split Availability #{@availability.start_date.to_s(:nz)} - #{@availability.end_date.to_s(:nz)}" %>
 
 <% semantic_form_for(@availability, :url => split_availability_form_url, :html => { :method => :post }) do |form| %>
-  <%= form.error_messages %>
+  <%= form.semantic_errors %>
   <% form.inputs :name => "Where would you like to split this availability?" do %>
     <li class="string required">
       <%= form.label :split_date, "Split date:" %>

@@ -1,5 +1,5 @@
 <% semantic_form_for(@availability, :url => availability_form_url) do |form| %>
-  <%= form.error_messages %>
+  <%= form.semantic_errors %>
 
   <% if @availability.conflicts_with_another_availability? %>
     <div id="errorExplanation" class="errorExplanation">

@@ -1,7 +1,7 @@
 <% title "New event" %>
 
 <% semantic_form_for(@event) do |form| %>
-  <%= form.error_messages %>
+  <%= form.semantic_errors %>
   <%= render 'form', :form => form %>
   <% form.actions do %>
     <% label = (@event.conflicts_with_another_event? ? 'Ignore Conflicts and Create Event' : 'Create Event') %>

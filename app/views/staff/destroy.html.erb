@@ -1,7 +1,7 @@
 <% title "Are you sure you want to delete #{@staff.full_name}?" %>
 
 <% semantic_form_for(@staff, :html => { :method => :delete }) do |form| %>
-  <%= form.error_messages %>
+  <%= form.semantic_errors %>
   <% form.actions do %>
     <%= form.action :submit, :button_html => { :value => "Yes, I'm sure." } %>
   <% end %>

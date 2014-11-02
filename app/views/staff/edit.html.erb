@@ -1,7 +1,7 @@
 <% title "Editing staff member: #{h(@staff.full_name)}" %>
 
 <% semantic_form_for(@staff) do |form| %>
-  <%= form.error_messages %>
+  <%= form.semantic_errors %>
   <%= render 'form', :form => form %>
   <% form.actions do %>
     <%= form.action :submit, :button_html => { :value => 'Save' } %>
