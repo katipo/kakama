@@ -18,7 +18,7 @@ module LayoutHelper
   end
 
   def required_astrix
-    "<abbr title='required'>*</abbr>"
+    "<abbr title='required'>*</abbr>".html_safe
   end
 
   def powered_by
