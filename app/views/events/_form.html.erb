@@ -34,7 +34,7 @@
 
 <div class="required"><%= required_astrix %> denotes a required field</div>
 
-<% form.inputs :name => "Event Details" do %>
+<%= form.inputs :name => "Event Details" do %>
   <%= form.input :name %>
 
   <%= form.input :venue, :input_html => { :name => 'event[venue_id]' } %>
@@ -43,7 +43,7 @@
                  :input_html => { :rows => 8, :cols => 44 } %>
 <% end %>
 
-<% form.inputs :name => "Event Start and End Times" do %>
+<%= form.inputs :name => "Event Start and End Times" do %>
   <li id="event_start_datetime_input" class="string required">
     <%= form.label :start_datetime, "Event Reporting Time " %><%= required_astrix %>
     <script type='text/javascript'>
