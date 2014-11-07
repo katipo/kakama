@@ -35,6 +35,7 @@ Feature: Roles
   Scenario: Cannot Delete a role with staff assigned
     Given a staff member "Joe" exists
     And they have the role "Usher"
-    When I try to delete the role "Usher", I should be refused to access the record
+    When I try to delete the role "Usher"
+    Then I should see "Usher can't be destroyed"
     When I go to the roles list
     Then I should see "Usher"

@@ -4,8 +4,6 @@ Given /^(?:I|they|"([^\"]*)") (?:have|has) the role "([^\"]*)"$/ do |full_name, 
   staff.roles << @role
 end
 
-When /^I try to delete the role "([^\"]*)", I should be refused to access the record$/ do |role_name|
-  assert_raise ActiveScaffold::RecordNotAllowed do
-    visit delete_role_path(find_or_create_role(role_name))
-  end
+When /^I try to delete the role "([^\"]*)"$/ do |role_name|
+  page.driver.submit :delete, role_path(find_or_create_role(role_name)), {}
 end

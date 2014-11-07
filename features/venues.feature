@@ -27,7 +27,8 @@ Feature: Venues
     And that venue has future events
     And I go to the venues list
     Then I should see "The Square"
-    When I try to delete the venue, I should be refused to access the record
+    When I try to delete the venue
+    Then I should see "The Square can't be destroyed"
     When I go to the venues list
     Then I should see "The Square"
 

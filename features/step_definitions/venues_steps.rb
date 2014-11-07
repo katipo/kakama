@@ -12,10 +12,8 @@ Given /^that venue has (past|future) events$/ do |type|
   find_or_create_event(options[:name], options)
 end
 
-When /^I try to delete the venue, I should be refused to access the record$/ do
-  assert_raise ActiveScaffold::RecordNotAllowed do
-    visit delete_venue_path(@venue)
-  end
+When /^I try to delete the venue$/ do
+    page.driver.submit :delete, venue_path(@venue), {}
 end
 
 Then /^the venues select field should be set to "([^\"]*)"$/ do |venue_name|
