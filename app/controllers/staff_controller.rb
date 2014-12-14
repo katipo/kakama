@@ -61,7 +61,7 @@ class StaffController < ApplicationController
       else
         flash[:error] = @staff.errors['base']
       end
-      redirect_to(staffs_url)
+      redirect_to(staff_index_url)
     end
   end
 
