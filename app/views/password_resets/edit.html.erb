@@ -1,6 +1,6 @@
 <% title "Change My Password" %>
 
-<% semantic_form_for @staff, :url => password_reset_path, :method => :put do |form| %>
+<%= semantic_form_for @staff, :url => password_reset_path, :method => :put do |form| %>
   <%= form.semantic_errors %>
   <% form.inputs :name => nil do %>
     <%= render('staff/password_fields', :form => form) %>

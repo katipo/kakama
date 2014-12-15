@@ -1,6 +1,6 @@
 <% title "Editing event" %>
 
-<% semantic_form_for(@event) do |form| %>
+<%= semantic_form_for(@event) do |form| %>
   <%= form.semantic_errors %>
   <%= render 'form', :form => form %>
   <% form.actions do %>
