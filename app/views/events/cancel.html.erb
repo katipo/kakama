@@ -2,7 +2,7 @@
 
 <%= semantic_form_for(@event, :url => { :action => 'cancel' }, :html => { :method => :delete }) do |form| %>
   <%= form.semantic_errors %>
-  <% form.actions do %>
+  <%= form.actions do %>
     <%= form.action :submit, :button_html => { :value => "Yes, I'm sure." } %>
   <% end %>
 <% end %>

@@ -3,7 +3,7 @@
 <%= semantic_form_for(@event) do |form| %>
   <%= form.semantic_errors %>
   <%= render 'form', :form => form %>
-  <% form.actions do %>
+  <%= form.actions do %>
     <li>
       <% label = (@event.conflicts_with_another_event? || @event.unavailable_staff_rosterings? ?
                  'Ignore Conflicts and Save Event' : 'Save Event') %>

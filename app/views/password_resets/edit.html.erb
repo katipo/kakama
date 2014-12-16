@@ -5,7 +5,7 @@
   <% form.inputs :name => nil do %>
     <%= render('staff/password_fields', :form => form) %>
   <% end %>
-  <% form.actions do %>
+  <%= form.actions do %>
     <%= form.action :submit, :button_html => { :value => 'Update my password' } %>
   <% end %>
 <% end %>

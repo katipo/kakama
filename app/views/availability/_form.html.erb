@@ -78,7 +78,7 @@
     <% end %>
   <% end %>
 
-  <% form.actions do %>
+  <%= form.actions do %>
     <% label = !@availability.conflicts_with_another_availability? || !admin? ? nil :
                 (@availability.new_record? ?
                   'Ignore Conflicts and Create Availability' :
