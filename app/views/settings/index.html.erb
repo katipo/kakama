@@ -1,6 +1,6 @@
 <% title "Edit Settings" %>
 
-<% form_tag({}, { :class => 'formtastic' }) do %>
+<%= form_tag({}, { :class => 'formtastic' }) do %>
   <fieldset class='inputs'>
     <ol>
     <% Setting.all.keys.sort.each do |key| %>

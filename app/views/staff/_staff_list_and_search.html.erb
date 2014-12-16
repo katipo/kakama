@@ -4,7 +4,7 @@
 <%= will_paginate @staffs %>
 
 <div id="staff_search">
-  <% form_tag({}, { :method => :get }) do %>
+  <%= form_tag({}, { :method => :get }) do %>
     <% if search_for_rostering %>
       <%= hidden_field_tag :event_id, params[:event_id] %>
       <%= hidden_field_tag :role_id, params[:role_id] %>

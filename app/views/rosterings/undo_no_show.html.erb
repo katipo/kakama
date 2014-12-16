@@ -1,6 +1,6 @@
 <% title "Are you sure you want to unmark #{@staff.full_name} as being a no show at this event?" %>
 
-<% form_tag({ :action => 'undo_no_show' }, { :method => :put }) do %>
+<%= form_tag({ :action => 'undo_no_show' }, { :method => :put }) do %>
   <%= submit_tag "Yes, I'm sure." %>
   or <%= link_to 'back to event', event_path(@event) %>
 <% end %>

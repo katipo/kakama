@@ -15,7 +15,7 @@
 
 <% if params[:type] == 'working' %>
   <% title "Working Events" %>
-  <% form_tag({:action => 'mass_approve'}, {:method => :post}) do %>
+  <%= form_tag({:action => 'mass_approve'}, {:method => :post}) do %>
     <%= render 'events_list', :events => @working_events, :show_finalize_button => true %>
     <%= submit_tag 'Mass Approve Event Rosters' %>
   <% end %>
