@@ -36,13 +36,13 @@ module NavigationHelpers
       edit_staff_path(:current)
 
     when /^delete the staff member "([^\"]*)"$/
-      destroy_staff_path(Staff.find_by_full_name!($1))
+      "#{staff_path(Staff.find_by_full_name!($1))}?destroy_action=true"
 
     when /^send (?:everyone|"([^\"]*)") an email$/
       if $1
         contact_staff_path(Staff.find_by_full_name!($1))
       else
-        contact_all_staffs_index_path
+        contact_all_staff_index_path
       end
 
     when /^enter my reset token$/
@@ -64,7 +64,7 @@ module NavigationHelpers
       venue_path(@venue)
 
     when /^delete the venue$/
-      delete_venue_path(@venue)
+      "#{venue_path(@venue)}?destroy_action=true"
 
     when /^the events list$/
       events_path
