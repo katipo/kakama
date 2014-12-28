@@ -19,7 +19,7 @@
   <% end %>
 </table>
 
-<% content_for(:tools) do %>
+<%= content_for(:tools) do %>
   <ul>
     <li><%=link_to 'Save Staff List (csv)', staff_list_reports_path(:format => :csv) %></li>
     <li><%=link_to 'Save Staff List (xls)', staff_list_reports_path(:format => :xls) %></li>

@@ -1,6 +1,6 @@
 <div class="required"><%= required_astrix %> denotes a required field</div>
 
-<% form.inputs :name => "Staff Details" do %>
+<%= form.inputs :name => "Staff Details" do %>
   <%= form.input :username if admin? %>
 
   <%= render('password_fields', :form => form, :required => true) if @staff.new_record? %>
@@ -8,7 +8,7 @@
   <%= form.input :full_name %>
 <% end %>
 
-<% form.inputs :name => "Contact Details" do %>
+<%= form.inputs :name => "Contact Details" do %>
   <%= form.input :email, :required => false %>
 
   <% form.semantic_fields_for :contact_details do |detail| %>
@@ -21,7 +21,7 @@
   <% end %>
 <% end %>
 
-<% form.inputs :name => "Administrator Fields" do %>
+<%= form.inputs :name => "Administrator Fields" do %>
   <%= form.input :staff_type, :as => :select, :collection => Staff::Types, :input_html => { :name => 'staff[staff_type]' } %>
 
   <%= form.input :roles, :as => :select, :required => false,
@@ -40,7 +40,7 @@
                  :input_html => { :rows => 8, :cols => 44 } if !@staff.new_record? %>
 <% end if admin? %>
 
-<% form.inputs :name => "Change Password" do %>
+<%= form.inputs :name => "Change Password" do %>
   <%= form.input :current_password, :as => :password, :required => false, :input_html => { :autocomplete => 'off' } unless admin? %>
   <%= render('password_fields', :form => form) %>
 <% end if !@staff.new_record? %>

@@ -2,7 +2,7 @@
 
 <%= semantic_form_for(@availability, :url => split_availability_form_url, :html => { :method => :post }) do |form| %>
   <%= form.semantic_errors %>
-  <% form.inputs :name => "Where would you like to split this availability?" do %>
+  <%= form.inputs :name => "Where would you like to split this availability?" do %>
     <li class="string required">
       <%= form.label :split_date, "Split date:" %>
       <script type='text/javascript'>

@@ -26,7 +26,7 @@
   <%= render 'events_list', :events => @cancelled_events %>
 <% end %>
 
-<% content_for(:tools) do %>
+<%= content_for(:tools) do %>
   <ul>
     <li><%= link_to 'Add Event', new_event_path %></li>
     <li><%= link_to 'Current and Upcoming Events', :type => nil %></li>

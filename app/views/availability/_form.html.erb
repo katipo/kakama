@@ -14,7 +14,7 @@
     <%= form.hidden_field :ignore_availability_conflicts, :value => true if admin? %>
   <% end %>
 
-  <% form.inputs :name => "Availability Details" do %>
+  <%= form.inputs :name => "Availability Details" do %>
     <li class="string required">
       <%= form.label :start_date, "Start date " %><%= required_astrix %>
       <script type='text/javascript'>
@@ -32,7 +32,7 @@
     </li>
   <% end %>
 
-  <% form.inputs :name => "Select Hours of Availability Each Day" do %>
+  <%= form.inputs :name => "Select Hours of Availability Each Day" do %>
     <li class="string required">
       <%= label_tag 'All Days' %>
       Start: <%= hour_selector 'availability[hours][all][start]' %>
@@ -63,14 +63,14 @@
   <% end %>
 
   <% unless (admin? && changing_own_availability?) || @staff.email.blank? %>
-    <% form.inputs :name => "Additional Information" do %>
+    <%= form.inputs :name => "Additional Information" do %>
       <%= form.input :notification_comment, :as => :text, :required => false,
                      :input_html => { :rows => 8, :cols => 44 } %>
     <% end %>
   <% end %>
 
   <% if admin? && !changing_own_availability? %>
-    <% form.inputs :name => "Administrative Actions" do %>
+    <%= form.inputs :name => "Administrative Actions" do %>
       <li class="boolean optional" id="availability_admin_locked_input">
         <%= label_tag 'availability_admin_locked', 'Lock this Availability?' %>
         <%= form.check_box :admin_locked %>

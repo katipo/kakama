@@ -30,7 +30,7 @@
   <% end %>
 </div>
 
-<% content_for(:tools) do %>
+<%= content_for(:tools) do %>
 <ul>
   <li><%= link_to 'Add Availability', new_staff_availability_path(@staff, :start_date => params[:start_date]) %></li>
 </ul>

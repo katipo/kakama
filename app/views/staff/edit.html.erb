@@ -9,7 +9,7 @@
 <% end %>
 
 <% if admin? %>
-  <% content_for(:tools) do %>
+  <%= content_for(:tools) do %>
     <ul>
       <li><%= link_to 'Return to Staff Profile', @staff %></li>
     </ul>

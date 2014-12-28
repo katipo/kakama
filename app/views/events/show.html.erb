@@ -26,7 +26,7 @@
     <%= render 'finalize_event_roster', :event => @event %>
   <% end %>
 
-  <% content_for(:tools) do %>
+  <%= content_for(:tools) do %>
     <ul>
       <% unless @event.finished? || @event.cancelled? %>
         <li><%= link_to 'Contact Staff Involved', contact_staff_event_path %></li>
