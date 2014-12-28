@@ -49,6 +49,7 @@ end
 
 group :development do
   gem 'pry'
+  gem "spring"
 end
 
 #Test group
