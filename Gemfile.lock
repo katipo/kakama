@@ -40,6 +40,11 @@ GEM
     authlogic (3.2.0)
       activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
+    better_errors (1.1.0)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+    binding_of_caller (0.7.2)
+      debug_inspector (>= 0.0.1)
     builder (3.0.4)
     capybara (2.4.4)
       mime-types (>= 1.16)
@@ -71,6 +76,7 @@ GEM
       rails (~> 3.0)
     daemons (1.0.10)
     database_cleaner (0.5.0)
+    debug_inspector (0.0.2)
     delayed_job (1.8.5)
     diff-lcs (1.2.5)
     docile (1.1.5)
@@ -223,6 +229,8 @@ PLATFORMS
 DEPENDENCIES
   active_scaffold (~> 3.4.7)
   authlogic (~> 3.2.0)
+  better_errors (~> 1.1.0)
+  binding_of_caller
   builder
   calendar_date_select!
   capybara (~> 2.4.4)
