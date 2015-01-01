@@ -55,7 +55,7 @@ Kakama::Application.routes.draw do
 
   end
 
-  resources :staffs, {:as => 'staff', :controller => 'staff'} do
+  resources :staffs, {:controller => 'staff'} do
     collection do
       get :contact_all, :as => 'contact_all'
       post :contact_all

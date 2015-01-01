@@ -43,7 +43,7 @@
       <div id="tools">
         <% if admin? %>
         <ul>
-          <li class="<%= current_section_if(:staff) %>"><%= link_to 'Staff Members', staff_index_path %></li>
+          <li class="<%= current_section_if(:staff) %>"><%= link_to 'Staff Members', staffs_path %></li>
           <li class="<%= current_section_if(:events) %>"><%= link_to 'Events', events_path %></li>
           <li class="<%= current_section_if(:venues) %>"><%= link_to 'Venues', venues_path %></li>
           <li class="<%= current_section_if(:reports) %>"><%= link_to 'Reports', reports_path %></li>
