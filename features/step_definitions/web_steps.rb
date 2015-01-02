@@ -16,7 +16,7 @@ Given /^(?:|I )am on (.+)$/ do |page_name|
 end
 
 When /^(?:|I )go to (delete.+)$/ do |page_name|
-  page.driver.submit :delete, path_to(page_name), {}
+  visit path_to(page_name)
 end
 
 When /^(?:|I )go to ((?!delete).+)$/ do |page_name|
