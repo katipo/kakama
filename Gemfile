@@ -52,6 +52,7 @@ group :development do
   gem "spring"
   gem "better_errors", '~>1.1.0'
   gem "binding_of_caller"
+  gem "spring-commands-cucumber"
 end
 
 #Test group
@@ -67,6 +68,5 @@ group :test do
   gem 'capybara', '~> 2.4.4'
   
 end
-
 
 
