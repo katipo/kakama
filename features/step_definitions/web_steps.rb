@@ -36,11 +36,11 @@ When /^(?:|I )follow "([^\"]*)" within "([^\"]*)"$/ do |link, parent|
 end
 
 When /^(?:|I )fill in "([^\"]*)" with "([^\"]*)"$/ do |field, value|
-  fill_in(field, :with => value)
+  fill_in(field, :with => value, :match => :prefer_exact)
 end
 
 When /^(?:|I )fill in "([^\"]*)" for "([^\"]*)"$/ do |value, field|
-  fill_in(field, :with => value)
+  fill_in(field, :with => value, :match => :prefer_exact)
 end
 
 # Use this to fill in an entire form with data from a table. Example:

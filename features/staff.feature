@@ -69,7 +69,7 @@ Feature: Staff
   Scenario: Change Password as Administrator
     When I go to edit the staff member "Joe"
     And I fill in "Password" with "newpass"
-    And I fill in "Password Confirmation" with "newpass"
+    And I fill in "Password confirmation" with "newpass"
     And I press "Save"
     Then I should see "Staff was successfully updated."
     When I go to logout
@@ -79,7 +79,7 @@ Feature: Staff
     Given I am logged in as "joe"
     When I go to edit my details
     And I fill in "Password" with "newpass"
-    And I fill in "Password Confirmation" with "newpass"
+    And I fill in "Password confirmation" with "newpass"
     And I press "Save"
     Then I should see "Current password must be set when changing the password."
 
@@ -88,7 +88,7 @@ Feature: Staff
     When I go to edit my details
     And I fill in "Current password" with "test"
     And I fill in "Password" with "newpass"
-    And I fill in "Password Confirmation" with "newpass"
+    And I fill in "Password confirmation" with "newpass"
     And I press "Save"
     Then I should see "Staff was successfully updated."
     When I go to logout
