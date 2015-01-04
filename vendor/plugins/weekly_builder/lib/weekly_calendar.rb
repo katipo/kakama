@@ -21,7 +21,7 @@ module WeeklyCalendar
   
   def weekly_links(options)
     #view helper to insert the next and previous week links
-    date = options[:date] || Time.now
+    date = options.to_date || Time.now
     start_date = Date.new(date.year, date.month, date.day) 
     end_date = Date.new(date.year, date.month, date.day) + 7
     safe_concat("<a href='?start_date=#{start_date - 7}?user_id='>&laquo; Previous Week</a> ")
