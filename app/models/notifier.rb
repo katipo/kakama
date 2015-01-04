@@ -62,7 +62,7 @@ class Notifier < ActionMailer::Base
         generator.filename = "#{type.to_s}_for_#{recipient.username}.pdf"
         pdf_generators << generator.save
       end
-      Notifier.deliver_collection_of_pdfs(pdf_generators, event)
+      Notifier.collection_of_pdfs(pdf_generators, event).deliver
     end
   end
 

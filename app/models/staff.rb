@@ -138,7 +138,7 @@ class Staff < ActiveRecord::Base
 
   def contact(options = {})
     return false if options[:subject].blank? || options[:body].blank? || email.blank?
-    Notifier.deliver_staff_email self, options[:subject], options[:body]
+    Notifier.staff_email(self, options[:subject], options[:body]).deliver
     true
   end
 
