@@ -7,10 +7,8 @@ Kakama::Application.configure do
   # and recreated between test runs. Don't rely on the data there!
   config.cache_classes = true
 
-  if Gem::Version.new(Rails.version) >= Gem::Version.new('3.1.0')
-    warn "WARNING: Enable config.action_view.cache_template_loading for use in Rail >= 3.1"
-  end
-  #config.action_view.cache_template_loading            = true
+  # Configure static asset server for tests with Cache-Control for performance
+  config.serve_static_assets = true
   config.static_cache_control = "public, max-age=3600"
 
   # Log error messages when you accidentally call methods on nil
