@@ -29,10 +29,7 @@
                  :input_html => { :size => 7, :multiple => true } %>
 
   <li id="staff_start_date_input" class="string required">
-    <%= form.label :start_date, "Start date " %><%= required_astrix %>
-    <script type='text/javascript'>
-      document.write("<%= escape_javascript form.calendar_date_select(:start_date, :time => false) %> <small>(click to select date)</small>");
-    </script>
+    <%= form.input :start_date, :as => :string, :input_html => { :id => "datepicker" } %>
     <noscript><%= form.date_select :start_date, :order => [:day, :month, :year], :include_blank => true %></noscript>
   </li>
 
