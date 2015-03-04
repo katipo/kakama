@@ -46,6 +46,7 @@ group :assets do
   gem 'uglifier'
   # gem 'prototype-rails', '~> 3.2.1'
   gem 'jquery-rails'
+  gem 'jquery-ui-rails'
 end
 
 group :development do
