@@ -13,7 +13,7 @@ gem 'formtastic', '~> 2.3.1'
 gem 'will_paginate', '~> 3.0'
 gem 'faker', '0.3.1'
 gem 'ruby-progressbar', '0.0.10'
-gem 'factory_girl', '1.3.3'
+gem 'factory_girl', '~> 4.5.0'
 gem 'whenever', '~> 0.9.2'
 gem 'ruby-prof', '~> 0.15.1'
 gem 'simplecov', '~> 0.9.0'
@@ -54,7 +54,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'spring-commands-cucumber'
   gem 'annotate'
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails', '~> 4.5.0'
 end
 
 #Test group

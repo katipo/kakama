@@ -5,14 +5,16 @@ require 'factory_girl'
 #
 
 # full name is passed in when the factory is made
-Factory.define :staff do |s|
-  s.full_name { "Joe#{(rand*10000).to_i} Someone" }
-  s.username { |u| u.full_name.split.first.downcase }
-  s.staff_type 'staff'
-  s.password 'test'
-  s.password_confirmation 'test'
-  s.start_date Time.new.strftime('%Y-%m-%d')
-  s.email { |u| u.full_name.split.first.downcase + "@example.com" }
+FactoryGirl.define do
+  factory :staff do 
+    full_name { "Joe#{(rand*10000).to_i} Someone" }
+    username { |u| u.full_name.split.first.downcase }
+    staff_type 'staff'
+    password 'test'
+    password_confirmation 'test'
+    start_date Time.new.strftime('%Y-%m-%d')
+    email { |u| u.full_name.split.first.downcase + "@example.com" }
+  end
 end
 
 def find_or_create_staff(full_name, options = {})
@@ -31,8 +33,10 @@ end
 # Venue
 #
 
-Factory.define :venue do |v|
-  v.name 'Some Venue'
+FactoryGirl.define do
+  factory :venue do |v|
+    v.name 'Some Venue'
+  end
 end
 
 def find_or_create_venue(name, options = {})
@@ -50,13 +54,14 @@ end
 #
 # Event
 #
-
-Factory.define :event do |e|
-  e.name 'Some Event'
-  e.start_datetime 1.day.from_now
-  e.end_datetime 4.days.from_now
-  e.association :venue, :factory => :venue
-  e.association :organiser, :factory => :staff
+FactoryGirl.define do
+  factory :event do |e|
+    e.name 'Some Event'
+    e.start_datetime 1.day.from_now
+    e.end_datetime 4.days.from_now
+    e.association :venue, :factory => :venue
+    e.association :organiser, :factory => :staff
+  end
 end
 
 def find_or_create_event(name, options = {})
@@ -74,9 +79,10 @@ end
 #
 # Role
 #
-
-Factory.define :role do |r|
-  r.name 'Some Role'
+FactoryGirl.define do
+  factory :role do |r|
+    r.name 'Some Role'
+  end
 end
 
 def find_or_create_role(name, options = {})

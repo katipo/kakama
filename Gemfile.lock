@@ -86,9 +86,10 @@ GEM
     email_spec (0.6.2)
     erubis (2.7.0)
     execjs (2.2.2)
-    factory_girl (1.3.3)
-    factory_girl_rails (1.0.1)
-      factory_girl (~> 1.3)
+    factory_girl (4.5.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.5.0)
+      factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
     faker (0.3.1)
     fastercsv (1.5.5)
@@ -253,8 +254,8 @@ DEPENDENCIES
   delayed_job (= 1.8.5)
   diff-lcs
   email_spec (= 0.6.2)
-  factory_girl (= 1.3.3)
-  factory_girl_rails
+  factory_girl (~> 4.5.0)
+  factory_girl_rails (~> 4.5.0)
   faker (= 0.3.1)
   fastercsv
   formtastic (~> 2.3.1)
