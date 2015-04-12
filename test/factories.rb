@@ -30,9 +30,19 @@ def find_or_create_staff(full_name, options = {})
 end
 
 #
+# Availability
+#
+FactoryGirl.define do
+  factory :availability do 
+    staff_id 1
+    start_date 10.days.ago
+    end_date 2.years.from_now
+  end
+end
+
+#
 # Venue
 #
-
 FactoryGirl.define do
   factory :venue do |v|
     v.name 'Some Venue'
