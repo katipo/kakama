@@ -49,11 +49,12 @@ end
 
 group :development do
   gem 'pry'
-  gem "spring"
-  gem "better_errors", '~>1.1.0'
-  gem "binding_of_caller"
-  gem "spring-commands-cucumber"
-  gem "annotate"
+  gem 'spring'
+  gem 'better_errors', '~>1.1.0'
+  gem 'binding_of_caller'
+  gem 'spring-commands-cucumber'
+  gem 'annotate'
+  gem 'factory_girl_rails'
 end
 
 #Test group
