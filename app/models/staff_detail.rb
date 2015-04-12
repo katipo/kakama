@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: staff_details
+#
+#  id             :integer          not null, primary key
+#  staff_id       :integer          not null
+#  detail_type_id :integer          not null
+#  value          :text             not null
+#  created_at     :datetime
+#  updated_at     :datetime
+#
+
 class StaffDetail < ActiveRecord::Base
   belongs_to :detail_type
   belongs_to :staff

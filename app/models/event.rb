@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: events
+#
+#  id             :integer          not null, primary key
+#  venue_id       :integer          not null
+#  recurring      :boolean
+#  schedule_id    :integer          not null
+#  name           :string(255)      not null
+#  description    :text
+#  start_datetime :datetime         not null
+#  end_datetime   :datetime         not null
+#  organiser_id   :integer          not null
+#  state          :string(255)      not null
+#  roles          :text
+#  deleted_at     :datetime
+#  created_at     :datetime
+#  updated_at     :datetime
+#  approver_id    :integer
+#
+
 class Event < ActiveRecord::Base
   has_many :rosterings, :dependent => :destroy
   has_many :staff, :through => :rosterings

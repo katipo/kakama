@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: roles
+#
+#  id          :integer          not null, primary key
+#  name        :string(255)      not null
+#  description :string(255)
+#  deleted_at  :datetime
+#  created_at  :datetime
+#  updated_at  :datetime
+#
+
 class Role < ActiveRecord::Base
   has_many :staff_roles
   has_many :staff, :through => :staff_roles

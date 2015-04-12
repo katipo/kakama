@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: availabilities
+#
+#  id           :integer          not null, primary key
+#  staff_id     :integer          not null
+#  start_date   :date             not null
+#  end_date     :date             not null
+#  hours        :text             not null
+#  admin_locked :boolean
+#  created_at   :datetime
+#  updated_at   :datetime
+#
+
 require 'test_helper'
 
 class AvailabilityTest < ActiveSupport::TestCase

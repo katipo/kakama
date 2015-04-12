@@ -53,6 +53,7 @@ group :development do
   gem "better_errors", '~>1.1.0'
   gem "binding_of_caller"
   gem "spring-commands-cucumber"
+  gem "annotate"
 end
 
 #Test group
