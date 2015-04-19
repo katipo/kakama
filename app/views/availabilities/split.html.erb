@@ -5,9 +5,11 @@
   <%= form.inputs :name => "Where would you like to split this availability?" do %>
     <li class="string required">
       <%= form.label :split_date, "Split date:" %>
-      <script type='text/javascript'>
-        document.write("<%= escape_javascript form.calendar_date_select(:split_date, :time => false, :valid_date_check => "date > (new Date(#{convert_date_to_js(@availability.start_date)})) && date <= (new Date(#{convert_date_to_js(@availability.end_date)}))") %> <small>(click to select date)</small>");
-      </script>
+      <%= form.input :split_date, :as => :string, 
+        :input_html => { 
+            id: "datepicker", 
+            data-min: convert_date_to_js(@availability.start_date),
+            data-max: convert_date_to_js(@availability.end_date)} %>
       <noscript><%= form.date_select :split_date, :order => [:day, :month, :year], :include_blank => true %></noscript>
     </li>
   <% end %>

@@ -15,7 +15,10 @@
 //= require_tree .
 
 $(document).ready(function() {
-        $('#datepicker').datepicker({
-                                      dateFormat: "yy-mm-dd"
-                                    });
-    });
+    dpElement = $('#datepicker')
+        dpElement.datepicker({
+          dateFormat: "yy-mm-dd"
+          minDate: dpElement.data("min"),
+          maxDate: dpElement.data("max")
+        });
+});
