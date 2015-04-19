@@ -179,7 +179,7 @@ class Availability < ActiveRecord::Base
     self.hours = Hash.new unless hours.class.name =~ /Hash/
 
     all = hours.delete(:all) || Hash.new
-    Availability::Days.each do |key, value|
+    Days.each do |key, value|
       hours[key] ||= [ { :start => nil, :finish => nil, :comment => nil } ]
       raise "ERROR: Expected an Array but got a #{hours[key].class.name}" unless hours[key].is_a?(Array)
       hours[key].each do |data|
