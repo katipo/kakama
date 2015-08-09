@@ -17,7 +17,7 @@
 $(document).ready(function() {
     dpElement = $('#datepicker')
         dpElement.datepicker({
-          dateFormat: "yy-mm-dd"
+          dateFormat: "yy-mm-dd",
           minDate: dpElement.data("min"),
           maxDate: dpElement.data("max")
         });
