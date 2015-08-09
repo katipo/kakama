@@ -13,6 +13,8 @@
 //= require jquery
 //= require jquery-ui/datepicker
 //= require_tree .
+//= require moment
+//= require fullcalendar
 
 $(document).ready(function() {
     dpElement = $('#datepicker')

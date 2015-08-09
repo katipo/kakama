@@ -44,6 +44,8 @@ group :assets do
   # gem 'prototype-rails', '~> 3.2.1'
   gem 'jquery-rails'
   gem 'jquery-ui-rails'
+  gem 'fullcalendar-rails'
+  gem 'momentjs-rails'
 end
 
 group :development do
