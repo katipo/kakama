@@ -48,7 +48,7 @@ group :assets do
 end
 
 group :development do
-  gem 'pry'
+  gem 'jazz_hands'
   gem 'spring'
   gem 'better_errors', '~>1.1.0'
   gem 'binding_of_caller'
@@ -68,7 +68,7 @@ group :test do
   gem 'rspec', '~> 3.1.0'
   gem 'rspec-rails', '~> 3.1.0'
   gem 'capybara', '~> 2.4.4'
-  
+
 end
 
 
