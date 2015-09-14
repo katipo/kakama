@@ -3,10 +3,7 @@
 
 <%= weekly_links(@time) %>
 
-<% weekly_builder(@times, :time => @time, :with_onclick => false) do |event|  %>
-  <%= event.starts_at.strftime('%I:%M%p') %> - <%= event.ends_at.strftime('%I:%M%p') %><br />
-  <%= event.comment unless event.comment.blank? %>
-<% end -%>
+<div id='calendar' data-availabilities='<%= raw @times.to_json %>'></div>
 
 <div id="availability_controls">
   <% if @staff.availability.size > 0 %>

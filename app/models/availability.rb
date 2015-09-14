@@ -82,10 +82,10 @@ class Availability < ActiveRecord::Base
   end
 
   # Gets an array of Times objects (see the class at the bottom of this file)
-  # This is used for the weekly builder. Has only starts_at, ends_at, and comment
+  # This is used for full calendar. Has only start, end, and title
   # First argument is when to start counting time objects. By default, it starts
-  # from the beginning of the availability, but the weekly_builder calender passes
-  # the current week start date into it which restricts lookup to the viewed week
+  # from the beginning of the availability, but you can restrict lookup to the
+  # viewed week
   # The second argument overides the first. If true, all time object between the
   # start and end of the availability are collected (can be quite slow for long
   # periods of availability)
@@ -104,9 +104,9 @@ class Availability < ActiveRecord::Base
       values.each do |data|
         next if data[:start].blank? || data[:finish].blank?
         time_objects << Times.new(
-          :starts_at => Chronic.parse("#{date} #{data[:start].to_two_digit}:00"),
-          :ends_at => Chronic.parse("#{date} #{data[:finish].to_two_digit}:00"),
-          :comment => data[:comment]
+          :start => Chronic.parse("#{date} #{data[:start].to_two_digit}:00"),
+          :end => Chronic.parse("#{date} #{data[:finish].to_two_digit}:00"),
+          :title => data[:comment]
         )
       end
     end
@@ -247,10 +247,10 @@ class Availability < ActiveRecord::Base
 end
 
 class Times
-  attr_accessor :starts_at, :ends_at, :comment
+  attr_accessor :start, :end, :title
   def initialize(options)
-    self.starts_at = options[:starts_at]
-    self.ends_at = options[:ends_at]
-    self.comment = options[:comment]
+    self.start = options[:start]
+    self.end = options[:end]
+    self.title = options[:title]
   end
 end

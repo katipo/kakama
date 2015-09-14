@@ -23,4 +23,14 @@ $(document).ready(function() {
           minDate: dpElement.data("min"),
           maxDate: dpElement.data("max")
         });
+
+    cal = $('#calendar')
+
+    cal.fullCalendar({
+        defaultView: 'agendaWeek',
+        minTime: '06:00:00',
+        maxTime: '19:00:00',
+        events: eval(cal.data('availabilities'))
+    })
+
 });

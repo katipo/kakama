@@ -54,7 +54,7 @@ class AvailabilityTest < ActiveSupport::TestCase
     assert_equal 0, @sally.availability.wrapping(2.days.ago, 8.days.from_now).size
   end
 
-  test "times is returning valid Time object as weekly_builder plugin expects" do
+  test "times is returning valid Time object as full calendar library expects" do
     first_monday = Chronic.parse('First Monday this year')
     availability = @sally.availability.create!(:start_date => first_monday, :end_date => first_monday + 20.days)
 
