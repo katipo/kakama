@@ -1,7 +1,6 @@
 <% time_period = !Chronic.parse(params[:start_date]).blank? ? "the week of #{Chronic.parse(params[:start_date]).to_date.to_s(:nz)}" : 'this week' %>
 <% title "Availability of #{@staff.full_name} for #{time_period}" %>
 
-<%= weekly_links(@time) %>
 
 <div id='calendar' data-availabilities='<%= raw @times.to_json %>'></div>
 
