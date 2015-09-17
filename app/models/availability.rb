@@ -81,6 +81,32 @@ class Availability < ActiveRecord::Base
     self.with_hours_of(event).size > 0
   end
 
+  def to_calendar_events
+    calendar_events = []
+    time_format = '%Y/%m/%d'
+
+    hours.each do |day_availabilties|
+      day_of_week = day_availabilties[0]
+      availability_slots = day_availabilties[1]
+
+      availability_slots.each do |availability_slot|
+        next if availability_slot[:start].blank? || availability_slot[:finish].blank?
+
+        calendar_events << {
+          start: "#{availability_slot[:start].to_two_digit}:00",
+          end: "#{availability_slot[:finish].to_two_digit}:00",
+          title: availability_slot[:comment],
+          dow: [Date.parse(day_of_week.capitalize.to_s).wday],
+          ranges: [{start: start_date.strftime(time_format),
+                    end: end_date.strftime(time_format)}]
+
+        }
+      end
+    end
+
+    calendar_events
+  end
+
   # Gets an array of Times objects (see the class at the bottom of this file)
   # This is used for full calendar. Has only start, end, and title
   # First argument is when to start counting time objects. By default, it starts

@@ -12,8 +12,8 @@ class AvailabilitiesController < ApplicationController
   helper_method :changing_own_availability?
 
   def index
-    @availabilities = @staff.availabilities_overlapping(@time, @time + 6.days)
-    @times = @availabilities.collect { |a| a.times(@time) }.flatten
+    @availabilities = @staff.availabilities_overlapping(@time - 6.months, @time + 6.months)
+    @times = @availabilities.collect { |a| a.to_calendar_events }.flatten
   end
 
   def show
