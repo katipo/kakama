@@ -29,7 +29,7 @@ module EmailHelpers
     # Replace with your a way to find your current email. e.g @current_user.email
     # last_email_address will return the last email address used by email spec to find an email.
     # Note that last_email_address will be reset after each Scenario.
-    last_email_address || (@current_staff && @current_staff.email) || "example@example.com"
+    last_email_address || "example@example.com"
   end
 end
 
@@ -57,6 +57,10 @@ Then /^(?:I|they|"([^"]*?)") should have (an|no|\d+) emails?$/ do |address, amou
 end
 
 Then /^(?:I|they|"([^"]*?)") should receive (an|no|\d+) emails? with subject "([^"]*?)"$/ do |address, amount, subject|
+  unread_emails_for(address).select { |m| m.subject =~ Regexp.new(Regexp.escape(subject)) }.size.should == parse_email_count(amount)
+end
+
+Then /^(?:I|they|"([^"]*?)") should receive (an|no|\d+) emails? with subject \/([^"]*?)\/$/ do |address, amount, subject|
   unread_emails_for(address).select { |m| m.subject =~ Regexp.new(subject) }.size.should == parse_email_count(amount)
 end
 
@@ -77,8 +81,16 @@ When /^(?:I|they|"([^"]*?)") opens? the email with subject "([^"]*?)"$/ do |addr
   open_email(address, :with_subject => subject)
 end
 
+When /^(?:I|they|"([^"]*?)") opens? the email with subject \/([^"]*?)\/$/ do |address, subject|
+  open_email(address, :with_subject => Regexp.new(subject))
+end
+
 When /^(?:I|they|"([^"]*?)") opens? the email with text "([^"]*?)"$/ do |address, text|
   open_email(address, :with_text => text)
+end
+
+When /^(?:I|they|"([^"]*?)") opens? the email with text \/([^"]*?)\/$/ do |address, text|
+  open_email(address, :with_text => Regexp.new(text))
 end
 
 #
@@ -94,11 +106,11 @@ Then /^(?:I|they) should see \/([^"]*?)\/ in the email subject$/ do |text|
 end
 
 Then /^(?:I|they) should see "([^"]*?)" in the email body$/ do |text|
-  current_email.body.should include(text)
+  current_email.default_part_body.to_s.should include(text)
 end
 
 Then /^(?:I|they) should see \/([^"]*?)\/ in the email body$/ do |text|
-  current_email.body.should =~ Regexp.new(text)
+  current_email.default_part_body.to_s.should =~ Regexp.new(text)
 end
 
 Then /^(?:I|they) should see the email delivered from "([^"]*?)"$/ do |text|
@@ -113,6 +125,18 @@ Then /^(?:I|they) should see \/([^\"]*)\/ in the email "([^"]*?)" header$/ do |t
   current_email.should have_header(name, Regexp.new(text))
 end
 
+Then /^I should see it is a multi\-part email$/ do
+    current_email.should be_multipart
+end
+
+Then /^(?:I|they) should see "([^"]*?)" in the email html part body$/ do |text|
+    current_email.html_part.body.to_s.should include(text)
+end
+
+Then /^(?:I|they) should see "([^"]*?)" in the email text part body$/ do |text|
+    current_email.text_part.body.to_s.should include(text)
+end
+
 #
 # Inspect the Email Attachments
 #
@@ -122,24 +146,24 @@ Then /^(?:I|they) should see (an|no|\d+) attachments? with the email$/ do |amoun
 end
 
 Then /^there should be (an|no|\d+) attachments? named "([^"]*?)"$/ do |amount, filename|
-  current_email_attachments.select { |a| a.original_filename == filename }.size.should == parse_email_count(amount)
+  current_email_attachments.select { |a| a.filename == filename }.size.should == parse_email_count(amount)
 end
 
 Then /^attachment (\d+) should be named "([^"]*?)"$/ do |index, filename|
-  current_email_attachments[(index.to_i - 1)].original_filename.should == filename
+  current_email_attachments[(index.to_i - 1)].filename.should == filename
 end
 
 Then /^there should be (an|no|\d+) attachments? of type "([^"]*?)"$/ do |amount, content_type|
-  current_email_attachments.select { |a| a.content_type == content_type }.size.should == parse_email_count(amount)
+  current_email_attachments.select { |a| a.content_type.include?(content_type) }.size.should == parse_email_count(amount)
 end
 
 Then /^attachment (\d+) should be of type "([^"]*?)"$/ do |index, content_type|
-  current_email_attachments[(index.to_i - 1)].content_type.should == content_type
+  current_email_attachments[(index.to_i - 1)].content_type.should include(content_type)
 end
 
 Then /^all attachments should not be blank$/ do
   current_email_attachments.each do |attachment|
-    attachment.size.should_not == 0
+    attachment.read.size.should_not == 0
   end
 end
 
@@ -151,8 +175,8 @@ end
 # Interact with Email Contents
 #
 
-When /^(?:I|they) follow "([^"]*?)" in the email$/ do |link|
-  visit_in_email(link)
+When /^(?:I|they|"([^"]*?)") follows? "([^"]*?)" in the email$/ do |address, link|
+  visit_in_email(link, address)
 end
 
 When /^(?:I|they) click the first link in the email$/ do

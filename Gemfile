@@ -18,7 +18,6 @@ gem 'ruby-prof', '~> 0.15.1'
 gem 'simplecov', '~> 0.9.0'
 gem 'chronic', '~> 0.6.3'
 gem 'daemons', '1.0.10'
-gem 'email_spec', '0.6.2'
 gem 'timecop', '0.3.4'
 gem 'nokogiri'
 gem 'ruby-terminfo', '0.1.1'
@@ -68,6 +67,7 @@ group :test do
   gem 'builder'
   gem 'rspec', '~> 3.1.0'
   gem 'rspec-rails', '~> 3.1.0'
+  gem 'email_spec'
   gem 'capybara', '~> 2.4.4'
 
 end
