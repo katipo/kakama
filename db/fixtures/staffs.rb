@@ -4,6 +4,6 @@ Staff.seed(:username) do |u|
   u.password = 'test'
   u.password_confirmation = 'test'
   u.full_name = 'Administrator'
-  u.email = 'admin@changeme.com'
+  u.email = 'admin@kakama.org'
   u.start_date = Time.now
 end
