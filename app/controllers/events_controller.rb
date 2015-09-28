@@ -122,7 +122,7 @@ class EventsController < ApplicationController
         pdf_generators << generator.save
       end
     end
-    Notifier.collection_of_pdfs(pdf_generators).deliver if pdf_generators.size > 0
+    Notifier.deliver_collection_of_pdfs(pdf_generators) if pdf_generators.size > 0
 
     flash[:notice] = "All selected events have now been approved and all involved notified of the event."
     if events_past_cut_off.size > 0
