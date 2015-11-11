@@ -41,6 +41,7 @@ class Rostering < ActiveRecord::Base
   scope :with_role, lambda { |role| { :conditions => { :role_id => role.id } } }
   scope :with_state, lambda { |states| { :conditions => { :state => states } } }
   scope :active_state, :conditions => { :state => [Rostering::States[:unconfirmed], Rostering::States[:confirmed]] }
+  scope :active_state_or_no_show, :conditions => { :state => [Rostering::States[:unconfirmed], Rostering::States[:confirmed], Rostering::States[:no_show]] }
   scope :inactive_state, :conditions => { :state => [Rostering::States[:rejected], Rostering::States[:declined], Rostering::States[:cancelled]] }
   scope :non_system_flagged, :conditions => { :system_flagged => false }
   scope :system_flagged, :conditions => { :system_flagged => true }
