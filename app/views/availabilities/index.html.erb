@@ -10,7 +10,7 @@
     <h3>Availabilities</h3>
     <ul>
     <% @staff.availability.sort_by(&:start_date).each do |availability| %>
-      <% content_tag('li') do %>
+      <%= content_tag('li') do %>
         <%= link_to("#{availability.start_date.to_s(:nz)} - #{availability.end_date.to_s(:nz)}", :start_date => availability.start_date) %>
         (
           <%= link_to 'edit', edit_staff_availability_path(@staff, availability) %> |
