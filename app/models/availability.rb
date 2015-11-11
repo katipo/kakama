@@ -17,6 +17,7 @@ class Availability < ActiveRecord::Base
 
   validates_presence_of :staff_id, :start_date, :end_date
 
+  validate :validate
   before_validation :convert_all_values
 
   after_save :notify_correct_people_of_changes

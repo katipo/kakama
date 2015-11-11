@@ -28,6 +28,7 @@ class Event < ActiveRecord::Base
   belongs_to :organiser, :class_name => "Staff", :foreign_key => "organiser_id"
   belongs_to :approver, :class_name => "Staff", :foreign_key => "approver_id"
 
+  validate :validate
   validates_presence_of :venue_id, :name, :start_datetime, :end_datetime, :organiser_id
   # TODO: Implement this if budget permits
   # validates_presence_of :recurring, :schedule_id
