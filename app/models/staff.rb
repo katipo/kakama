@@ -196,9 +196,9 @@ class Staff < ActiveRecord::Base
 
   def ensure_staff_deletable
     if rosterings(true).active_state.size > 0
-      errors.add_to_base("Unable to delete the staff member #{full_name}.
+      errors[:base] << "Unable to delete the staff member #{full_name}.
         They are currently unconfirmed or confirmed at one or more events.
-        They need to be removed from these events before they can be deleted.")
+        They need to be removed from these events before they can be deleted."
       false
     else
       true

@@ -164,16 +164,16 @@ class Availability < ActiveRecord::Base
     end
 
     if split_date.blank?
-      errors.add_to_base("You left the split date empty. You must supply one.")
+      errors[:base] << "You left the split date empty. You must supply one."
       false
     elsif split_date <= start_date
-      errors.add_to_base("The split date must be after this availabilities start date.")
+      errors[:base] << "The split date must be after this availabilities start date."
       false
     elsif split_date > end_date
-      errors.add_to_base("The split date must be on or before this availabilities end date.")
+      errors[:base] << "The split date must be on or before this availabilities end date."
       false
     elsif staff.events.occuring_at(split_date, split_date).size > 0
-      errors.add_to_base("You cannot split your availability here because there are events overlapping it.")
+      errors[:base] << "You cannot split your availability here because there are events overlapping it."
       false
     else
       new_availability = self.clone
@@ -232,7 +232,7 @@ class Availability < ActiveRecord::Base
 
   def ensure_availability_changeable
     if !ignore_availability_conflicts && events_rostered_at_this_time?
-      errors.add_to_base("You can't edit this availability because you are rostered to an event at this time.")
+      errors[:base] << "You can't edit this availability because you are rostered to an event at this time."
       false
     else
       true
@@ -253,8 +253,9 @@ class Availability < ActiveRecord::Base
         passes_validation = false
       end
     end
+
     if !ignore_availability_conflicts && conflicts_with_another_availability?
-      errors.add_to_base("The availability you're trying to add conflicts with an already existing availability.")
+      errors[:base] << "The availability you're trying to add conflicts with an already existing availability."
     end
     if hours
       Availability::Days.each do |key, label|

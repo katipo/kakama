@@ -137,12 +137,12 @@ class Event < ActiveRecord::Base
   # Create a method similar to destroy. Returns true if cancel worked, else false
   def cancel
     if cancelled?
-      errors.add_to_base("Event has already been cancelled. You cannot cancel it twice.")
+      errors[:base] << "Event has already been cancelled. You cannot cancel it twice."
     elsif in_progress?
-      errors.add_to_base("Event cannot be cancelled because it is in progress.")
+      errors[:base] << "Event cannot be cancelled because it is in progress."
       false
     elsif finished?
-      errors.add_to_base("Event cannot be cancelled because it has already happened.")
+      errors[:base] << "Event cannot be cancelled because it has already happened."
       false
     else
       # We need to do this before cancelled! (when approved? is actually the right value)
@@ -328,10 +328,10 @@ class Event < ActiveRecord::Base
   def check_approver_set_if_approving_roster
     if approved?
       if approver_id.blank?
-        errors.add_to_base("Cannot approve a roster without an approver set.")
+        errors[:base] << "Cannot approve a roster without an approver set."
         false
       elsif !Staff.find_by_id(approver_id)
-        errors.add_to_base("Approver does not exist.")
+        errors[:base] << "Approver does not exist."
         false
       else
         true
@@ -353,8 +353,8 @@ class Event < ActiveRecord::Base
     return if ignore_event_conflicts
 
     unavailable_staff_rosterings.each do |rostering|
-      errors.add_to_base("#{rostering.staff.full_name} (#{rostering.role.name}) is not
-                          available at the new time of this event.")
+      errors[:base] << "#{rostering.staff.full_name} (#{rostering.role.name}) is not
+                          available at the new time of this event."
     end
 
     return unavailable_staff_rosterings.blank?
@@ -439,13 +439,13 @@ class Event < ActiveRecord::Base
   def ensure_event_deletable
     return true if cancelled?
     if not_started?
-      errors.add_to_base("You cannot delete this event because it has not started. Try canceling it instead.")
+      errors[:base] << "You cannot delete this event because it has not started. Try canceling it instead."
       false
     elsif in_progress?
-      errors.add_to_base("You cannot delete this event because it is in progress. Please wait until after.")
+      errors[:base] << "You cannot delete this event because it is in progress. Please wait until after."
       false
     elsif finished? && !finished_a_month_ago?
-      errors.add_to_base("You cannot delete this event because one month has not passed. Try again later.")
+      errors[:base] << "You cannot delete this event because one month has not passed. Try again later."
       false
     else
       true
@@ -491,7 +491,7 @@ class Event < ActiveRecord::Base
       end
     end
     if !ignore_event_conflicts && conflicts_with_another_event?
-      errors.add_to_base("The event you're adding conflicts with another one at this venue and time. Please change the venue or time below, or save again to ignore the conflicts (not advised).")
+      errors[:base] << "The event you're adding conflicts with another one at this venue and time. Please change the venue or time below, or save again to ignore the conflicts (not advised)."
       return false
     end
     true
