@@ -4,12 +4,12 @@
   <%= form.semantic_errors %>
   <%= form.inputs :name => "Where would you like to split this availability?" do %>
     <li class="string required">
-      <%= form.label :split_date, "Split date:" %>
-      <%= form.input :split_date, :as => :string, 
-        :input_html => { 
-            class: "datepicker", 
-            data-min: convert_date_to_js(@availability.start_date),
-            data-max: convert_date_to_js(@availability.end_date)} %>
+      <%= form.input :split_date, 
+                      as: :string, 
+                      input_html: { class: "datepicker", 
+                        :'data-min' => convert_date_to_js(@availability.start_date),
+                        :'data-max' => convert_date_to_js(@availability.end_date)
+                      } %>
       <noscript><%= form.date_select :split_date, :order => [:day, :month, :year], :include_blank => true %></noscript>
     </li>
   <% end %>
