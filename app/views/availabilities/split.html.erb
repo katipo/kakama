@@ -7,7 +7,7 @@
       <%= form.label :split_date, "Split date:" %>
       <%= form.input :split_date, :as => :string, 
         :input_html => { 
-            id: "datepicker", 
+            class: "datepicker", 
             data-min: convert_date_to_js(@availability.start_date),
             data-max: convert_date_to_js(@availability.end_date)} %>
       <noscript><%= form.date_select :split_date, :order => [:day, :month, :year], :include_blank => true %></noscript>

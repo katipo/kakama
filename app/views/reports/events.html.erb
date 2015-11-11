@@ -10,7 +10,7 @@
     <p>
       <%= label_tag :start_date, "Start date: " %>
     <%= form.input :start_date, :as => :string, 
-      :input_html => { :id => "datepicker" } %>
+      :input_html => { :class => "datepicker" } %>
       <noscript><%= date_select :start_date, nil, :order => [:day, :month, :year], :default => @date %></noscript>
     </p>
     <p><%= submit_tag 'View Report' %></p>

@@ -17,12 +17,13 @@
 //= require fullcalendar
 
 $(document).ready(function() {
-    dpElement = $('#datepicker')
-        dpElement.datepicker({
-          dateFormat: "yy-mm-dd",
-          minDate: dpElement.data("min"),
-          maxDate: dpElement.data("max")
-        });
+    dpElement = $('.datepicker')
+
+    dpElement.datepicker({
+      dateFormat: "yy-mm-dd",
+      minDate: dpElement.data("min"),
+      maxDate: dpElement.data("max")
+    });
 
     cal = $('#calendar')
 

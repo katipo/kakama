@@ -30,7 +30,7 @@
 
   <li id="staff_start_date_input" class="string required">
     <%= form.input :start_date, :as => :string, 
-      :input_html => { :id => "datepicker" } %>
+      :input_html => { :class => "datepicker" } %>
     <noscript><%= form.date_select :start_date, :order => [:day, :month, :year], :include_blank => true %></noscript>
   </li>
 
