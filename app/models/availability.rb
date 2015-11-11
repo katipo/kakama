@@ -177,7 +177,7 @@ class Availability < ActiveRecord::Base
       errors[:base] << "You cannot split your availability here because there are events overlapping it."
       false
     else
-      new_availability = self.clone
+      new_availability = self.dup
       new_availability.start_date = split_date.to_date.to_s
       # Ignore conflicts because we're saving on top of the other one before we edit it
       new_availability.ignore_availability_conflicts = true
