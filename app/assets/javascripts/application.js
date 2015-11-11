@@ -21,8 +21,8 @@ $(document).ready(function() {
 
     dpElement.datepicker({
       dateFormat: "yy-mm-dd",
-      minDate: dpElement.data("min"),
-      maxDate: dpElement.data("max")
+      minDate: new Date(dpElement.data("min")),
+      maxDate: new Date(dpElement.data("max"))
     });
 
     cal = $('#calendar')
