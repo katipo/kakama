@@ -17,10 +17,7 @@ doc
 lib/tasks/import.rake
 log/*.log
 mkmf.log
-public/javascripts/cache
-public/stylesheets/application.css
-public/stylesheets/print.css
-public/stylesheets/cache
+public/assets/**
 tmp/*
 tmp/**/*
 webrat*.html
