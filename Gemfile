@@ -2,6 +2,8 @@
 # This preamble is the current preamble for Rails 3 apps; edit as needed.
 source 'http://rubygems.org'
 
+ruby '1.9.3'
+
 gem 'rails', '~> 3.2.0'
 gem 'rake', '0.9.1'
 gem 'active_scaffold', '~> 3.4.7'
