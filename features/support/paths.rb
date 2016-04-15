@@ -88,7 +88,7 @@ module NavigationHelpers
       edit_event_path(@event)
 
     when /^delete the event$/
-      destroy_event_path(@event)
+      "#{event_path(@event)}?destroy_action=true"
 
     when /^cancel the event$/
       cancel_event_path(@event)
@@ -109,7 +109,7 @@ module NavigationHelpers
       split_staff_availability_path(:current, :current)
 
     when /^remove my current availability$/
-      destroy_staff_availability_path(:current, :current)
+      "#{staff_availability_path(:current, :current)}?destroy_action=true"
 
     when /^the roles list$/
       roles_path
