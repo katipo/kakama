@@ -32,6 +32,8 @@ class EventsController < ApplicationController
       flash[:notice] = 'Event was successfully created.'
       redirect_to(@event)
     else
+      flash[:error] = @event.errors.full_messages.join(', ')
+
       render :action => "new"
     end
   end
