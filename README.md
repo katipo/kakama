@@ -11,10 +11,13 @@
     * cp config/database.yml.example config/database.yml
     * Adjust config/database.yml as needed
 * Prepare
-    * rake gems:install
+    * bundle install
     * rake db:setup
     * rake db:seed_fu
     * whenever --update-crontab
     * ruby script/delayed_job start
 * Run
-    * ruby script/server
+    * rails server
+
+### Known issues:
+    * Date selectors on event page don't show
