@@ -55,7 +55,7 @@ class Staff < ActiveRecord::Base
 
   scope :administrators, :conditions => { :staff_type => 'admin' }
   scope :members, :conditions => { :staff_type => 'staff' }
-  
+
 
   def self.available_for(event)
     all.select { |staff| staff.available_for?(event) }
@@ -95,7 +95,7 @@ class Staff < ActiveRecord::Base
   def deliver_password_reset_instructions!
     return false if email.blank?
     reset_perishable_token!
-    Notifier.password_reset_instructions.deliver self
+    Notifier.password_reset_instructions(self).deliver
     true
   end
 
@@ -178,18 +178,18 @@ class Staff < ActiveRecord::Base
       details
     end
   end
-  
+
   # This method has been created to replace the searchlogic functionality that is no longer available in Rails 3.2+
   def self.username_or_full_name_like(search_text, options={})
     search_text_parameter = "%#{search_text}%"
-    search_query = 'username LIKE ? or full_name LIKE ?' 
-    
+    search_query = 'username LIKE ? or full_name LIKE ?'
+
     if options[:order_by]
       Staff.where(search_query, search_text_parameter, search_text_parameter).order(options[:order_by])
     else
       Staff.where(search_query, search_text_parameter, search_text_parameter)
     end
-      
+
   end
 
   protected
