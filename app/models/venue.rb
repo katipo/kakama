@@ -32,7 +32,7 @@ class Venue < ActiveRecord::Base
 
   def ensure_no_unfinished_events
     if has_unfinished_events?
-      errors[:base] << "You cannot delete this venue because it contains unfinished events."
+      errors.add(:base, "You cannot delete this venue because it contains unfinished events.")
       false
     else
       true

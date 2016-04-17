@@ -12,8 +12,11 @@ Given /^that venue has (past|future) events$/ do |type|
   find_or_create_event(options[:name], options)
 end
 
-When /^I try to delete the venue$/ do
-    page.driver.submit :delete, venue_path(@venue), {}
+When /^I try to delete the venue, I should be refused to access the record$/ do
+  visit delete_venue_path(@venue)
+  expect(page).to have_content('Are you sure you want to delete ?')
+  click_button('Delete')
+  expect(page).to have_content('You cannot delete this venue because it contains unfinished events.')
 end
 
 Then /^the venues select field should be set to "([^\"]*)"$/ do |venue_name|

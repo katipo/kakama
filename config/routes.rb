@@ -6,7 +6,13 @@ Kakama::Application.routes.draw do
   resources :detail_types do as_routes end
 
   # TODO: rake routes shows venue#destroy_existing, but the controller doesn't implement it
-  resources :venues do as_routes end
+  resources :venues do
+    as_routes
+
+    member do
+      get '/delete' => 'venues#delete', :as => 'delete'
+    end
+  end
   resources :roles do as_routes end
   resources :schedules do as_routes end
   resources :email_logs do as_routes end
