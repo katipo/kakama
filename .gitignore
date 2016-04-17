@@ -20,4 +20,6 @@ mkmf.log
 public/assets/**
 tmp/*
 tmp/**/*
-webrat*.html
+public/assets/
+public/stylesheets/
+.tags*
