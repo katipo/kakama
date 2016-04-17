@@ -102,7 +102,7 @@ Feature: Availability
     Given no emails have been sent
     When I go to edit my current availability
     And I mark 2009-08-31 till 2009-09-02 as available
-    And I fill in "Notification Comment" with "The next few days availability"
+    And I fill in "availability_notification_comment" with "The next few days availability"
     And I press "Create Availability"
     Then all administrators should receive an email
     When they open the email
@@ -115,7 +115,7 @@ Feature: Availability
     And I am logged in as "admin"
     When I go to edit the current availability of "Gerry"
     And I mark 2009-08-31 till 2009-09-02 as available
-    And I fill in "Notification Comment" with "I've set you to work now"
+    And I fill in "availability_notification_comment" with "I've set you to work now"
     And I press "Create Availability"
     Then the staff member "Gerry" should receive an email
     When they open the email
