@@ -36,7 +36,7 @@ module NavigationHelpers
       edit_staff_path(:current)
 
     when /^delete the staff member "([^\"]*)"$/
-      "#{staff_path(Staff.find_by_full_name!($1))}?destroy_action=true"
+      destroy_staff_path(Staff.find_by_full_name!($1))
 
     when /^send (?:everyone|"([^\"]*)") an email$/
       if $1
@@ -64,7 +64,7 @@ module NavigationHelpers
       venue_path(@venue)
 
     when /^delete the venue$/
-      "#{venue_path(@venue)}?destroy_action=true"
+      delete_venue_path(@venue)
 
     when /^the events list$/
       events_path
@@ -88,7 +88,7 @@ module NavigationHelpers
       edit_event_path(@event)
 
     when /^delete the event$/
-      "#{event_path(@event)}?destroy_action=true"
+      destroy_event_path(@event)
 
     when /^cancel the event$/
       cancel_event_path(@event)
@@ -109,7 +109,7 @@ module NavigationHelpers
       split_staff_availability_path(:current, :current)
 
     when /^remove my current availability$/
-      "#{staff_availability_path(:current, :current)}?destroy_action=true"
+      destroy_staff_availability_path(:current, :current)
 
     when /^the roles list$/
       roles_path

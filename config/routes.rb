@@ -2,7 +2,7 @@ Kakama::Application.routes.draw do
   match 'login' => 'staff_sessions#new', :as => :login
   match 'logout' => 'staff_sessions#destroy', :as => :logout
   match 'dashboard' => 'staff#dashboard', :as => :dashboard
-  
+
   resources :detail_types do as_routes end
 
   # TODO: rake routes shows venue#destroy_existing, but the controller doesn't implement it
@@ -10,10 +10,10 @@ Kakama::Application.routes.draw do
   resources :roles do as_routes end
   resources :schedules do as_routes end
   resources :email_logs do as_routes end
-  
+
   resources :password_resets
   resources :staff_sessions
-  
+
   resources :events do
     collection do
       post :mass_approve
@@ -21,6 +21,7 @@ Kakama::Application.routes.draw do
     member do
       get :cancel
       delete :cancel
+      get '/destroy' => 'events#destroy', :as => 'destroy'
       get :contact_staff
       post :contact_staff
     end
@@ -64,12 +65,14 @@ Kakama::Application.routes.draw do
       get :dashboard
       get :contact
       post :contact
+      get '/destroy' => 'staff#destroy', :as => 'destroy'
     end
     resources :availabilities do
 
       member do
         get :split
         post :split
+        get '/destroy' => 'availabilities#destroy', :as => 'destroy'
       end
 
     end
