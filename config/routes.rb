@@ -13,7 +13,15 @@ Kakama::Application.routes.draw do
       get '/delete' => 'venues#delete', :as => 'delete'
     end
   end
-  resources :roles do as_routes end
+
+  resources :roles do
+    as_routes
+
+    member do
+      get '/delete' => 'roles#delete', :as => 'delete'
+    end
+  end
+
   resources :schedules do as_routes end
   resources :email_logs do as_routes end
 
