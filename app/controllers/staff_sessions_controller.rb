@@ -4,7 +4,10 @@ class StaffSessionsController < ApplicationController
   end
 
   def new
-    redirect_to dashboard_path if current_staff
+    if current_staff
+      flash.keep
+      redirect_to dashboard_path
+    end
     @staff_session = StaffSession.new
   end
 
