@@ -21,3 +21,5 @@
 
 ### Known issues:
     * Date selectors on event page don't show
+    * delete config/initializers/new_rails_defaults.rb
+    * Fix paging
