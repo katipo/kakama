@@ -16,9 +16,8 @@ Given /^(?:I|"([^\"]*)") (?:am|is) (also|only|) *available from ([^\"]*) till ([
 end
 
 When /^I mark ([^\"]*) till ([^\"]*) as available$/ do |start_date, end_date|
-  start_date, end_date = parse_time(start_date), parse_time(end_date)
-  fill_in_datetime_with start_date, 'availability_start_date', true
-  fill_in_datetime_with end_date, 'availability_end_date', true
+  fill_in 'availability_start_date', with: start_date
+  fill_in 'availability_end_date', with: end_date
 end
 
 When /^I click on one of the conflicting availabilities$/ do
