@@ -1,4 +1,5 @@
 class VenuesController < ApplicationController
+
   before_filter :login_required
   before_filter :admin_required, :except => [:show]
 
@@ -7,13 +8,7 @@ class VenuesController < ApplicationController
     columns[:name].required = true
   end
 
-  def do_destroy
-    destroy_find_record
-    self.successful = @record.destroy
-
-    if @record.errors.count > 0
-      flash[:warning] = (@record.errors.messages[:base] || []).join(' ')
-      self.successful = false
-    end
-  end
+  # This must be included after active_scaffold config because it overrides
+  # some of the methods added by the controller
+  include DisplayDeleteErrors
 end
