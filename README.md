@@ -3,23 +3,32 @@
 
 ### Basic Installation
 * Clone
-    * git clone git://github.com/katipo/kakama.git
+  * git clone git://github.com/katipo/kakama.git
 * Create databases
-    * mysql> create database kakama;
-    * mysql> grant all on kakama.* to 'kakama'@'localhost' identified by 'kakama';
+  * mysql> create database kakama;
+  * mysql> grant all on kakama.* to 'kakama'@'localhost' identified by 'kakama';
 * Configure
-    * cp config/database.yml.example config/database.yml
-    * Adjust config/database.yml as needed
+  * cp config/database.yml.example config/database.yml
+  * Adjust config/database.yml as needed
 * Prepare
-    * bundle install
-    * rake db:setup
-    * rake db:seed_fu
-    * whenever --update-crontab
-    * ruby script/delayed_job start
+  * bundle install
+  * rake db:setup
+  * rake db:seed_fu
+  * whenever --update-crontab
+  * ruby script/delayed_job start
 * Run
-    * rails server
+  * rails server
 
 ### Known issues:
-    * Date selectors on event page don't show
-    * delete config/initializers/new_rails_defaults.rb
-    * Fix paging
+  * Date selectors on event page don't show
+  * TODO: Delete config/initializers/new_rails_defaults.rb
+  * TODO: Fix paging
+  * TODO: Check venue create link. It's running as XHR and badly formatted.
+  * TODO: Check other TODO buried in code
+
+### Notes for peer review:
+  * Please could you check all changes to the features/ folder? I want to be
+  sure that I haven't relaxed any important rules.
+  * In particular, one change to the RolesController and VenuesController is
+  that when validation prevents deletion, an error is not returned, but a
+  message is displayed. Is this acceptable?
