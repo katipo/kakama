@@ -33,7 +33,10 @@ Then /^the staff member "([^\"]*)" should receive ([^\"]*) emails?$/ do |full_na
   if email.blank?
     raise "ERROR: #{full_name} cannot receive emails because he/she has no email address." unless amount == 'no'
   else
-    Then "\"#{email}\" should receive #{amount} emails"
+    # It would be better to use should receive here because it is supposed to
+    # check unread emails. However there appears to be a bug in email_spec so
+    # 'should have' is a workaround.
+    Then "\"#{email}\" should have #{amount} emails"
   end
 end
 
