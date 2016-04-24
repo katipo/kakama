@@ -5,7 +5,7 @@ class ReportsController < ApplicationController
   end
 
   def staff_list
-    @staff = Staff.ascend_by_full_name.all(:include => :staff_details)
+    @staff = Staff.all(include: :staff_details, order: :full_name)
     @detail_types = DetailType.all
     respond_to do |format|
       format.html
