@@ -24,9 +24,11 @@
 * TODO: Delete config/initializers/new_rails_defaults.rb
 * TODO: Check venue create link. It's running as XHR and badly formatted.
 * TODO: Check other TODO buried in code
-* TODO: Add test for Events > Past events
-* TODO: Add test for Events > Working events
-* TODO: Add test for Events > Cancelled events
+* TODO: Fix tests for Events - features/events.feature:292
+  * Change the tests to click the links on the screen, then fix the links
+  * Past events
+  * Working events
+  * Cancelled events
 * TODO: Staff roles, Staff detail types and Email logs
   * Create new / Search links badly formatted and don't do anything
   * Role 'edit delete show' links don't do anything except display a confirmation screen
