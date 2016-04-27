@@ -22,4 +22,5 @@ tmp/*
 tmp/**/*
 public/assets/
 public/stylesheets/
+public/javascripts/
 .tags*
