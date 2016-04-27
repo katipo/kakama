@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <%= display_flash_contents %>
+      <%= display_flash_contents.html_safe %>
 
       <% if admin? || !yield(:tools).blank? %>
       <div id="tools">

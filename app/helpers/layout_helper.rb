@@ -8,9 +8,7 @@ module LayoutHelper
   end
 
   def display_flash_contents
-    flash.inject('') do |html, (name, msg)|
-      content_tag(:div, msg, :class => "flash_#{name}")
-    end
+    flash.map { |name, msg| content_tag(:div, msg, :class => "flash_#{name}")}.join
   end
 
   def title(page_title)
