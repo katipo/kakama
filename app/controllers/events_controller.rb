@@ -128,7 +128,9 @@ class EventsController < ApplicationController
 
     flash[:notice] = "All selected events have now been approved and all involved notified of the event."
     if events_past_cut_off.size > 0
-      flash[:error] = render_to_string :partial => 'mass_approved_msg', :locals => { :events => events_past_cut_off }
+      flash[:error] = render_to_string(
+                        :partial => 'mass_approved_msg',
+                        :locals => { :events => events_past_cut_off }).html_safe
     end
     redirect_to events_url
   end
