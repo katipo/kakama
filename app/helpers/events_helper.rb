@@ -58,7 +58,7 @@ module EventsHelper
     else
       raise "ERROR: Did not recognise error type: #{type}"
     end
-    content_tag("div", msg, :class => 'flash_error')
+    content_tag("div", msg.html_safe, :class => 'flash_error')
   end
 
   def confirmation_message_for(type)
