@@ -152,7 +152,7 @@ end
 Then /^(?:|I )should see "([^\"]*)" within "([^\"]*)"$/ do |text, selector|
   within(selector) do |content|
     if defined?(Capybara::RSpecMatchers)
-      content.should have_content(text)
+      expect(page).to have_content(text)
     else
       hc = Webrat::Matchers::HasContent.new(text)
       assert hc.matches?(content), hc.failure_message
