@@ -193,7 +193,7 @@ Feature: Staff
     And administrators dont get all emails
 
     When I send an email to everyone
-    Then all administrators should receive an email
-    When they open the email
+    Then all administrators should receive 2 emails
+    When they open the email with subject "Kakama Test - Document printing and mail to staff required"
     Then there should be an attachment named "email_to_all_staff_for_jim.pdf"
     And there should be an attachment named "email_to_all_staff_for_sally.pdf"
