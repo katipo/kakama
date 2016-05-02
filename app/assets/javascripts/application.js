@@ -16,6 +16,7 @@
 //= require_tree .
 //= require moment
 //= require fullcalendar
+//= require active_scaffold
 
 $(document).ready(function() {
     dpElement = $('.datepicker')
