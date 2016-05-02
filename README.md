@@ -22,10 +22,7 @@
 ### Known issues:
 * Date selectors on event page don't show
 * TODO: Delete config/initializers/new_rails_defaults.rb
-* TODO: Check venue create link. It's running as XHR and badly formatted.
 * TODO: Check other TODO buried in code
-* TODO: Staff roles, Staff detail types and Email logs
-  * Create new / Search links badly formatted
 * Nice to have: Confirmation of Site settings after clicking save
 
 ### Notes for peer review:

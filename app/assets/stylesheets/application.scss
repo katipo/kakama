@@ -253,6 +253,14 @@ h3.page_title {
   }
 }
 
+.active-scaffold-header {
+  .actions {
+    a {
+      margin: 5px;
+    }
+  }
+}
+
 .role_text_fields {
   width: 420px;
   margin: 10px 0;
