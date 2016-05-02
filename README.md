@@ -21,8 +21,7 @@
 
 ### Known issues:
 * Date selectors on event page don't show
-* TODO: Delete config/initializers/new_rails_defaults.rb
-* TODO: Check other TODO buried in code
+* Need to fix 'Create event' button so that the button text is not displayed twice
 * Nice to have: Confirmation of Site settings after clicking save
 
 ### Notes for peer review:
