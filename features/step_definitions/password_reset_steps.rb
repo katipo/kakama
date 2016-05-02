@@ -10,7 +10,7 @@ end
 private
 
 def enter_reset_token(token)
-  When 'I go to enter my reset token'
-  And "I fill in \"Reset token\" with \"#{token}\""
-  And 'I press "Enter reset token"'
+  step 'I go to enter my reset token'
+  step "I fill in \"Reset token\" with \"#{token}\""
+  step 'I press "Enter reset token"'
 end

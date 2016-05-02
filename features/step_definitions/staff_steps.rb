@@ -11,21 +11,21 @@ Given /^a staff member "([^\"]*)" (?:exists|has existed)(\swithout an email)?(?:
 end
 
 Given /^I fill in details for "([^\"]*)"$/ do |full_name|
-  And "I fill in \"Username\" with \"#{full_name.split.first.downcase}\""
-  And 'I fill in "Password" with "test"'
-  And 'I fill in "Password confirmation" with "test"'
-  And "I fill in \"Full name\" with \"#{full_name}\""
-  And 'I select "Staff Member" from "Staff type"'
+  step "I fill in \"Username\" with \"#{full_name.split.first.downcase}\""
+  step 'I fill in "Password" with "test"'
+  step 'I fill in "Password confirmation" with "test"'
+  step "I fill in \"Full name\" with \"#{full_name}\""
+  step 'I select "Staff Member" from "Staff type"'
 end
 
 When /^I send an email to everyone$/ do
   @email_subject = 'sent all staff members an email'
   @message_subject, @message_body = 'Hello', 'Testing'
 
-  When "I go to send everyone an email"
-  And "I fill in \"Subject\" with \"#{@message_subject}\""
-  And "I fill in \"Email body\" with \"#{@message_body}\""
-  And 'I press "Send Email to all Staff Members"'
+  step "I go to send everyone an email"
+  step "I fill in \"Subject\" with \"#{@message_subject}\""
+  step "I fill in \"Email body\" with \"#{@message_body}\""
+  step 'I press "Send Email to all Staff Members"'
 end
 
 Then /^the staff member "([^\"]*)" should receive ([^\"]*) emails?$/ do |full_name, amount|
@@ -36,16 +36,16 @@ Then /^the staff member "([^\"]*)" should receive ([^\"]*) emails?$/ do |full_na
     # It would be better to use should receive here because it is supposed to
     # check unread emails. However there appears to be a bug in email_spec so
     # 'should have' is a workaround.
-    Then "\"#{email}\" should have #{amount} emails"
+    step "\"#{email}\" should have #{amount} emails"
   end
 end
 
 Then /^the staff member "([^\"]*)" should receive the email I just sent$/ do |full_name|
-  Then "the staff member \"#{full_name}\" should receive an email"
-  When 'they open the email'
-  Then "they should see /#{@email_subject}/ in the email subject"
-  And "they should see \"#{@message_subject}\" in the email body"
-  And "they should see \"#{@message_body}\" in the email body"
+  step "the staff member \"#{full_name}\" should receive an email"
+  step 'they open the email'
+  step "they should see /#{@email_subject}/ in the email subject"
+  step "they should see \"#{@message_subject}\" in the email body"
+  step "they should see \"#{@message_body}\" in the email body"
 end
 
 Then /^there should be an email log for "([^\"]*)" about the email I sent to everyone$/ do |full_name|

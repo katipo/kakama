@@ -1,8 +1,8 @@
 When /^I fill in event details for "([^\"]*)" at "([^\"]*)"$/ do |event_name, event_venue|
-  And "I fill in \"Name\" with \"#{event_name}\""
-  And "I select \"#{event_venue}\" from \"Venue\""
-  And 'the event starts 1 day from now'
-  And 'the event ends 2 days from now'
+  step "I fill in \"Name\" with \"#{event_name}\""
+  step "I select \"#{event_venue}\" from \"Venue\""
+  step 'the event starts 1 day from now'
+  step 'the event ends 2 days from now'
 end
 
 When /^the event (starts|ends) ([^\"]*)$/ do |type, time|
@@ -85,12 +85,12 @@ When /^I contact "([^\"]*)" about "([^\"]*)" and "([^\"]*)"$/ do |staff_type, me
   @email_subject = "contacted you regarding the event"
   @message_subject, @message_body = message_subject, message_body
 
-  When "I go to view the event"
-  And 'I follow "Contact Staff Involved"'
-  And "I select \"#{staff_type}\" from \"group\""
-  And "I fill in \"Subject\" with \"#{@message_subject}\""
-  And "I fill in \"Email body\" with \"#{@message_body}\""
-  And 'I press "Send Email"'
+  step "I go to view the event"
+  step 'I follow "Contact Staff Involved"'
+  step "I select \"#{staff_type}\" from \"group\""
+  step "I fill in \"Subject\" with \"#{@message_subject}\""
+  step "I fill in \"Email body\" with \"#{@message_body}\""
+  step 'I press "Send Email"'
 end
 
 Then /^the event should have the error "([^\"]*)"$/ do |error|

@@ -29,13 +29,13 @@ end
 
 When /^I split (my current\s)?availability (\d+\s)?at ([^\"]*)$/ do |current, position, split_date|
   if !current.blank?
-    When "I go to split my current availability"
+    step "I go to split my current availability"
   else
     visit split_staff_availability_path(:current, current_staff_availability[position.to_i - 1])
   end
   split_date = parse_time(split_date)
   fill_in_datetime_with split_date, 'availability_split_date', true
-  And "I press \"Split Availability\""
+  step "I press \"Split Availability\""
 end
 
 When /^I delete availability (\d+)$/ do |position|

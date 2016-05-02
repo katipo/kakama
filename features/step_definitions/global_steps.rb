@@ -8,7 +8,7 @@ end
 
 Then /^all administrators should receive ([^\"]*) emails?$/ do |amount|
   Setting.site_administrator_emails.each do |admin_email|
-    Then "\"#{admin_email}\" should receive #{amount} email"
+    step "\"#{admin_email}\" should receive #{amount} email"
   end
 end
 
