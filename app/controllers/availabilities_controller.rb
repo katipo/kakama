@@ -1,4 +1,4 @@
-class AvailabilityController < ApplicationController
+class AvailabilitiesController < ApplicationController
   before_filter :login_required
   before_filter :parse_start_date_from_params_or_now
   before_filter :prepare_current_staff_member
