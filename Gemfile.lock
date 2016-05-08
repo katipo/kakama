@@ -20,6 +20,8 @@ GEM
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.2.1)
+    active_model_serializers (0.9.3)
+      activemodel (>= 3.2)
     active_scaffold (3.4.7)
       rails (>= 3.2.18, < 5)
     activemodel (3.2.19)
@@ -302,6 +304,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_model_serializers
   active_scaffold (~> 3.4.7)
   annotate
   authlogic (~> 3.2.0)

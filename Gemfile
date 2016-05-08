@@ -38,6 +38,7 @@ gem 'seed-fu', '~> 2.3.3'
 gem 'spreadsheet_on_rails', '~> 1.0.0'
 gem 'mysql2', '~> 0.3.10', require: false
 gem 'strong_parameters'
+gem 'active_model_serializers'
 
 #Assets
 group :assets do
