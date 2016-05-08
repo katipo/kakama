@@ -10,10 +10,20 @@ class StaffController < ApplicationController
   def index
     scope = Staff.username_or_full_name_like(params[:search_text], :order_by => :full_name)
     @staffs = scope.paginate :page => params[:page]
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @staffs }
+    end
   end
 
   def show
     @staff = staff_from_id_else_current
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @staff}
+    end
   end
 
   def new
