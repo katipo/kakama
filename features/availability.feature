@@ -67,6 +67,7 @@ Feature: Availability
     When I press "Ignore Conflicts and Save Availability"
     Then I should see "Availability was successfully updated."
 
+  # TODO: Fix this test so that it works on a Sunday
   Scenario: Editing Availability locked by an admin, then unlocked
     Given I am logged in as "admin"
     And "Gerry" is available from 1 day from now till 2 days from now
