@@ -20,6 +20,8 @@
 #
 
 class Staff < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   has_many :staff_roles
   has_many :roles, :through => :staff_roles
   has_many :staff_details
@@ -56,6 +58,20 @@ class Staff < ActiveRecord::Base
   scope :administrators, :conditions => { :staff_type => 'admin' }
   scope :members, :conditions => { :staff_type => 'staff' }
 
+  def self.strong_attributes
+    [
+      :username,
+      :staff_type,
+      :email,
+      :full_name,
+      :start_date,
+      :admin_notes,
+      :password,
+      :password_confirmation,
+      contact_details: %w(1 2 3 4 5),
+      role_ids: []
+    ]
+  end
 
   def self.available_for(event)
     all.select { |staff| staff.available_for?(event) }
@@ -244,4 +260,6 @@ class Staff < ActiveRecord::Base
   def send_notifying_email
     Notifier.deliver_email_or_pdf_of(:staff_account_creation, self)
   end
+
+
 end
