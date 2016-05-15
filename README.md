@@ -23,10 +23,6 @@
 * Date selectors on event page don't show
 * Need to fix 'Create event' button so that the button text is not displayed twice
 * Nice to have: Confirmation of Site settings after clicking save
-
-### Notes for peer review:
-  * Please could you check all changes to the features/ folder? I want to be
-  sure that I haven't relaxed any important rules.
-  * In particular, one change to the RolesController and VenuesController is
-  that when validation prevents deletion, an error is not returned, but a
-  message is displayed. Is this acceptable?
+* If you have trouble installing 'therubyracer' gem, on Mac OS X, try the
+  following suggestion on StackOverflow:
+    http://stackoverflow.com/questions/19630154/gem-install-therubyracer-v-0-10-2-on-osx-mavericks-not-installing/20145328#20145328
