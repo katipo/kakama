@@ -13,6 +13,8 @@
 #
 
 class Availability < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   belongs_to :staff
 
   validates_presence_of :staff_id, :start_date, :end_date
@@ -51,6 +53,34 @@ class Availability < ActiveRecord::Base
     "(availabilities.start_date <= :start_date AND availabilities.end_date >= :end_date)",
     { :start_date => start_date.to_date.to_s, :end_date => end_date.to_date.to_s }
   ] } }
+
+
+  def self.strong_attributes
+    [
+      :start_date,
+      :end_date,
+      :notification_comment,
+      :admin_locked,
+      :ignore_availability_conflicts,
+      :notification_comment,
+      :edited_by_administrator,
+      :changing_own_availability,
+      :split_date,
+      hours: {
+          all: hours_attributes,
+          mon: hours_attributes,
+          tue: hours_attributes,
+          wed: hours_attributes,
+          thu: hours_attributes,
+          fri: hours_attributes,
+          sat: hours_attributes,
+          sun: hours_attributes}
+    ]
+  end
+
+  def self.hours_attributes
+    [:start, :finish, :comment]
+  end
 
   # WARNING
   # Split day event availability detection is still incomplete

@@ -21,11 +21,11 @@ class AvailabilitiesController < ApplicationController
   end
 
   def new
-    @availability = Availability.new(:staff_id => @staff)
+    @availability = Availability.new
   end
 
   def create
-    @availability = Availability.new(params[:availability])
+    @availability = Availability.new(availability_params)
     @availability.staff = @staff
     @availability.edited_by_administrator = admin?
     @availability.changing_own_availability = changing_own_availability?
@@ -45,7 +45,7 @@ class AvailabilitiesController < ApplicationController
   def update
     @availability.edited_by_administrator = admin?
     @availability.changing_own_availability = changing_own_availability?
-    if @availability.update_attributes(params[:availability])
+    if @availability.update_attributes(availability_params)
       flash[:notice] = 'Availability was successfully updated.'
       redirect_to(staff_availabilities_path(@availability.staff, :start_date => @availability.start_date))
     else
@@ -78,6 +78,10 @@ class AvailabilitiesController < ApplicationController
   end
 
   private
+
+  def availability_params
+    params.require(:availability).permit(*Availability.strong_attributes)
+  end
 
   def parse_start_date_from_params_or_now
     @time = (Chronic.parse(params[:start_date]) || Time.now).beginning_of_week
