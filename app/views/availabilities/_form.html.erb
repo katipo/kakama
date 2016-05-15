@@ -16,13 +16,13 @@
 
   <%= form.inputs :name => "Availability Details" do %>
     <li class="string required">
-      <%= form.input :start_date, :as => :string, 
+      <%= form.input :start_date, :as => :string,
         :input_html => { :class => "datepicker" } %>
       <noscript><%= form.date_select :start_date, :order => [:day, :month, :year], :include_blank => true %></noscript>
     </li>
 
     <li class="string required">
-      <%= form.input :end_date, :as => :string, 
+      <%= form.input :end_date, :as => :string,
         :input_html => { :class => "datepicker" } %>
       <noscript><%= form.date_select :end_date, :order => [:day, :month, :year], :include_blank => true %></noscript>
     </li>
@@ -41,7 +41,7 @@
       <li class="string required">
         <%= label_tag label %>
         <div id="<%= day %>_start_finish_comment_editors" class="start_finish_comment_editors">
-          <% if @availability && @availability.hours && @availability.hours[day] %>
+          <% if @availability && @availability.hours.present? && @availability.hours[day] %>
             <% @availability.hours[day].each_with_index do |data, index| %>
               <%= render 'start_finish_comment', :day => day,
                          :with_close => (index != 0), :start_time => data[:start],
