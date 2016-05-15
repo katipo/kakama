@@ -70,7 +70,7 @@ Feature: Availability
   # TODO: Fix this test so that it works on a Sunday
   Scenario: Editing Availability locked by an admin, then unlocked
     Given I am logged in as "admin"
-    And "Gerry" is available from 1 day from now till 2 days from now
+    And "Gerry" is available from 2 day ago till 2 days from now
     When I go to edit the current availability of "Gerry"
     And I mark now till 2 days from now as available
     And I check "Lock this Availability?"
