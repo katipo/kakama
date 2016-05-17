@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: availabilities
+#
+#  id           :integer          not null, primary key
+#  staff_id     :integer          not null
+#  start_date   :date             not null
+#  end_date     :date             not null
+#  hours        :text             not null
+#  admin_locked :boolean
+#  created_at   :datetime
+#  updated_at   :datetime
+#
+
 require 'test_helper'
 
 class AvailabilityTest < ActiveSupport::TestCase
@@ -40,10 +54,9 @@ class AvailabilityTest < ActiveSupport::TestCase
     assert_equal 0, @sally.availability.wrapping(2.days.ago, 8.days.from_now).size
   end
 
-  test "times is returning valid Time object as weekly_builder plugin expects" do
+  test "times is returning valid Time object as full calendar library expects" do
     first_monday = Chronic.parse('First Monday this year')
-    @sally.availability.create!(:start_date => first_monday, :end_date => first_monday + 20.days)
-    availability = @sally.availability.last
+    availability = @sally.availability.create!(:start_date => first_monday, :end_date => first_monday + 20.days)
 
     assert_equal 0, availability.times.size # no hours have been set at this stage
 
@@ -59,20 +72,25 @@ class AvailabilityTest < ActiveSupport::TestCase
     assert @sally.availability.new(:start_date => 1.days.from_now, :end_date => 3.days.from_now).conflicts_with_another_availability?
 
     @sally.availability.create!(:start_date => 10.days.from_now, :end_date => 11.days.from_now)
-    availability = @sally.availability.last
+    availability = sally_availabilities.last
     assert !availability.conflicts_with_another_availability?
+  end
+
+  def sally_availabilities
+    @sally.availability.find(:all, :order => 'start_date ASC')
   end
 
   test "assigning hours via all settings works as expected" do
     # Avoid picking up the wrong record at the end of the test
-    if @sally.availability.find_by_start_date(6.days.from_now)
-      @sally.availability.find_by_start_date(6.days.from_now).destroy
+    if sally_availabilities().find_by_start_date(6.days.from_now)
+      sally_availabilities().find_by_start_date(6.days.from_now).destroy
     end
 
-    @sally.availability.first.update_attributes(:hours => { :all => { :start => 0, :finish => 24 } })
+    sally_availabilities().first.update_attributes(:hours => { :all => { :start => 0, :finish => 24 } })
+
     expected = {}
     Availability::Days.each { |key, label| expected[key] = [{:finish=>24, :start=>0, :comment=>nil}] }
-    assert_equal expected, @sally.availability.first.hours
+    assert_equal expected, sally_availabilities.first.hours
   end
 
   test "with_hours_of and within_hours_of? are returning correct results" do
@@ -126,7 +144,7 @@ class AvailabilityTest < ActiveSupport::TestCase
       :start_datetime => cp("tomorrow 9pm"),
       :end_datetime => cp("tomorrow 4am") + 1.day
     )
-    @sally.availability.first.update_attributes(:hours => {
+    sally_availabilities.first.update_attributes(:hours => {
       @event.start_datetime.strftime("%a").downcase.to_sym => [{ :start => 17, :finish => 24 }],
       @event.end_datetime.strftime("%a").downcase.to_sym => [{ :start => 0, :finish => 9 }]
     })
@@ -143,7 +161,7 @@ class AvailabilityTest < ActiveSupport::TestCase
   def every_day_has(data)
     hours = Hash.new
     Availability::Days.each { |key, label| hours[key] = data }
-    @sally.availability.first.update_attributes(:hours => hours)
+    sally_availabilities.first.update_attributes(:hours => hours)
   end
 
   def test_availabilities_with(data)

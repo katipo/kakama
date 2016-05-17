@@ -13,9 +13,10 @@ Given /^that venue has (past|future) events$/ do |type|
 end
 
 When /^I try to delete the venue, I should be refused to access the record$/ do
-  assert_raise ActiveScaffold::RecordNotAllowed do
-    visit delete_venue_path(@venue)
-  end
+  visit delete_venue_path(@venue)
+  expect(page).to have_content('Are you sure you want to delete ?')
+  click_button('Delete')
+  expect(page).to have_content('You cannot delete this venue because it contains unfinished events.')
 end
 
 Then /^the venues select field should be set to "([^\"]*)"$/ do |venue_name|

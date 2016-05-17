@@ -1,13 +1,13 @@
 <% title "Editing event" %>
 
-<% semantic_form_for(@event) do |form| %>
-  <%= form.error_messages %>
+<%= semantic_form_for(@event) do |form| %>
+  <%= form.semantic_errors %>
   <%= render 'form', :form => form %>
-  <% form.buttons do %>
+  <%= form.actions do %>
     <li>
       <% label = (@event.conflicts_with_another_event? || @event.unavailable_staff_rosterings? ?
                  'Ignore Conflicts and Save Event' : 'Save Event') %>
-      <%= form.submit label %>
+      <%= form.action :submit, :label => label %>
       <% if @event.unavailable_staff_rosterings? %>
         OR &nbsp; <%= form.submit 'Cancel Unavailable Staff and Save Event', :name => 'event[cancel_unavailable_staff]' %>
       <% end %>
@@ -15,7 +15,7 @@
   <% end %>
 <% end %>
 
-<% content_for(:tools) do %>
+<%= content_for(:tools) do %>
   <ul>
     <li><%= link_to 'Return to Event', @event %></li>
   </ul>

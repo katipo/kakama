@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: staffs
+#
+#  id                :integer          not null, primary key
+#  username          :string(255)      not null
+#  staff_type        :string(255)      not null
+#  crypted_password  :string(255)      not null
+#  email             :string(255)
+#  full_name         :string(255)      not null
+#  start_date        :date             not null
+#  admin_notes       :text
+#  deleted_at        :datetime
+#  created_at        :datetime
+#  updated_at        :datetime
+#  password_salt     :string(255)      not null
+#  persistence_token :string(255)      not null
+#  perishable_token  :string(255)      not null
+#  last_request_at   :datetime
+#
+
 class Staff < ActiveRecord::Base
   has_many :staff_roles
   has_many :roles, :through => :staff_roles
@@ -10,6 +31,7 @@ class Staff < ActiveRecord::Base
   validates_presence_of :username, :staff_type, :full_name, :start_date
   validates_uniqueness_of :username
   validates_as_email_address :email, :allow_blank => true
+  validate :validate_password, :on => :update
 
   after_save :setup_roles
   after_save :setup_contact_details
@@ -31,8 +53,9 @@ class Staff < ActiveRecord::Base
     ['Staff Member', 'staff']
   ]
 
-  named_scope :administrators, :conditions => { :staff_type => 'admin' }
-  named_scope :members, :conditions => { :staff_type => 'staff' }
+  scope :administrators, :conditions => { :staff_type => 'admin' }
+  scope :members, :conditions => { :staff_type => 'staff' }
+
 
   def self.available_for(event)
     all.select { |staff| staff.available_for?(event) }
@@ -72,7 +95,7 @@ class Staff < ActiveRecord::Base
   def deliver_password_reset_instructions!
     return false if email.blank?
     reset_perishable_token!
-    Notifier.deliver_password_reset_instructions self
+    Notifier.password_reset_instructions(self).deliver
     true
   end
 
@@ -136,7 +159,7 @@ class Staff < ActiveRecord::Base
 
   def contact(options = {})
     return false if options[:subject].blank? || options[:body].blank? || email.blank?
-    Notifier.deliver_staff_email self, options[:subject], options[:body]
+    Notifier.staff_email(self, options[:subject], options[:body]).deliver
     true
   end
 
@@ -156,13 +179,26 @@ class Staff < ActiveRecord::Base
     end
   end
 
+  # This method has been created to replace the searchlogic functionality that is no longer available in Rails 3.2+
+  def self.username_or_full_name_like(search_text, options={})
+    search_text_parameter = "%#{search_text}%"
+    search_query = 'username LIKE ? or full_name LIKE ?'
+
+    if options[:order_by]
+      Staff.where(search_query, search_text_parameter, search_text_parameter).order(options[:order_by])
+    else
+      Staff.where(search_query, search_text_parameter, search_text_parameter)
+    end
+
+  end
+
   protected
 
   def ensure_staff_deletable
     if rosterings(true).active_state.size > 0
-      errors.add_to_base("Unable to delete the staff member #{full_name}.
+      errors[:base] << "Unable to delete the staff member #{full_name}.
         They are currently unconfirmed or confirmed at one or more events.
-        They need to be removed from these events before they can be deleted.")
+        They need to be removed from these events before they can be deleted."
       false
     else
       true
@@ -190,9 +226,10 @@ class Staff < ActiveRecord::Base
     end
   end
 
-  # Current password must be set if password is being changed
-  def validate_on_update
-    if !password.blank? && !skip_current_password
+  # Current password must be set if password is being changed.
+  # Doesn't apply to new records
+  def validate_password
+    if !new_record? && !password.blank? && !skip_current_password
       if current_password.blank?
         errors.add(:current_password, "must be set when changing the password.")
         return false

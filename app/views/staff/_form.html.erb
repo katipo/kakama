@@ -1,6 +1,6 @@
 <div class="required"><%= required_astrix %> denotes a required field</div>
 
-<% form.inputs :name => "Staff Details" do %>
+<%= form.inputs :name => "Staff Details" do %>
   <%= form.input :username if admin? %>
 
   <%= render('password_fields', :form => form, :required => true) if @staff.new_record? %>
@@ -8,10 +8,10 @@
   <%= form.input :full_name %>
 <% end %>
 
-<% form.inputs :name => "Contact Details" do %>
+<%= form.inputs :name => "Contact Details" do %>
   <%= form.input :email, :required => false %>
 
-  <% form.semantic_fields_for :contact_details do |detail| %>
+  <%= form.semantic_fields_for :contact_details do |detail| %>
     <% DetailType.all.each do |detail_type| %>
       <%= detail.input "#{detail_type.id}", :label => detail_type.name,
                        :as => detail_type.field_type.to_sym, :required => false,
@@ -21,7 +21,7 @@
   <% end %>
 <% end %>
 
-<% form.inputs :name => "Administrator Fields" do %>
+<%= form.inputs :name => "Administrator Fields" do %>
   <%= form.input :staff_type, :as => :select, :collection => Staff::Types, :input_html => { :name => 'staff[staff_type]' } %>
 
   <%= form.input :roles, :as => :select, :required => false,
@@ -29,10 +29,8 @@
                  :input_html => { :size => 7, :multiple => true } %>
 
   <li id="staff_start_date_input" class="string required">
-    <%= form.label :start_date, "Start date " %><%= required_astrix %>
-    <script type='text/javascript'>
-      document.write("<%= escape_javascript form.calendar_date_select(:start_date, :time => false) %> <small>(click to select date)</small>");
-    </script>
+    <%= form.input :start_date, :as => :string, 
+      :input_html => { :class => "datepicker" } %>
     <noscript><%= form.date_select :start_date, :order => [:day, :month, :year], :include_blank => true %></noscript>
   </li>
 
@@ -40,7 +38,7 @@
                  :input_html => { :rows => 8, :cols => 44 } if !@staff.new_record? %>
 <% end if admin? %>
 
-<% form.inputs :name => "Change Password" do %>
+<%= form.inputs :name => "Change Password" do %>
   <%= form.input :current_password, :as => :password, :required => false, :input_html => { :autocomplete => 'off' } unless admin? %>
   <%= render('password_fields', :form => form) %>
 <% end if !@staff.new_record? %>

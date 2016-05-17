@@ -5,7 +5,7 @@
     <h3>Select how many of each role is needed</h3>
   <% end %>
 
-  <% form_for @event do |f| %>
+  <%= form_for @event do |f| %>
     <div class="role_text_fields">
       <% Role.all.each do |role| %>
         <div class="role_text_field">

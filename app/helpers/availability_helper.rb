@@ -29,6 +29,6 @@ module AvailabilityHelper
   # In Javascript, when you do 'new Date(yyyy, mm, dd)', Javascript expects
   # a month value one less than the actual month (i.e. months start at 0, not 1)
   def convert_date_to_js(date)
-    date.year.to_s + ',' + (date.month - 1).to_s + ',' + date.day.to_s
+    date.year.to_s + ',' + (date.month).to_s + ',' + date.day.to_s
   end
 end

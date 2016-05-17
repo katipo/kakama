@@ -1,6 +1,6 @@
 <% title "Contact staff rostered to event: #{@event.name}" %>
 
-<% form_tag({}, { :method => :post }) do %>
+<%= form_tag({}, { :method => :post }) do %>
   <p>
     <label for="group"><strong>Who should this email be sent to?</strong></label> <br />
     <%= select_tag :group, options_for_select(Event::ContactGroups, params[:group]) %>

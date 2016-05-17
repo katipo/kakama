@@ -4,7 +4,10 @@ class StaffSessionsController < ApplicationController
   end
 
   def new
-    redirect_to dashboard_path if current_staff
+    if current_staff
+      flash.keep
+      redirect_to dashboard_path
+    end
     @staff_session = StaffSession.new
   end
 
@@ -12,7 +15,7 @@ class StaffSessionsController < ApplicationController
     @staff_session = StaffSession.new(params[:staff_session])
     if @staff_session.save
       flash[:notice] = "Successfully logged in."
-      redirect_to (session[:return_to] ? session[:return_to] : root_url)
+      redirect_to (session[:return_to] ? session[:return_to] : dashboard_url)
     else
       render :action => 'new'
     end

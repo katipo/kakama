@@ -2,7 +2,7 @@
 
 <p>Leaving both fields blank will make it so no emails are sent to <%= @staff.full_name %></p>
 
-<% form_tag({ :action => 'cancel' }, { :method => :put }) do %>
+<%= form_tag({ :action => 'cancel' }, { :method => :put }) do %>
   <p>
     Either select a preset response: <br />
     <% values = [ [''],

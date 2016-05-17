@@ -7,7 +7,10 @@ require File.expand_path(File.dirname(__FILE__) + '/../../test/factories')
 require 'rake'
 require 'rake/rdoctask'
 require 'rake/testtask'
-require 'tasks/rails'
+
+#Require the applications rake tasks
+Kakama::Application.load_tasks
+
 silence_stream(STDOUT) do
   Rake::Task['db:reset'].execute(ENV)
   Rake::Task["db:seed_fu"].execute(ENV)

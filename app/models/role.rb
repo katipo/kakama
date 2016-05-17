@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: roles
+#
+#  id          :integer          not null, primary key
+#  name        :string(255)      not null
+#  description :string(255)
+#  deleted_at  :datetime
+#  created_at  :datetime
+#  updated_at  :datetime
+#
+
 class Role < ActiveRecord::Base
   has_many :staff_roles
   has_many :staff, :through => :staff_roles
@@ -30,7 +42,7 @@ class Role < ActiveRecord::Base
 
   def ensure_role_deletable
     if assigned_to_staff?
-      errors.add_to_base('You cannot delete this role because it is still assigned to staff members.')
+      errors.add(:base, 'You cannot delete this role because it is still assigned to staff members.')
       false
     else
       true

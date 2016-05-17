@@ -1,13 +1,13 @@
 <% title "Login" %>
 
-<% semantic_form_for @staff_session do |form| %>
-  <%= form.error_messages %>
-  <% form.inputs :name => nil do %>
+<%= semantic_form_for @staff_session do |form| %>
+  <%= form.semantic_errors %>
+  <%= form.inputs :name => nil do %>
     <%= form.input :username %>
     <%= form.input :password, :as => :password %>
-  <% end %>
-  <% form.buttons do %>
-    <%= form.commit_button :button_html => { :value => 'Login' } %> or
+<% end %>
+  <%= form.actions do %>
+    <%= form.action :submit, :button_html => { :value => 'Login' } %> or
       <%= link_to 'reset password', new_password_reset_path %>
   <% end %>
 <% end %>

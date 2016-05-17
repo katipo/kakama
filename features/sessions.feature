@@ -24,14 +24,14 @@ Feature: Sessions
     And I fill in "Username" with "invalid"
     And I fill in "Password" with "test"
     And I press "Login"
-    Then I should see "Username is not valid"
+    Then I should see "Username* is not valid"
 
   Scenario: Login with incorrect password
     When I go to login
     And I fill in "Username" with "jane"
     And I fill in "Password" with "invalid"
     And I press "Login"
-    Then I should see "Password is not valid"
+    Then I should see "Password* is not valid"
 
   Scenario: Session does not time out before configured cutoff
     Given I am logged in as "jane"

@@ -1,6 +1,6 @@
 <% title "Contact all staff members" %>
 
-<% form_tag({}, { :method => :post }) do %>
+<%= form_tag({}, { :method => :post }) do %>
   <%= render 'contact_form' %>
   <p>
     <%= submit_tag "Send Email to all Staff Members" %>

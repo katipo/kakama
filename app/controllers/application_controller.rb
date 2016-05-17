@@ -5,9 +5,6 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
-  # Scrub sensitive parameters from your log
-  filter_parameter_logging :password, :password_confirmation, :current_password
-
   before_filter :store_last_location
 
   include Authentication
@@ -20,7 +17,7 @@ class ApplicationController < ActionController::Base
   #  * it's a request other than html (csv, xls, xml)
   def store_last_location
     return if params[:controller] == 'staff_sessions' || !request.get? || request.format != 'text/html'
-    session[:return_to] = request.request_uri
+    session[:return_to] = request.url
   end
 
   # Get the current staff member based on the url.

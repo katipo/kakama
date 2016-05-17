@@ -3,8 +3,10 @@ Given /^a site admin "([^\"]*)" exists(\swithout an email)?$/ do |full_name, wit
   find_or_create_staff full_name, options.merge(:staff_type => 'admin')
 end
 
-Given /^a staff member "([^\"]*)" exists(\swithout an email)?$/ do |full_name, without_email|
+Given /^a staff member "([^\"]*)" (?:exists|has existed)(\swithout an email)?(?:\ssince\s)?(.*)$/ do |full_name, without_email, start_date|
   options = without_email ? { :email => '' } : {}
+  options.store :start_date, parse_time(start_date) unless start_date.empty?
+  options.store :skip_current_password, true
   find_or_create_staff full_name, options
 end
 
@@ -31,7 +33,10 @@ Then /^the staff member "([^\"]*)" should receive ([^\"]*) emails?$/ do |full_na
   if email.blank?
     raise "ERROR: #{full_name} cannot receive emails because he/she has no email address." unless amount == 'no'
   else
-    Then "\"#{email}\" should receive #{amount} emails"
+    # It would be better to use should receive here because it is supposed to
+    # check unread emails. However there appears to be a bug in email_spec so
+    # 'should have' is a workaround.
+    Then "\"#{email}\" should have #{amount} emails"
   end
 end
 

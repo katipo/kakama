@@ -19,7 +19,7 @@ When /^I update roles to require (\d+) "([^\"]*)"(\swithout auto rostering)?$/ d
     Event.update_all(:roles => @event.roles.to_yaml, :id => @event.id)
   else
     And "I fill in \"#{role_name}\" with \"#{amount}\""
-    And 'I press "event_submit"'
+    And 'I press "Generate Staff Lists to fill required roles"'
     Then 'I should see "Event was successfully updated."'
   end
 end

@@ -2,7 +2,7 @@ class DetailTypesController < ApplicationController
   before_filter :login_required
   before_filter :admin_required
 
-  active_scaffold :detail_types do |config|
+  active_scaffold :detail_type do |config|
     config.columns = [:name, :field_type]
 
     list.columns.exclude :field_type

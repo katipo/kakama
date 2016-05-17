@@ -4,7 +4,7 @@
 
 <p>Would you like to ignore this fact and roster them regardless?</p>
 
-<% form_tag({ :action => 'add' }, { :method => :post }) do %>
+<%= form_tag({ :action => 'add' }, { :method => :post }) do %>
   <%= hidden_field_tag :staff_id, params[:staff_id] %>
   <%= hidden_field_tag :event_id, params[:event_id] %>
   <%= hidden_field_tag :role_id, params[:role_id] %>

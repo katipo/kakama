@@ -59,7 +59,7 @@
 </p>
 <% end %>
 
-<% content_for(:tools) do %>
+<%= content_for(:tools) do %>
 <ul>
   <% if admin? %>
     <li><%= link_to 'Edit Staff Member', edit_staff_path(@staff) %></li>

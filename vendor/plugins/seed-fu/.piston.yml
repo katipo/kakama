@@ -1,8 +1,0 @@
---- 
-format: 1
-handler: 
-  commit: 819af7e994d63a945d503245fc613837d55836ba
-  branch: master
-lock: false
-repository_class: Piston::Git::Repository
-repository_url: git://github.com/mbleigh/seed-fu.git

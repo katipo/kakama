@@ -24,7 +24,7 @@
       <%= link_to 'Edit', edit_event_path(event) if event.editable? %>
     </td>
     <td class="control">
-      <%= link_to 'Delete', destroy_event_path(event), :confirm => 'Are you sure?', :method => :delete if event.deletable? %>
+      <%= link_to 'Delete', event_path(event), :confirm => 'Are you sure?', :method => :delete if event.deletable? %>
     </td>
     <td class="control">
       <%= link_to 'Cancel', cancel_event_path(event), :confirm => 'Are you sure?', :method => :delete if event.cancelable? %>

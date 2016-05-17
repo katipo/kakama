@@ -1,11 +1,11 @@
 <% title "Change My Password" %>
 
-<% semantic_form_for @staff, :url => password_reset_path, :method => :put do |form| %>
-  <%= form.error_messages %>
-  <% form.inputs :name => nil do %>
+<%= semantic_form_for @staff, :url => password_reset_path, :method => :put do |form| %>
+  <%= form.semantic_errors %>
+  <%= form.inputs :name => nil do %>
     <%= render('staff/password_fields', :form => form) %>
   <% end %>
-  <% form.buttons do %>
-    <%= form.commit_button :button_html => { :value => 'Update my password' } %>
+  <%= form.actions do %>
+    <%= form.action :submit, :button_html => { :value => 'Update my password' } %>
   <% end %>
 <% end %>

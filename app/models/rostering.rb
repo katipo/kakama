@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: rosterings
+#
+#  id             :integer          not null, primary key
+#  staff_id       :integer          not null
+#  event_id       :integer          not null
+#  role_id        :integer          not null
+#  state          :string(255)      not null
+#  system_flagged :boolean
+#  created_at     :datetime
+#  updated_at     :datetime
+#
+
 class Rostering < ActiveRecord::Base
   belongs_to :staff
   belongs_to :event
@@ -24,15 +38,16 @@ class Rostering < ActiveRecord::Base
     :no_show => 'no_show'
   }
 
-  named_scope :with_role, lambda { |role| { :conditions => { :role_id => role.id } } }
-  named_scope :with_state, lambda { |states| { :conditions => { :state => states } } }
-  named_scope :active_state, :conditions => { :state => [Rostering::States[:unconfirmed], Rostering::States[:confirmed]] }
-  named_scope :inactive_state, :conditions => { :state => [Rostering::States[:rejected], Rostering::States[:declined], Rostering::States[:cancelled]] }
-  named_scope :non_system_flagged, :conditions => { :system_flagged => false }
-  named_scope :system_flagged, :conditions => { :system_flagged => true }
+  scope :with_role, lambda { |role| { :conditions => { :role_id => role.id } } }
+  scope :with_state, lambda { |states| { :conditions => { :state => states } } }
+  scope :active_state, :conditions => { :state => [Rostering::States[:unconfirmed], Rostering::States[:confirmed]] }
+  scope :active_state_or_no_show, :conditions => { :state => [Rostering::States[:unconfirmed], Rostering::States[:confirmed], Rostering::States[:no_show]] }
+  scope :inactive_state, :conditions => { :state => [Rostering::States[:rejected], Rostering::States[:declined], Rostering::States[:cancelled]] }
+  scope :non_system_flagged, :conditions => { :system_flagged => false }
+  scope :system_flagged, :conditions => { :system_flagged => true }
 
   Rostering::States.each do |key,state_value|
-    named_scope key, :conditions => { :state => state_value }
+    scope key, :conditions => { :state => state_value }
     define_method "#{key.to_s}?" do
       state == state_value
     end

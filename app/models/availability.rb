@@ -1,8 +1,23 @@
+# == Schema Information
+#
+# Table name: availabilities
+#
+#  id           :integer          not null, primary key
+#  staff_id     :integer          not null
+#  start_date   :date             not null
+#  end_date     :date             not null
+#  hours        :text             not null
+#  admin_locked :boolean
+#  created_at   :datetime
+#  updated_at   :datetime
+#
+
 class Availability < ActiveRecord::Base
   belongs_to :staff
 
   validates_presence_of :staff_id, :start_date, :end_date
 
+  validate :validate
   before_validation :convert_all_values
 
   after_save :notify_correct_people_of_changes
@@ -24,7 +39,7 @@ class Availability < ActiveRecord::Base
     [:sun, 'Sunday']
   ]
 
-  named_scope :overlapping, lambda { |start_date, end_date| { :conditions => [
+  scope :overlapping, lambda { |start_date, end_date| { :conditions => [
     "(:start_date >= availabilities.start_date AND :start_date <= availabilities.end_date) OR
      (:end_date >= availabilities.start_date AND :end_date <= availabilities.end_date) OR
      (availabilities.start_date >= :start_date AND availabilities.start_date <= :end_date) OR
@@ -32,7 +47,7 @@ class Availability < ActiveRecord::Base
     { :start_date => start_date.to_date.to_s, :end_date => end_date.to_date.to_s }
   ] } }
 
-  named_scope :wrapping, lambda { |start_date, end_date| { :conditions => [
+  scope :wrapping, lambda { |start_date, end_date| { :conditions => [
     "(availabilities.start_date <= :start_date AND availabilities.end_date >= :end_date)",
     { :start_date => start_date.to_date.to_s, :end_date => end_date.to_date.to_s }
   ] } }
@@ -67,11 +82,37 @@ class Availability < ActiveRecord::Base
     self.with_hours_of(event).size > 0
   end
 
+  def to_calendar_events
+    calendar_events = []
+    time_format = '%Y/%m/%d'
+
+    hours.each do |day_availabilties|
+      day_of_week = day_availabilties[0]
+      availability_slots = day_availabilties[1]
+
+      availability_slots.each do |availability_slot|
+        next if availability_slot[:start].blank? || availability_slot[:finish].blank?
+
+        calendar_events << {
+          start: "#{availability_slot[:start].to_two_digit}:00",
+          end: "#{availability_slot[:finish].to_two_digit}:00",
+          title: availability_slot[:comment],
+          dow: [Date.parse(day_of_week.capitalize.to_s).wday],
+          ranges: [{start: start_date.strftime(time_format),
+                    end: end_date.strftime(time_format)}]
+
+        }
+      end
+    end
+
+    calendar_events
+  end
+
   # Gets an array of Times objects (see the class at the bottom of this file)
-  # This is used for the weekly builder. Has only starts_at, ends_at, and comment
+  # This is used for full calendar. Has only start, end, and title
   # First argument is when to start counting time objects. By default, it starts
-  # from the beginning of the availability, but the weekly_builder calender passes
-  # the current week start date into it which restricts lookup to the viewed week
+  # from the beginning of the availability, but you can restrict lookup to the
+  # viewed week
   # The second argument overides the first. If true, all time object between the
   # start and end of the availability are collected (can be quite slow for long
   # periods of availability)
@@ -90,9 +131,9 @@ class Availability < ActiveRecord::Base
       values.each do |data|
         next if data[:start].blank? || data[:finish].blank?
         time_objects << Times.new(
-          :starts_at => Chronic.parse("#{date} #{data[:start].to_two_digit}:00"),
-          :ends_at => Chronic.parse("#{date} #{data[:finish].to_two_digit}:00"),
-          :comment => data[:comment]
+          :start => Chronic.parse("#{date} #{data[:start].to_two_digit}:00"),
+          :end => Chronic.parse("#{date} #{data[:finish].to_two_digit}:00"),
+          :title => data[:comment]
         )
       end
     end
@@ -124,19 +165,19 @@ class Availability < ActiveRecord::Base
     end
 
     if split_date.blank?
-      errors.add_to_base("You left the split date empty. You must supply one.")
+      errors[:base] << "You left the split date empty. You must supply one."
       false
     elsif split_date <= start_date
-      errors.add_to_base("The split date must be after this availabilities start date.")
+      errors[:base] << "The split date must be after this availabilities start date."
       false
     elsif split_date > end_date
-      errors.add_to_base("The split date must be on or before this availabilities end date.")
+      errors[:base] << "The split date must be on or before this availabilities end date."
       false
     elsif staff.events.occuring_at(split_date, split_date).size > 0
-      errors.add_to_base("You cannot split your availability here because there are events overlapping it.")
+      errors[:base] << "You cannot split your availability here because there are events overlapping it."
       false
     else
-      new_availability = self.clone
+      new_availability = self.dup
       new_availability.start_date = split_date.to_date.to_s
       # Ignore conflicts because we're saving on top of the other one before we edit it
       new_availability.ignore_availability_conflicts = true
@@ -165,7 +206,7 @@ class Availability < ActiveRecord::Base
     self.hours = Hash.new unless hours.class.name =~ /Hash/
 
     all = hours.delete(:all) || Hash.new
-    Availability::Days.each do |key, value|
+    Days.each do |key, value|
       hours[key] ||= [ { :start => nil, :finish => nil, :comment => nil } ]
       raise "ERROR: Expected an Array but got a #{hours[key].class.name}" unless hours[key].is_a?(Array)
       hours[key].each do |data|
@@ -187,12 +228,12 @@ class Availability < ActiveRecord::Base
     return if changing_own_availability && edited_by_administrator
     recipient = edited_by_administrator ? staff : Setting.site_administrator_emails
     return if notification_comment.blank? || recipient.blank? || (recipient.is_a?(Staff) && recipient.email.blank?)
-    Notifier.deliver_availability_changes_notification recipient, self
+    Notifier.availability_changes_notification(recipient, self).deliver
   end
 
   def ensure_availability_changeable
     if !ignore_availability_conflicts && events_rostered_at_this_time?
-      errors.add_to_base("You can't edit this availability because you are rostered to an event at this time.")
+      errors[:base] << "You can't edit this availability because you are rostered to an event at this time."
       false
     else
       true
@@ -213,8 +254,9 @@ class Availability < ActiveRecord::Base
         passes_validation = false
       end
     end
+
     if !ignore_availability_conflicts && conflicts_with_another_availability?
-      errors.add_to_base("The availability you're trying to add conflicts with an already existing availability.")
+      errors[:base] << "The availability you're trying to add conflicts with an already existing availability."
     end
     if hours
       Availability::Days.each do |key, label|
@@ -233,10 +275,10 @@ class Availability < ActiveRecord::Base
 end
 
 class Times
-  attr_accessor :starts_at, :ends_at, :comment
+  attr_accessor :start, :end, :title
   def initialize(options)
-    self.starts_at = options[:starts_at]
-    self.ends_at = options[:ends_at]
-    self.comment = options[:comment]
+    self.start = options[:start]
+    self.end = options[:end]
+    self.title = options[:title]
   end
 end

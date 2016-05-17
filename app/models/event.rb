@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: events
+#
+#  id             :integer          not null, primary key
+#  venue_id       :integer          not null
+#  recurring      :boolean
+#  schedule_id    :integer          not null
+#  name           :string(255)      not null
+#  description    :text
+#  start_datetime :datetime         not null
+#  end_datetime   :datetime         not null
+#  organiser_id   :integer          not null
+#  state          :string(255)      not null
+#  roles          :text
+#  deleted_at     :datetime
+#  created_at     :datetime
+#  updated_at     :datetime
+#  approver_id    :integer
+#
+
 class Event < ActiveRecord::Base
   has_many :rosterings, :dependent => :destroy
   has_many :staff, :through => :rosterings
@@ -7,6 +28,7 @@ class Event < ActiveRecord::Base
   belongs_to :organiser, :class_name => "Staff", :foreign_key => "organiser_id"
   belongs_to :approver, :class_name => "Staff", :foreign_key => "approver_id"
 
+  validate :validate
   validates_presence_of :venue_id, :name, :start_datetime, :end_datetime, :organiser_id
   # TODO: Implement this if budget permits
   # validates_presence_of :recurring, :schedule_id
@@ -71,17 +93,18 @@ class Event < ActiveRecord::Base
 
   default_scope :conditions => ['events.deleted_at IS ? AND events.state != ?', nil, Event::States[:cancelled]]
 
-  named_scope :not_deleted, lambda { { :conditions => ['events.deleted_at IS ?', nil] } }
-  named_scope :current, lambda { { :conditions => ['events.start_datetime <= :now AND events.end_datetime >= :now', { :now => Time.now.utc }], :order => "events.start_datetime ASC, events.end_datetime ASC" } }
-  named_scope :future, lambda { { :conditions => ['events.start_datetime > ?', Time.now.utc], :order => "events.start_datetime ASC, events.end_datetime ASC" } }
-  named_scope :finished, lambda { { :conditions => ['events.end_datetime < ?', Time.now.utc], :order => "events.start_datetime DESC, events.end_datetime DESC" } }
-  named_scope :finished_a_month_ago, lambda { { :conditions => ['events.end_datetime < ?', 1.month.ago.utc] } }
-  named_scope :occuring_at, lambda { |start_datetime, end_datetime| { :conditions => [Event.sql_between_query, { :event_start => start_datetime.dup.utc, :event_end => end_datetime.dup.utc }] } }
-  named_scope :between, lambda { |start_datetime, end_datetime| { :conditions => ['events.start_datetime >= :start_datetime AND events.end_datetime <= :end_datetime', { :start_datetime => start_datetime.dup.utc, :end_datetime => end_datetime.dup.utc }] } }
-  named_scope :excluding, lambda { |excludes| excludes.blank? ? {} : { :conditions => ['events.id NOT IN (?)', excludes.collect { |e| e.id }] } }
+  scope :not_deleted, lambda { { :conditions => ['events.deleted_at IS ?', nil] } }
+  scope :current, lambda { { :conditions => ['events.start_datetime <= :now AND events.end_datetime >= :now', { :now => Time.now.utc }], :order => "events.start_datetime ASC, events.end_datetime ASC" } }
+  scope :future, lambda { { :conditions => ['events.start_datetime > ?', Time.now.utc], :order => "events.start_datetime ASC, events.end_datetime ASC" } }
+  scope :current_or_future, lambda { { :conditions => ['events.end_datetime >= ?', Time.now.utc], :order => "events.start_datetime ASC, events.end_datetime ASC" } }
+  scope :finished, lambda { { :conditions => ['events.end_datetime < ?', Time.now.utc], :order => "events.start_datetime DESC, events.end_datetime DESC" } }
+  scope :finished_a_month_ago, lambda { { :conditions => ['events.end_datetime < ?', 1.month.ago.utc] } }
+  scope :occuring_at, lambda { |start_datetime, end_datetime| { :conditions => [Event.sql_between_query, { :event_start => start_datetime.dup.utc, :event_end => end_datetime.dup.utc }] } }
+  scope :between, lambda { |start_datetime, end_datetime| { :conditions => ['events.start_datetime >= :start_datetime AND events.end_datetime <= :end_datetime', { :start_datetime => start_datetime.dup.utc, :end_datetime => end_datetime.dup.utc }] } }
+  scope :excluding, lambda { |excludes| excludes.blank? ? {} : { :conditions => ['events.id NOT IN (?)', excludes.collect { |e| e.id }] } }
 
   Event::States.each do |key,state_value|
-    named_scope key, :conditions => { :state => state_value }
+    scope key, :conditions => { :state => state_value }
     define_method "#{key.to_s}?" do
       state == state_value
     end
@@ -115,12 +138,12 @@ class Event < ActiveRecord::Base
   # Create a method similar to destroy. Returns true if cancel worked, else false
   def cancel
     if cancelled?
-      errors.add_to_base("Event has already been cancelled. You cannot cancel it twice.")
+      errors[:base] << "Event has already been cancelled. You cannot cancel it twice."
     elsif in_progress?
-      errors.add_to_base("Event cannot be cancelled because it is in progress.")
+      errors[:base] << "Event cannot be cancelled because it is in progress."
       false
     elsif finished?
-      errors.add_to_base("Event cannot be cancelled because it has already happened.")
+      errors[:base] << "Event cannot be cancelled because it has already happened."
       false
     else
       # We need to do this before cancelled! (when approved? is actually the right value)
@@ -306,10 +329,10 @@ class Event < ActiveRecord::Base
   def check_approver_set_if_approving_roster
     if approved?
       if approver_id.blank?
-        errors.add_to_base("Cannot approve a roster without an approver set.")
+        errors[:base] << "Cannot approve a roster without an approver set."
         false
       elsif !Staff.find_by_id(approver_id)
-        errors.add_to_base("Approver does not exist.")
+        errors[:base] << "Approver does not exist."
         false
       else
         true
@@ -331,8 +354,8 @@ class Event < ActiveRecord::Base
     return if ignore_event_conflicts
 
     unavailable_staff_rosterings.each do |rostering|
-      errors.add_to_base("#{rostering.staff.full_name} (#{rostering.role.name}) is not
-                          available at the new time of this event.")
+      errors[:base] << "#{rostering.staff.full_name} (#{rostering.role.name}) is not
+                          available at the new time of this event."
     end
 
     return unavailable_staff_rosterings.blank?
@@ -417,13 +440,13 @@ class Event < ActiveRecord::Base
   def ensure_event_deletable
     return true if cancelled?
     if not_started?
-      errors.add_to_base("You cannot delete this event because it has not started. Try canceling it instead.")
+      errors[:base] << "You cannot delete this event because it has not started. Try canceling it instead."
       false
     elsif in_progress?
-      errors.add_to_base("You cannot delete this event because it is in progress. Please wait until after.")
+      errors[:base] << "You cannot delete this event because it is in progress. Please wait until after."
       false
     elsif finished? && !finished_a_month_ago?
-      errors.add_to_base("You cannot delete this event because one month has not passed. Try again later.")
+      errors[:base] << "You cannot delete this event because one month has not passed. Try again later."
       false
     else
       true
@@ -469,7 +492,7 @@ class Event < ActiveRecord::Base
       end
     end
     if !ignore_event_conflicts && conflicts_with_another_event?
-      errors.add_to_base("The event you're adding conflicts with another one at this venue and time. Please change the venue or time below, or save again to ignore the conflicts (not advised).")
+      errors[:base] << "The event you're adding conflicts with another one at this venue and time. Please change the venue or time below, or save again to ignore the conflicts (not advised)."
       return false
     end
     true

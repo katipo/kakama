@@ -67,6 +67,7 @@ Feature: Availability
     When I press "Ignore Conflicts and Save Availability"
     Then I should see "Availability was successfully updated."
 
+  # TODO: Fix this test so that it works on a Sunday
   Scenario: Editing Availability locked by an admin, then unlocked
     Given I am logged in as "admin"
     And "Gerry" is available from 1 day from now till 2 days from now
@@ -101,41 +102,41 @@ Feature: Availability
   Scenario: Notifying administrators of availability change
     Given no emails have been sent
     When I go to edit my current availability
-    And I mark 2009-08-31 till 2009-09-02 as available
-    And I fill in "Notification Comment" with "The next few days availability"
+    And I mark 2021-08-23 till 2021-09-29 as available
+    And I fill in "availability_notification_comment" with "The next few days availability"
     And I press "Create Availability"
     Then all administrators should receive an email
     When they open the email
     Then they should see /Availability of Gerry has been changed/ in the email subject
     When they follow "View the new availability" in the email
-    Then I should see "Availability of Gerry for the week of 31-08-2009"
+    Then I should see "Availability of Gerry for the week of 23-08-2021"
 
   Scenario: Notifying the staff member of changes to their availability
     Given no emails have been sent
     And I am logged in as "admin"
     When I go to edit the current availability of "Gerry"
-    And I mark 2009-08-31 till 2009-09-02 as available
-    And I fill in "Notification Comment" with "I've set you to work now"
+    And I mark 2021-08-23 till 2021-09-29 as available
+    And I fill in "availability_notification_comment" with "I've set you to work now"
     And I press "Create Availability"
     Then the staff member "Gerry" should receive an email
     When they open the email
     Then they should see /Your availability has been changed by an administrator/ in the email subject
     When they follow "View the new availability" in the email
-    Then I should see "Availability of Gerry for the week of 31-08-2009"
+    Then I should see "Availability of Gerry for the week of 23-08-2021"
 
   Scenario: An administrator changing their own availability should send no notifications
     Given no emails have been sent
     And I am logged in as "admin"
     When I go to edit my current availability
     Then I should not see "Additional Information"
-    When I mark 2009-08-31 till 2009-09-02 as available
+    When I mark 2021-08-23 till 2021-09-29 as available
     And I press "Create Availability"
     Then all administrators should receive no emails
 
   Scenario: When notification comment is empty, no emails should be sent
     Given no emails have been sent
     When I go to edit my current availability
-    And I mark 2009-08-31 till 2009-09-02 as available
+    And I mark 2021-08-23 till 2021-09-29 as available
     And I press "Create Availability"
     Then all administrators should receive no emails
 

@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: venues
+#
+#  id          :integer          not null, primary key
+#  name        :string(255)      not null
+#  description :text
+#  deleted_at  :datetime
+#  created_at  :datetime
+#  updated_at  :datetime
+#
+
 class Venue < ActiveRecord::Base
   has_many :events
 
@@ -20,7 +32,7 @@ class Venue < ActiveRecord::Base
 
   def ensure_no_unfinished_events
     if has_unfinished_events?
-      errors.add_to_base("You cannot delete this venue because it contains unfinished events.")
+      errors.add(:base, "You cannot delete this venue because it contains unfinished events.")
       false
     else
       true

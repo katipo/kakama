@@ -14,14 +14,19 @@ module SoftDelete
     end
   end
 
-  # Taken from is_paranoid gem. Calls 'before_destroy' call back,
-  # marks the instance as destroyed, and calls 'after_destroy'
+  # Taken from paranoia gem, 
   def destroy(with_callbacks = true)
-    return false if with_callbacks && callback(:before_destroy) == false
-    update_attribute(:deleted_at, Time.now)
-    callback(:after_destroy) if with_callbacks
+    if with_callbacks
+      return false unless run_callbacks(:destroy) { touch_soft_delete_column }
+    else
+      touch_soft_delete_column
+    end
 
     freeze
+  end
+  
+  def touch_soft_delete_column
+    update_attribute(:deleted_at, Time.now)
   end
 
   # Duplicate of Rails default destroy method, but with ! to imply

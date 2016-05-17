@@ -4,7 +4,7 @@ class SchedulesController < ApplicationController
   before_filter :login_required
   before_filter :admin_required
 
-  active_scaffold :schedules do |config|
+  active_scaffold :schedule do |config|
     config.columns = [:name, :interval, :delay_mapping_id]
     list.columns = [:name]
 
