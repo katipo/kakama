@@ -20,10 +20,16 @@ Given /^that event has not started$/ do
   # do nothing, find_or_create_event makes events that have not started
 end
 
+def update_event(attributes)
+  params = ActionController::Parameters.new(attributes)
+
+  @event.update_attributes!(params.permit(*Event.strong_attributes))
+end
+
 Given /^that event starts in ([^\"]*)$/ do |time|
   reload_event
   time = parse_time(time)
-  @event.update_attributes!({
+  update_event({
     :start_datetime => time,
     :end_datetime => time + 1.day,
     :allow_past_events => true,
@@ -34,7 +40,7 @@ end
 Given /^that event ends in ([^\"]*)$/ do |time|
   reload_event
   time = parse_time(time)
-  @event.update_attributes!({
+  update_event( attributes = {
     :end_datetime => time,
     :allow_past_events => true,
     :ignore_event_conflicts => true
@@ -43,7 +49,7 @@ end
 
 Given /^that event is in progress$/ do
   reload_event
-  @event.update_attributes!({
+  update_event({
     :start_datetime => 1.day.ago,
     :end_datetime => 1.day.from_now,
     :allow_past_events => true
@@ -53,7 +59,7 @@ end
 Given /^that event finished ([^\"]*)$/ do |time|
   reload_event
   time = parse_time(time)
-  @event.update_attributes!({
+  update_event({
     :start_datetime => (time - 1.minute),
     :end_datetime => time,
     :allow_past_events => true

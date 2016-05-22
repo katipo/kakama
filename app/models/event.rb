@@ -20,6 +20,8 @@
 #
 
 class Event < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   has_many :rosterings, :dependent => :destroy
   has_many :staff, :through => :rosterings
   has_many :email_logs, :dependent => :destroy
@@ -127,6 +129,26 @@ class Event < ActiveRecord::Base
     define_method "#{type}_staff_for" do |role|
       rosterings.send(type.to_sym).with_role(role)
     end
+  end
+
+  def self.strong_attributes
+    [
+      :allow_past_events,
+      :cancel_unavailable_staff,
+      :clear_unconfirmed_rosterings,
+      :description,
+      :end_datetime,
+      :ignore_event_conflicts,
+      :name,
+      :recurring,
+      :roles,
+      :schedule_id,
+      :skip_notification_email,
+      :start_datetime,
+      :state,
+      :venue_id
+      # In EventService class, all numeric key values are permitted for roles
+    ]
   end
 
   # Gets run by a cron job after system reboot
