@@ -18,41 +18,41 @@ When /^I update roles to require (\d+) "([^\"]*)"(\swithout auto rostering)?$/ d
     @event.roles[@role.id.to_s] = amount.to_s
     Event.update_all(:roles => @event.roles.to_yaml, :id => @event.id)
   else
-    And "I fill in \"#{role_name}\" with \"#{amount}\""
-    And 'I press "Generate Staff Lists to fill required roles"'
-    Then 'I should see "Event was successfully updated."'
+    step "I fill in \"#{role_name}\" with \"#{amount}\""
+    step 'I press "Generate Staff Lists to fill required roles"'
+    step 'I should see "Event was successfully updated."'
   end
 end
 
 When /^I finalize that events roster$/ do
-  When 'I press "Finalize Roster for this Event"'
+  step 'I press "Finalize Roster for this Event"'
 end
 
 When /^I approve "([^\"]*)" as an "([^\"]*)" at the event$/ do |full_name, role_name|
-  When 'I go to view the event'
-  And "I update roles to require 1 \"#{role_name}\""
-  When "I follow \"approve\" within \".selected_staff .#{role_name.downcase.gsub(/\s/, '_')}\""
-  Then "I should see \"#{full_name} has been approved as a #{role_name} at this event.\""
+  step 'I go to view the event'
+  step "I update roles to require 1 \"#{role_name}\""
+  step "I follow \"approve\" within \".selected_staff .#{role_name.downcase.gsub(/\s/, '_')}\""
+  step "I should see \"#{full_name} has been approved as a #{role_name} at this event.\""
 end
 
 When /^I manually add "([^\"]*)" as an "([^\"]*)" at the event$/ do |full_name, role_name|
-  When "I update roles to require 1 \"#{role_name}\" without auto rostering"
-  And 'I go to view the event'
-  And "I follow \"add\" within \".selected_staff .#{role_name.downcase.gsub(/\s/, '_')}\""
-  Then 'I should see "Search for member to roster"'
-  And "I should see \"#{full_name}\""
+  step "I update roles to require 1 \"#{role_name}\" without auto rostering"
+  step 'I go to view the event'
+  step "I follow \"add\" within \".selected_staff .#{role_name.downcase.gsub(/\s/, '_')}\""
+  step 'I should see "Search for member to roster"'
+  step "I should see \"#{full_name}\""
 
-  When "I follow \"#{full_name}\""
-  Then "I should see \"#{full_name} has been added as a #{role_name} to this event.\""
-  And "I should see \"(1/1)\" within \".selected_staff .#{role_name.downcase.gsub(/\s/, '_')}\""
-  And "I should see \"#{full_name}\" within \".selected_staff .#{role_name.downcase.gsub(/\s/, '_')}\""
+  step "I follow \"#{full_name}\""
+  step "I should see \"#{full_name} has been added as a #{role_name} to this event.\""
+  step "I should see \"(1/1)\" within \".selected_staff .#{role_name.downcase.gsub(/\s/, '_')}\""
+  step "I should see \"#{full_name}\" within \".selected_staff .#{role_name.downcase.gsub(/\s/, '_')}\""
 end
 
 Then /^"([^\"]*)" should receive an email containing details about their new rostering$/ do |full_name|
-  Then "the staff member \"#{full_name}\" should receive an email"
-  When 'they open the email'
-  Then 'they should see /You have been scheduled to work at a new event/ in the email subject'
-  And 'they should see "accept or decline this event by visiting your dashboard" in the email body'
+  step "the staff member \"#{full_name}\" should receive an email"
+  step 'they open the email'
+  step 'they should see /You have been scheduled to work at a new event/ in the email subject'
+  step 'they should see "accept or decline this event by visiting your dashboard" in the email body'
 end
 
 Then /^the rostering for "([^\"]*)" at the event should be "([^\"]*)"(\sby the system)?$/ do |full_name, state, by_system|

@@ -8,7 +8,7 @@ end
 
 Then /^all administrators should receive ([^\"]*) emails?$/ do |amount|
   Setting.site_administrator_emails.each do |admin_email|
-    Then "\"#{admin_email}\" should receive #{amount} email"
+    step "\"#{admin_email}\" should receive #{amount} email"
   end
 end
 
@@ -36,10 +36,11 @@ private
 
 # Takes a string and parses it into a time object via Rails time extensions
 def parse_time(time)
-  return Time.parse(time) if time =~ /^\d{4}-\d{2}-\d{2}$/ # dates like 2009-08-31
-  return Time.now if %w{ today now }.include?(time)
-  time.gsub!('from now', 'from_now') if time.include?('from now') # "1 day from now" -> "1 day from_now"
-  eval(time.split.join('.')) # "1 day from_now" -> eval("1.day.from_now")
+  # return Time.parse(time) if time =~ /^\d{4}-\d{2}-\d{2}$/ # dates like 2009-08-31
+  # return Time.now if %w{ today now }.include?(time)
+  # time.gsub!('from now', 'from_now') if time.include?('from now') # "1 day from now" -> "1 day from_now"
+  # eval(time.split.join('.')) # "1 day from_now" -> eval("1.day.from_now")
+  Chronic.parse(time)
 rescue
   nil
 end

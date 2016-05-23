@@ -36,6 +36,7 @@ gem 'prawn-layout', '0.7.2', :require => 'prawn/layout'
 gem 'pg'
 gem 'seed-fu', '~> 2.3.3'
 gem 'spreadsheet_on_rails', '~> 1.0.0'
+gem 'mysql2', '~> 0.3.10', require: false
 
 #Assets
 group :assets do
