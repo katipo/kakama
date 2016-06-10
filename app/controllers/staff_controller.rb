@@ -26,7 +26,7 @@ class StaffController < ApplicationController
   end
 
   def create
-    @staff = Staff.new(params[:staff])
+    @staff = Staff.new(staff_params)
 
     if @staff.save
       flash[:notice] = 'Staff was successfully created. '
@@ -45,7 +45,7 @@ class StaffController < ApplicationController
     @staff = staff_from_id_else_current
     @staff.skip_current_password = admin? # skips current password check
 
-    if @staff.update_attributes(params[:staff])
+    if @staff.update_attributes(staff_params)
       flash[:notice] = 'Staff was successfully updated.'
       redirect_to(@staff)
     else
@@ -95,6 +95,15 @@ class StaffController < ApplicationController
   end
 
   private
+
+  def staff_password_params
+    [:password, :password_confirmation, :current_password]
+  end
+
+  def staff_params
+    params.require(:staff)
+      .permit(*(Staff.strong_attributes + staff_password_params))
+  end
 
   def current_staff_can_view_profile
     unless admin? || staff_from_id_else_current == current_staff

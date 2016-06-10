@@ -68,6 +68,7 @@ Feature: Availability
     Then I should see "Availability was successfully updated."
 
   Scenario: Editing Availability locked by an admin, then unlocked
+    Given it is currently next wednesday
     Given I am logged in as "admin"
     And "Gerry" is available from 2 day ago till 2 days from now
     When I go to edit the current availability of "Gerry"

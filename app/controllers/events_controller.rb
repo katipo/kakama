@@ -17,7 +17,7 @@ class EventsController < ApplicationController
   end
 
   def new
-    @event = Event.new(:venue_id => params[:venue_id])
+    @event = Event.new(venue_id: params[:venue_id])
   end
 
   def edit
@@ -25,7 +25,7 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(params[:event])
+    @event = Event.new(event_params)
     @event.organiser_id = current_staff.id
 
     if @event.save
@@ -42,7 +42,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     @event.approver_id = current_staff.id if params[:event][:state] && params[:event][:state] == 'approved'
 
-    if @event.update_attributes(params[:event])
+    if @event.update_attributes(event_params)
       flash[:notice] = 'Event was successfully updated.'
       redirect_to(@event)
     else
@@ -136,6 +136,10 @@ class EventsController < ApplicationController
   end
 
   private
+
+  def event_params
+    EventService.get_strong_attributes(params)
+  end
 
   def redirect_staff_unless_event_approved
     # By default, Event.find will exclude cancelled and deleted
