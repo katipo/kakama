@@ -24,3 +24,4 @@ public/assets/
 public/stylesheets/
 public/javascripts/
 .tags*
+vendor/bundle
