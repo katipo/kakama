@@ -74,9 +74,19 @@ Feature: Events
     When I go to the past events list
     Then I should see "Special Day"
 
-  Scenario: Delete Event a month after finished
-    Given an event "Special Day" exists at "Civic Square"
-    And that event finished 1 month ago
+  Scenario: Delete Event a month after finished without DST adjustment
+    Given it is currently 9th July 2016
+    And an event "Special Day" exists at "Civic Square"
+    And that event finished 32 days ago
+    When I go to delete the event
+    And I press "Yes, I'm sure."
+    Then I should see "Event was successfully destroyed."
+    Then I should not see "Special Day"
+
+  Scenario: Delete Event a month after finished with DST adjustment
+    Given it is currently 9th November 2016
+    And an event "Special Day" exists at "Civic Square"
+    And that event finished 32 days ago
     When I go to delete the event
     And I press "Yes, I'm sure."
     Then I should see "Event was successfully destroyed."
