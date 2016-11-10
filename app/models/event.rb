@@ -217,7 +217,7 @@ class Event < ActiveRecord::Base
   end
 
   def finished_a_month_ago?
-    end_datetime < 1.month.ago
+    end_datetime.utc < DateTime.now.utc - 1.month
   end
 
   def editable?
