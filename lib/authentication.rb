@@ -35,15 +35,27 @@ module Authentication
 
     def login_required
       unless current_staff
-        flash[:error] = "The page you requested requires you be logged in."
-        redirect_to login_path
+        respond_to do |format|
+          format.html do
+            flash[:error] = "The page you requested requires you be logged in."
+            redirect_to login_path
+          end
+
+          format.json { render :nothing => true, :status => :unauthorized }
+        end
       end
     end
 
     def admin_required
       unless admin?
-        flash[:error] = "The page you requested requires you be an admin."
-        redirect_to dashboard_path
+        respond_to do |format|
+          format.html do
+            flash[:error] = "The page you requested requires you be an admin."
+            redirect_to dashboard_path
+          end
+
+          format.json { render :nothing => true, :status => :unauthorized }
+        end
       end
     end
 
