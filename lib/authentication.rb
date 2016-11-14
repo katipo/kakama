@@ -8,7 +8,14 @@ module Authentication
     private
 
     def current_staff_session
-      @current_staff_session ||= StaffSession.find
+      @current_staff_session ||= staff_session_from_api_key || StaffSession.find
+    end
+
+    def staff_session_from_api_key
+      if api_key = params[:api_key]
+        user = Staff.find_by_single_access_token(api_key)
+        StaffSession.new(user) unless user.blank?
+      end
     end
 
     def current_staff
