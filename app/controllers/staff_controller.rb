@@ -47,7 +47,14 @@ class StaffController < ApplicationController
       end
       redirect_to(@staff)
     else
-      render :action => "new"
+      respond_to do |format|
+        format.html { render :action => "new" }
+        format.json do
+          render json: {
+            errors: @staff.errors
+          }, status: :bad_request
+        end
+      end
     end
   end
 
