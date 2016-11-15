@@ -61,6 +61,7 @@ group :development do
   gem 'spring-commands-cucumber'
   gem 'annotate'
   gem 'factory_girl_rails', '~> 4.5.0'
+  gem 'swagger-docs'
 end
 
 #Test group
