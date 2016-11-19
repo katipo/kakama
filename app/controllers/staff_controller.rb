@@ -41,6 +41,22 @@ class StaffController < ApplicationController
     end
   end
 
+  swagger_path '/staffs/{id}' do
+    operation :get do |operation|
+      key :description, 'Fetches a staff record given an id'
+      key :notes, ""
+
+      ApplicationController.add_common_params(operation)
+
+      parameter name: :id,
+                in: :path,
+                required: true,
+                type: :string,
+                description: 'Staff ID'
+
+    end
+  end
+
   def show
     @staff = staff_from_id_else_current
 
