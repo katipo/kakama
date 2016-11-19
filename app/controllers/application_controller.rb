@@ -11,8 +11,11 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def self.add_common_params(api)
-    api.param :form, :api_key, :string, :required, 'Authentication token'
+  def self.add_common_params(operation)
+    operation.parameter name: :api_key,
+                        required: true,
+                        type: :string,
+                        description: 'Authentication token'
   end
 
   private
