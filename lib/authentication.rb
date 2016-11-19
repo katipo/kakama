@@ -14,7 +14,7 @@ module Authentication
     def staff_session_from_api_key
       if api_key = params[:api_key]
         user = Staff.find_by_single_access_token(api_key)
-        StaffSession.create(user) unless user.blank?
+        return StaffSession.create(user) unless user.blank?
       end
     end
 
