@@ -13,6 +13,9 @@ class StaffController < ApplicationController
     operation :get do |operation|
       key :description, 'Fetches all staff records'
       key :notes, "This lists all the active staff"
+      key :tags, [
+        'staff'
+      ]
 
       ApplicationController.add_common_params(operation)
 
@@ -46,6 +49,10 @@ class StaffController < ApplicationController
       key :description, 'Fetches a staff record given an id'
       key :notes, ""
 
+      key :tags, [
+        'staff'
+      ]
+
       ApplicationController.add_common_params(operation)
 
       parameter name: :id,
@@ -54,6 +61,15 @@ class StaffController < ApplicationController
                 type: :string,
                 description: 'Staff ID'
 
+      response 200 do
+        key :description, 'staff response'
+        schema do
+          key :type, :array
+          items do
+            key :'$ref', :Staff
+          end
+        end
+      end
     end
   end
 
@@ -73,6 +89,35 @@ class StaffController < ApplicationController
 
   def edit
     @staff = staff_from_id_else_current
+  end
+
+  swagger_path '/staffs/' do
+    operation :post do |operation|
+      key :description, "Creates a staff record given it's attributes"
+      ApplicationController.add_common_params(operation)
+
+      key :tags, [
+        'staff'
+      ]
+      parameter do
+        key :name, :staff
+        key :in, :body
+        key :description, 'Staff record to create'
+        key :required, true
+        schema do
+          property :staff do
+            key :'$ref', :StaffInput
+          end
+        end
+      end
+
+      response 200 do
+        key :description, 'staff response'
+        schema do
+          key :'$ref', :Staff
+        end
+      end
+    end
   end
 
   def create

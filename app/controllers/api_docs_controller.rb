@@ -32,6 +32,7 @@ class ApiDocsController < ActionController::Base
   # A list of all classes that have swagger_* declarations.
   SWAGGERED_CLASSES = [
     StaffController,
+    Staff,
     self,
   ].freeze
 

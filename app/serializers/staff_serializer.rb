@@ -6,5 +6,6 @@ class StaffSerializer < ActiveModel::Serializer
              :full_name,
              :start_date,
              :admin_notes,
-             :last_request_at
+             :last_request_at,
+             :role_ids
 end
