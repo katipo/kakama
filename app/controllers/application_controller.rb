@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
 
   def self.add_common_params(operation)
     operation.parameter name: :api_key,
+                        in: :query,
                         required: true,
                         type: :string,
                         description: 'Authentication token'
