@@ -1,10 +1,34 @@
 class StaffController < ApplicationController
+  include Swagger::Blocks
+
   before_filter :login_required
   before_filter :admin_required, :except => [:dashboard, :show, :edit, :update]
   before_filter :current_staff_can_view_profile, :only => [:dashboard, :show, :edit, :update]
 
   def dashboard
     @staff = staff_from_id_else_current
+  end
+
+  swagger_path '/staffs' do
+    operation :get do |operation|
+      key :description, 'Fetches all staff records'
+      key :notes, "This lists all the active staff"
+
+      ApplicationController.add_common_params(operation)
+
+      parameter name: :search_text,
+                in: :query,
+                required: false,
+                type: :string,
+                description: 'Partial search on full name'
+
+      parameter name: :page,
+                in: :query,
+                required: false,
+                type: :integer,
+                description: 'Page number'
+
+    end
   end
 
   def index
