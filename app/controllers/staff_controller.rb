@@ -148,10 +148,24 @@ class StaffController < ApplicationController
     @staff.skip_current_password = admin? # skips current password check
 
     if @staff.update_attributes(staff_params)
-      flash[:notice] = 'Staff was successfully updated.'
-      redirect_to(@staff)
+      respond_to do |format|
+        format.html do
+          flash[:notice] = 'Staff was successfully updated.'
+          redirect_to(@staff)
+        end
+        format.json do
+          render nothing: true, status: :ok
+        end
+      end
     else
-      render :action => "edit"
+      respond_to do |format|
+        format.html { render :action => "edit" }
+        format.json do
+          render json: {
+            errors: @staff.errors
+          }, status: :bad_request
+        end
+      end
     end
   end
 
