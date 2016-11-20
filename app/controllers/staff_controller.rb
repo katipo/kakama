@@ -143,6 +143,42 @@ class StaffController < ApplicationController
     end
   end
 
+  swagger_path '/staffs/{id}' do
+    operation :put do |operation|
+      key :description, "Updates a staff record given it's attributes"
+      ApplicationController.add_common_params(operation)
+
+      key :tags, [
+        'staff'
+      ]
+
+      parameter name: :id,
+                in: :path,
+                required: true,
+                type: :string,
+                description: 'Staff ID'
+
+      parameter do
+        key :name, :staff
+        key :in, :body
+        key :description, 'Staff record to update'
+        key :required, true
+        schema do
+          property :staff do
+            key :'$ref', :StaffInput
+          end
+        end
+      end
+
+      response 200 do
+        key :description, 'staff response'
+        schema do
+          key :'$ref', :Staff
+        end
+      end
+    end
+  end
+
   def update
     @staff = staff_from_id_else_current
     @staff.skip_current_password = admin? # skips current password check
