@@ -209,10 +209,24 @@ class StaffController < ApplicationController
     @staff = staff_from_id_else_current
     if request.delete?
       if @staff.destroy
-        flash[:notice] = "Staff was successfully destroyed."
+        respond_to do |format|
+          format.html { flash[:notice] = "Staff was successfully destroyed." }
+          format.json do
+            return render nothing: true, status: :ok
+          end
+        end
+
       else
-        flash[:error] = @staff.errors['base']
+        respond_to do |format|
+          format.html { flash[:error] = @staff.errors['base'] }
+          format.json do
+            return render json: {
+              errors: @staff.errors
+            }, status: :bad_request
+          end
+        end
       end
+
       redirect_to(staffs_path)
     end
   end
