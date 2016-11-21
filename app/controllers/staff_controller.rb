@@ -205,6 +205,27 @@ class StaffController < ApplicationController
     end
   end
 
+  swagger_path '/staffs/{id}' do
+    operation :delete do |operation|
+      key :description, "Deletes a staff record given it's id"
+      ApplicationController.add_common_params(operation)
+
+      key :tags, [
+        'staff'
+      ]
+
+      parameter name: :id,
+                in: :path,
+                required: true,
+                type: :string,
+                description: 'Staff ID'
+
+      response 200 do
+        key :description, 'record successfully destroyed'
+      end
+    end
+  end
+
   def destroy
     @staff = staff_from_id_else_current
     if request.delete?
