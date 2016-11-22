@@ -34,6 +34,7 @@ class ApiDocsController < ActionController::Base
     StaffController,
     Staff,
     EventsController,
+    Event,
     self,
   ].freeze
 

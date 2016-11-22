@@ -55,8 +55,41 @@ class EventsController < ApplicationController
     end
   end
 
+  swagger_path '/events/{id}' do
+    operation :get do |operation|
+      key :description, 'Fetches an event record given an id'
+      key :notes, ""
+
+      key :tags, [
+        'events'
+      ]
+
+      ApplicationController.add_common_params(operation)
+
+      parameter name: :id,
+                in: :path,
+                required: true,
+                type: :string,
+                description: 'Event ID'
+
+      response 200 do
+        key :description, 'event response'
+        schema do
+          key :type, :array
+          items do
+            key :'$ref', :Event
+          end
+        end
+      end
+    end
+  end
+
   def show
     # event is fetched in a before filter
+    respond_to do |format|
+      format.html
+      format.json { render json: @event}
+    end
   end
 
   def new

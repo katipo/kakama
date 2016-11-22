@@ -20,6 +20,7 @@
 #
 
 class Event < ActiveRecord::Base
+  include Swagger::Blocks
   include ActiveModel::ForbiddenAttributesProtection
 
   has_many :rosterings, :dependent => :destroy
@@ -129,6 +130,24 @@ class Event < ActiveRecord::Base
     define_method "#{type}_staff_for" do |role|
       rosterings.send(type.to_sym).with_role(role)
     end
+  end
+
+  swagger_schema :Event do
+    key :required, [:venue_id, :name, :start_datetime, :end_datetime, :organiser_id]
+    property :venue_id,       type: :string,  example: '1'
+    property :recurring,      type: :boolean, example: 'false'
+    property :schedule_id,    type: :integer, example: '1', format: :int64
+    property :name,           type: :string,  example: 'event name'
+    property :description,    type: :string,  example: 'event description'
+    property :start_datetime, type: :string,  example: '9999-01-31T00:00:00+01:00'
+    property :end_datetime,   type: :string,  example: '9999-01-31T00:00:00+01:00'
+    property :organiser_id,   type: :integer, example: '1', format: :int64
+    property :state,
+             type: :string,
+             example: 'approved',
+             enum: %w(working, approved, cancelled)
+    property :created_at,     type: :string,  example: '2016-11-22T22:35:33+01:00'
+    property :updated_at,     type: :string,  example: '2016-11-22T22:35:33+01:00'
   end
 
   def self.strong_attributes
