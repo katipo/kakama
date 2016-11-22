@@ -100,6 +100,35 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
   end
 
+  swagger_path '/events/' do
+    operation :post do |operation|
+      key :description, "Creates a staff record given it's attributes"
+      ApplicationController.add_common_params(operation)
+
+      key :tags, [
+        'events'
+      ]
+      parameter do
+        key :name, :event
+        key :in, :body
+        key :description, 'Event record to create'
+        key :required, true
+        schema do
+          property :event do
+            key :'$ref', :Event
+          end
+        end
+      end
+
+      response 200 do
+        key :description, 'staff response'
+        schema do
+          key :'$ref', :Event
+        end
+      end
+    end
+  end
+
   def create
     @event = Event.new(event_params)
     @event.organiser_id = current_staff.id
@@ -108,9 +137,19 @@ class EventsController < ApplicationController
       flash[:notice] = 'Event was successfully created.'
       redirect_to(@event)
     else
-      flash[:error] = @event.errors.full_messages.join(', ')
+      error_messages = @event.errors.full_messages.join(', ')
 
-      render :action => "new"
+      respond_to do |format|
+        format.html do
+          flash[:error] = error_messages
+          render :action => "new"
+        end
+        format.json do
+          render json: {
+            errors: error_messages
+          }, status: :bad_request
+        end
+      end
     end
   end
 
