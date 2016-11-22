@@ -212,14 +212,48 @@ class EventsController < ApplicationController
     end
   end
 
+  swagger_path '/staffs/{id}' do
+    operation :delete do |operation|
+      key :description, "Deletes an event record given it's id"
+      ApplicationController.add_common_params(operation)
+
+      key :tags, [
+        'events'
+      ]
+
+      parameter name: :id,
+                in: :path,
+                required: true,
+                type: :string,
+                description: 'Event ID'
+
+      response 200 do
+        key :description, 'record successfully destroyed'
+      end
+    end
+  end
+
   def destroy
     # event is fetched in a before filter
     if request.delete?
       if Event.with_exclusive_scope { @event.destroy }
-        flash[:notice] = "Event was successfully destroyed."
+        respond_to do |format|
+          format.html { flash[:notice] = "Event was successfully destroyed." }
+          format.json do
+            return render nothing: true, status: :ok
+          end
+        end
       else
-        flash[:error] = @event.errors['base']
+        respond_to do |format|
+          format.html { flash[:error] = @event.errors['base'] }
+          format.json do
+            return render json: {
+              errors: @event.errors
+            }, status: :bad_request
+          end
+        end
       end
+
       redirect_to(events_url)
     end
   end
