@@ -33,6 +33,7 @@ class ApiDocsController < ActionController::Base
   SWAGGERED_CLASSES = [
     StaffController,
     Staff,
+    EventsController,
     self,
   ].freeze
 

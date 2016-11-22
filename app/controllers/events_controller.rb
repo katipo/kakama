@@ -1,8 +1,38 @@
 class EventsController < ApplicationController
+  include Swagger::Blocks
+
   before_filter :login_required
   before_filter :admin_required, :except => [:show]
   before_filter :redirect_staff_unless_event_approved, :only => [:show, :destroy]
   before_filter :redirect_staff_unless_event_editable, :only => [:edit, :update, :roster_staff, :alter_rosterings]
+
+
+  swagger_path '/events' do
+    operation :get do |operation|
+      key :description, 'Fetches all event records'
+      key :notes, "This lists all events"
+      key :tags, [
+        'events'
+      ]
+
+      ApplicationController.add_common_params(operation)
+
+      parameter name: :type,
+                in: :query,
+                required: false,
+                type: :string,
+                description: 'Filter by event type',
+                notes: 'If not specified, returns all approved current and future events. ' +
+                       ' Valid values: "past", "working", "cancelled".'
+
+      parameter name: :page,
+                in: :query,
+                required: false,
+                type: :integer,
+                description: 'Page number'
+
+    end
+  end
 
   def index
     @current_events = Event.approved.current.paginate :page => params[:page] if params[:type].blank?
@@ -10,6 +40,19 @@ class EventsController < ApplicationController
     @past_events = Event.finished.paginate :page => params[:page] if params[:type] == 'past'
     @working_events = Event.working.current_or_future.paginate :page => params[:page] if params[:type] == 'working'
     @cancelled_events = Event.with_exclusive_scope { Event.not_deleted.cancelled.paginate :page => params[:page] } if params[:type] == 'cancelled'
+
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: {
+          current_events:   @current_events,
+          upcoming_events:  @upcoming_events,
+          past_events:      @past_events,
+          working_events:   @working_events,
+          cancelled_events: @cancelled_events
+        }
+      end
+    end
   end
 
   def show
