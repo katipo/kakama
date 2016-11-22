@@ -121,7 +121,7 @@ class EventsController < ApplicationController
       end
 
       response 200 do
-        key :description, 'staff response'
+        key :description, 'returns the created event record'
         schema do
           key :'$ref', :Event
         end
@@ -153,15 +153,62 @@ class EventsController < ApplicationController
     end
   end
 
+  swagger_path '/events/{id}' do
+    operation :put do |operation|
+      key :description, "Updates an event record given it's attributes"
+      ApplicationController.add_common_params(operation)
+
+      key :tags, [
+        'events'
+      ]
+
+      parameter name: :id,
+                in: :path,
+                required: true,
+                type: :string,
+                description: 'Event ID'
+
+      parameter do
+        key :name, :event
+        key :in, :body
+        key :description, 'Event record to update'
+        key :required, true
+        schema do
+          property :event do
+            key :'$ref', :Event
+          end
+        end
+      end
+
+      response 200 do
+        key :description, 'record successfully updated'
+      end
+    end
+  end
+
   def update
     @event = Event.find(params[:id])
     @event.approver_id = current_staff.id if params[:event][:state] && params[:event][:state] == 'approved'
 
     if @event.update_attributes(event_params)
-      flash[:notice] = 'Event was successfully updated.'
-      redirect_to(@event)
+      respond_to do |format|
+        format.html do
+          flash[:notice] = 'Event was successfully updated.'
+          redirect_to(@event)
+        end
+        format.json do
+          render nothing: true, status: :ok
+        end
+      end
     else
-      render :action => "edit"
+      respond_to do |format|
+        format.html { render :action => "edit" }
+        format.json do
+          render json: {
+            errors: @event.errors
+          }, status: :bad_request
+        end
+      end
     end
   end
 
