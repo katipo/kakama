@@ -112,7 +112,7 @@ class StaffController < ApplicationController
       end
 
       response 200 do
-        key :description, 'staff response'
+        key :description, 'returns the created staff record'
         schema do
           key :'$ref', :Staff
         end
@@ -171,10 +171,7 @@ class StaffController < ApplicationController
       end
 
       response 200 do
-        key :description, 'staff response'
-        schema do
-          key :'$ref', :Staff
-        end
+        key :description, 'record successfully updated'
       end
     end
   end
