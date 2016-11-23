@@ -11,8 +11,8 @@ class StaffController < ApplicationController
 
   swagger_path '/staffs' do
     operation :get do |operation|
-      key :description, 'Fetches all staff records'
-      key :notes, "This lists all the active staff"
+      key :description, 'Fetches all records'
+      key :notes, "This lists all the active records"
       key :tags, [
         'staff'
       ]
@@ -46,7 +46,7 @@ class StaffController < ApplicationController
 
   swagger_path '/staffs/{id}' do
     operation :get do |operation|
-      key :description, 'Fetches a staff record given an id'
+      key :description, 'Fetches a record given an id'
       key :notes, ""
 
       key :tags, [
@@ -62,7 +62,7 @@ class StaffController < ApplicationController
                 description: 'Staff ID'
 
       response 200 do
-        key :description, 'staff response'
+        key :description, 'record found'
         schema do
           key :type, :array
           items do
@@ -93,7 +93,7 @@ class StaffController < ApplicationController
 
   swagger_path '/staffs/' do
     operation :post do |operation|
-      key :description, "Creates a staff record given it's attributes"
+      key :description, "Creates a record given it's attributes"
       ApplicationController.add_common_params(operation)
 
       key :tags, [
@@ -112,7 +112,7 @@ class StaffController < ApplicationController
       end
 
       response 200 do
-        key :description, 'returns the created staff record'
+        key :description, 'record created'
         schema do
           key :'$ref', :Staff
         end
@@ -145,7 +145,7 @@ class StaffController < ApplicationController
 
   swagger_path '/staffs/{id}' do
     operation :put do |operation|
-      key :description, "Updates a staff record given it's attributes"
+      key :description, "Updates a record given it's attributes"
       ApplicationController.add_common_params(operation)
 
       key :tags, [
@@ -171,7 +171,7 @@ class StaffController < ApplicationController
       end
 
       response 200 do
-        key :description, 'record successfully updated'
+        key :description, 'record updated'
       end
     end
   end
@@ -204,7 +204,7 @@ class StaffController < ApplicationController
 
   swagger_path '/staffs/{id}' do
     operation :delete do |operation|
-      key :description, "Deletes a staff record given it's id"
+      key :description, "Deletes a record given it's id"
       ApplicationController.add_common_params(operation)
 
       key :tags, [
@@ -218,7 +218,7 @@ class StaffController < ApplicationController
                 description: 'Staff ID'
 
       response 200 do
-        key :description, 'record successfully destroyed'
+        key :description, 'record destroyed'
       end
     end
   end

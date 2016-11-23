@@ -9,8 +9,8 @@ class EventsController < ApplicationController
 
   swagger_path '/events' do
     operation :get do |operation|
-      key :description, 'Fetches all event records'
-      key :notes, "This lists all events"
+      key :description, 'Fetches all records'
+      key :notes, "This lists all records"
       key :tags, [
         'events'
       ]
@@ -21,7 +21,7 @@ class EventsController < ApplicationController
                 in: :query,
                 required: false,
                 type: :string,
-                description: 'Filter by event type',
+                description: 'Filter by type',
                 notes: 'If not specified, returns all approved current and future events. ' +
                        ' Valid values: "past", "working", "cancelled".'
 
@@ -57,7 +57,7 @@ class EventsController < ApplicationController
 
   swagger_path '/events/{id}' do
     operation :get do |operation|
-      key :description, 'Fetches an event record given an id'
+      key :description, 'Fetches a record given an id'
       key :notes, ""
 
       key :tags, [
@@ -73,7 +73,7 @@ class EventsController < ApplicationController
                 description: 'Event ID'
 
       response 200 do
-        key :description, 'event response'
+        key :description, 'record found'
         schema do
           key :type, :array
           items do
@@ -102,7 +102,7 @@ class EventsController < ApplicationController
 
   swagger_path '/events/' do
     operation :post do |operation|
-      key :description, "Creates a staff record given it's attributes"
+      key :description, "Creates a record given it's attributes"
       ApplicationController.add_common_params(operation)
 
       key :tags, [
@@ -121,7 +121,7 @@ class EventsController < ApplicationController
       end
 
       response 200 do
-        key :description, 'returns the created event record'
+        key :description, 'record created'
         schema do
           key :'$ref', :Event
         end
@@ -155,7 +155,7 @@ class EventsController < ApplicationController
 
   swagger_path '/events/{id}' do
     operation :put do |operation|
-      key :description, "Updates an event record given it's attributes"
+      key :description, "Updates a record given it's ID and attributes"
       ApplicationController.add_common_params(operation)
 
       key :tags, [
@@ -181,7 +181,7 @@ class EventsController < ApplicationController
       end
 
       response 200 do
-        key :description, 'record successfully updated'
+        key :description, 'record updated'
       end
     end
   end
@@ -214,7 +214,7 @@ class EventsController < ApplicationController
 
   swagger_path '/staffs/{id}' do
     operation :delete do |operation|
-      key :description, "Deletes an event record given it's id"
+      key :description, "Deletes a record given it's id"
       ApplicationController.add_common_params(operation)
 
       key :tags, [
