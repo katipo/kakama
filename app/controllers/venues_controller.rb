@@ -13,10 +13,10 @@ class VenuesController < ApplicationController
   # some of the methods added by the controller
   include DisplayDeleteErrors
 
-  swagger_path '/venues' do
+  swagger_path "/#{self.controller_name}" do
     operation :get do |operation|
       key :description, 'Lists all records'
-      key :notes, "This lists all venues"
+      key :notes, "This lists all records"
       key :tags, [
         'venues'
       ]
@@ -30,38 +30,7 @@ class VenuesController < ApplicationController
                 description: 'Page number'
 
     end
-  end
 
-  swagger_path '/venues/{id}' do
-    operation :get do |operation|
-      key :description, 'Fetches a record given an id'
-      key :notes, ""
-
-      key :tags, [
-        'venues'
-      ]
-
-      ApplicationController.add_common_params(operation)
-
-      parameter name: :id,
-                in: :path,
-                required: true,
-                type: :string,
-                description: 'Venue ID'
-
-      response 200 do
-        key :description, 'record found'
-        schema do
-          key :type, :array
-          items do
-            key :'$ref', :Venue
-          end
-        end
-      end
-    end
-  end
-
-  swagger_path '/venues/' do
     operation :post do |operation|
       key :description, "Creates a record given it's attributes"
       ApplicationController.add_common_params(operation)
@@ -72,7 +41,7 @@ class VenuesController < ApplicationController
       parameter do
         key :name, :venue
         key :in, :body
-        key :description, 'Venue record to create'
+        key :description, 'Record to create'
         key :required, true
         schema do
           property :record do
@@ -90,7 +59,34 @@ class VenuesController < ApplicationController
     end
   end
 
-  swagger_path '/venues/{id}' do
+  swagger_path "/#{self.controller_name}/{id}" do
+    operation :get do |operation|
+      key :description, 'Fetches a record given an id'
+      key :notes, ""
+
+      key :tags, [
+        'venues'
+      ]
+
+      ApplicationController.add_common_params(operation)
+
+      parameter name: :id,
+                in: :path,
+                required: true,
+                type: :string,
+                description: 'Record ID'
+
+      response 200 do
+        key :description, 'record found'
+        schema do
+          key :type, :array
+          items do
+            key :'$ref', :Venue
+          end
+        end
+      end
+    end
+
     operation :put do |operation|
       key :description, "Updates a record given it's attributes"
       ApplicationController.add_common_params(operation)
@@ -103,12 +99,12 @@ class VenuesController < ApplicationController
                 in: :path,
                 required: true,
                 type: :string,
-                description: 'Venue ID'
+                description: 'Record ID'
 
       parameter do
         key :name, :venue
         key :in, :body
-        key :description, 'Venue record to update'
+        key :description, 'Record to update'
         key :required, true
         schema do
           property :record do
@@ -121,9 +117,7 @@ class VenuesController < ApplicationController
         key :description, 'record updated'
       end
     end
-  end
 
-  swagger_path '/venues/{id}' do
     operation :delete do |operation|
       key :description, "Deletes a record given it's id"
       ApplicationController.add_common_params(operation)
@@ -136,12 +130,11 @@ class VenuesController < ApplicationController
                 in: :path,
                 required: true,
                 type: :string,
-                description: 'Venue ID'
+                description: 'Record ID'
 
       response 200 do
         key :description, 'record destroyed'
       end
     end
   end
-
 end
