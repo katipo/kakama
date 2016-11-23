@@ -33,6 +33,8 @@ class ApiDocsController < ActionController::Base
   SWAGGERED_CLASSES = [
     EventsController,
     Event,
+    RolesController,
+    Role,
     StaffController,
     Staff,
     VenuesController,
