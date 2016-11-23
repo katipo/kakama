@@ -1,7 +1,7 @@
 Kakama::Application.routes.draw do
   resources :api_docs, only: [:index]
 
-  get '/api' => redirect('/swagger/dist/index.html?url=/api_docs.json')
+  get '/api-docs/' => redirect('/swagger/dist/index.html?url=/api_docs.json')
 
   match 'login' => 'staff_sessions#new', :as => :login
   match 'logout' => 'staff_sessions#destroy', :as => :logout
