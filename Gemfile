@@ -9,7 +9,7 @@ gem 'rake', '0.9.1'
 gem 'active_scaffold', '~> 3.4.7'
 
 #gem 'calendar_date_select', '~> 2.0.0'
-gem 'calendar_date_select', :git => 'git://github.com/paneq/calendar_date_select.git'
+gem 'calendar_date_select', :git => 'https://github.com/paneq/calendar_date_select.git'
 gem 'authlogic', '~> 3.2.0'
 gem 'formtastic', '~> 2.3.1'
 gem 'will_paginate', '~> 3.0'
