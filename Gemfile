@@ -39,6 +39,7 @@ gem 'spreadsheet_on_rails', '~> 1.0.0'
 gem 'mysql2', '~> 0.3.10', require: false
 gem 'strong_parameters'
 gem 'active_model_serializers'
+gem 'swagger-blocks'
 
 #Assets
 group :assets do
@@ -61,7 +62,6 @@ group :development do
   gem 'spring-commands-cucumber'
   gem 'annotate'
   gem 'factory_girl_rails', '~> 4.5.0'
-  gem 'swagger-blocks'
 end
 
 #Test group
