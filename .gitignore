@@ -17,11 +17,12 @@ doc
 lib/tasks/import.rake
 log/*.log
 mkmf.log
+public/apidocs
 public/assets/**
-tmp/*
-tmp/**/*
 public/assets/
 public/stylesheets/
 public/javascripts/
+tmp/*
+tmp/**/*
 .tags*
 vendor/bundle

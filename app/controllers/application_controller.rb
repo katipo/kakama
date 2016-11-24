@@ -9,6 +9,16 @@ class ApplicationController < ActionController::Base
 
   include Authentication
 
+  protected
+
+  def self.add_common_params(operation)
+    operation.parameter name: :api_key,
+                        in: :query,
+                        required: true,
+                        type: :string,
+                        description: 'Authentication token'
+  end
+
   private
 
   # Store the last visited location unless:

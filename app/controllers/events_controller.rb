@@ -1,8 +1,38 @@
 class EventsController < ApplicationController
+  include Swagger::Blocks
+
   before_filter :login_required
   before_filter :admin_required, :except => [:show]
   before_filter :redirect_staff_unless_event_approved, :only => [:show, :destroy]
   before_filter :redirect_staff_unless_event_editable, :only => [:edit, :update, :roster_staff, :alter_rosterings]
+
+
+  swagger_path '/events' do
+    operation :get do |operation|
+      key :description, 'Fetches all records'
+      key :notes, "This lists all records"
+      key :tags, [
+        'events'
+      ]
+
+      ApplicationController.add_common_params(operation)
+
+      parameter name: :type,
+                in: :query,
+                required: false,
+                type: :string,
+                description: 'Filter by type',
+                notes: 'If not specified, returns all approved current and future events. ' +
+                       ' Valid values: "past", "working", "cancelled".'
+
+      parameter name: :page,
+                in: :query,
+                required: false,
+                type: :integer,
+                description: 'Page number'
+
+    end
+  end
 
   def index
     @current_events = Event.approved.current.paginate :page => params[:page] if params[:type].blank?
@@ -10,10 +40,56 @@ class EventsController < ApplicationController
     @past_events = Event.finished.paginate :page => params[:page] if params[:type] == 'past'
     @working_events = Event.working.current_or_future.paginate :page => params[:page] if params[:type] == 'working'
     @cancelled_events = Event.with_exclusive_scope { Event.not_deleted.cancelled.paginate :page => params[:page] } if params[:type] == 'cancelled'
+
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: {
+          current_events:   @current_events,
+          upcoming_events:  @upcoming_events,
+          past_events:      @past_events,
+          working_events:   @working_events,
+          cancelled_events: @cancelled_events
+        }
+      end
+    end
+  end
+
+  swagger_path '/events/{id}' do
+    operation :get do |operation|
+      key :description, 'Fetches a record given an id'
+      key :notes, ""
+
+      key :tags, [
+        'events'
+      ]
+
+      ApplicationController.add_common_params(operation)
+
+      parameter name: :id,
+                in: :path,
+                required: true,
+                type: :string,
+                description: 'Event ID'
+
+      response 200 do
+        key :description, 'record found'
+        schema do
+          key :type, :array
+          items do
+            key :'$ref', :Event
+          end
+        end
+      end
+    end
   end
 
   def show
     # event is fetched in a before filter
+    respond_to do |format|
+      format.html
+      format.json { render json: @event}
+    end
   end
 
   def new
@@ -24,6 +100,35 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
   end
 
+  swagger_path '/events/' do
+    operation :post do |operation|
+      key :description, "Creates a record given it's attributes"
+      ApplicationController.add_common_params(operation)
+
+      key :tags, [
+        'events'
+      ]
+      parameter do
+        key :name, :event
+        key :in, :body
+        key :description, 'Event record to create'
+        key :required, true
+        schema do
+          property :event do
+            key :'$ref', :Event
+          end
+        end
+      end
+
+      response 200 do
+        key :description, 'record created'
+        schema do
+          key :'$ref', :Event
+        end
+      end
+    end
+  end
+
   def create
     @event = Event.new(event_params)
     @event.organiser_id = current_staff.id
@@ -32,9 +137,52 @@ class EventsController < ApplicationController
       flash[:notice] = 'Event was successfully created.'
       redirect_to(@event)
     else
-      flash[:error] = @event.errors.full_messages.join(', ')
+      error_messages = @event.errors.full_messages.join(', ')
 
-      render :action => "new"
+      respond_to do |format|
+        format.html do
+          flash[:error] = error_messages
+          render :action => "new"
+        end
+        format.json do
+          render json: {
+            errors: error_messages
+          }, status: :bad_request
+        end
+      end
+    end
+  end
+
+  swagger_path '/events/{id}' do
+    operation :put do |operation|
+      key :description, "Updates a record given it's ID and attributes"
+      ApplicationController.add_common_params(operation)
+
+      key :tags, [
+        'events'
+      ]
+
+      parameter name: :id,
+                in: :path,
+                required: true,
+                type: :string,
+                description: 'Event ID'
+
+      parameter do
+        key :name, :event
+        key :in, :body
+        key :description, 'Event record to update'
+        key :required, true
+        schema do
+          property :event do
+            key :'$ref', :Event
+          end
+        end
+      end
+
+      response 200 do
+        key :description, 'record updated'
+      end
     end
   end
 
@@ -43,10 +191,45 @@ class EventsController < ApplicationController
     @event.approver_id = current_staff.id if params[:event][:state] && params[:event][:state] == 'approved'
 
     if @event.update_attributes(event_params)
-      flash[:notice] = 'Event was successfully updated.'
-      redirect_to(@event)
+      respond_to do |format|
+        format.html do
+          flash[:notice] = 'Event was successfully updated.'
+          redirect_to(@event)
+        end
+        format.json do
+          render nothing: true, status: :ok
+        end
+      end
     else
-      render :action => "edit"
+      respond_to do |format|
+        format.html { render :action => "edit" }
+        format.json do
+          render json: {
+            errors: @event.errors
+          }, status: :bad_request
+        end
+      end
+    end
+  end
+
+  swagger_path '/staffs/{id}' do
+    operation :delete do |operation|
+      key :description, "Deletes a record given it's id"
+      ApplicationController.add_common_params(operation)
+
+      key :tags, [
+        'events'
+      ]
+
+      parameter name: :id,
+                in: :path,
+                required: true,
+                type: :string,
+                description: 'Event ID'
+
+      response 200 do
+        key :description, 'record successfully destroyed'
+      end
     end
   end
 
@@ -54,10 +237,23 @@ class EventsController < ApplicationController
     # event is fetched in a before filter
     if request.delete?
       if Event.with_exclusive_scope { @event.destroy }
-        flash[:notice] = "Event was successfully destroyed."
+        respond_to do |format|
+          format.html { flash[:notice] = "Event was successfully destroyed." }
+          format.json do
+            return render nothing: true, status: :ok
+          end
+        end
       else
-        flash[:error] = @event.errors['base']
+        respond_to do |format|
+          format.html { flash[:error] = @event.errors['base'] }
+          format.json do
+            return render json: {
+              errors: @event.errors
+            }, status: :bad_request
+          end
+        end
       end
+
       redirect_to(events_url)
     end
   end

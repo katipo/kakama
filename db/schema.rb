@@ -1,15 +1,17 @@
-# This file is auto-generated from the current state of the database. Instead of editing this file, 
-# please use the migrations feature of Active Record to incrementally modify your database, and
-# then regenerate this schema definition.
+# encoding: UTF-8
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your database schema. If you need
-# to create the application database on another system, you should be using db:schema:load, not running
-# all the migrations from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091001013852) do
+ActiveRecord::Schema.define(:version => 20161110190820) do
 
   create_table "availabilities", :force => true do |t|
     t.integer  "staff_id",     :null => false
@@ -137,20 +139,21 @@ ActiveRecord::Schema.define(:version => 20091001013852) do
   add_index "staff_roles", ["staff_id", "role_id"], :name => "index_staff_roles_on_staff_id_and_role_id"
 
   create_table "staffs", :force => true do |t|
-    t.string   "username",          :null => false
-    t.string   "staff_type",        :null => false
-    t.string   "crypted_password",  :null => false
+    t.string   "username",                            :null => false
+    t.string   "staff_type",                          :null => false
+    t.string   "crypted_password",                    :null => false
     t.string   "email"
-    t.string   "full_name",         :null => false
-    t.date     "start_date",        :null => false
+    t.string   "full_name",                           :null => false
+    t.date     "start_date",                          :null => false
     t.text     "admin_notes"
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "password_salt",     :null => false
-    t.string   "persistence_token", :null => false
-    t.string   "perishable_token",  :null => false
+    t.string   "password_salt",                       :null => false
+    t.string   "persistence_token",                   :null => false
+    t.string   "perishable_token",                    :null => false
     t.datetime "last_request_at"
+    t.string   "single_access_token", :default => "", :null => false
   end
 
   add_index "staffs", ["full_name"], :name => "index_staffs_on_full_name"
