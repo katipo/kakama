@@ -18,7 +18,6 @@
   * rails server
 
 ### Known issues:
-* Date selectors on event page don't show
 * Nice to have: Confirmation of Site settings after clicking save
 * If you have trouble installing 'therubyracer' gem, on Mac OS X, try the
   following suggestion on StackOverflow:
