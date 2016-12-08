@@ -341,6 +341,8 @@ class Event < ActiveRecord::Base
       available = role.staff_available_for(self)
       amount_left.times do |i|
         break if available.size == 0
+
+        #TODO: change this to #ceil to be compatible with Ruby 2.4
         staff = available.delete_at((rand * (available.size - 1)).round)
         staff.roster_to(self, role_id, false, options)
       end
