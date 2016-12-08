@@ -14,6 +14,9 @@ class SchedulesController < ApplicationController
 
     columns[:delay_mapping_id].label = "Delay Type"
     columns[:delay_mapping_id].form_ui = :select
+
+    # TODO: Convert this to the new ActiveScaffold options format:
+    # https://github.com/activescaffold/active_scaffold/wiki/API:-Column
     columns[:delay_mapping_id].options = [['', '']] + Schedule::Types
     columns[:delay_mapping_id].description = "(the next event time is calculated by mutliplying the interval by the delay type, e.g. 5 days)"
   end
