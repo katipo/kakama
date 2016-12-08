@@ -16,12 +16,20 @@ class ApiDocsController < ActionController::Base
       end
     end
     tag do
-      key :name, 'staffs'
-      key :description, 'Staff Management'
-      externalDocs do
-        key :description, 'Find more info here'
-        key :url, 'https://swagger.io'
-      end
+      key :name, 'staff'
+      key :description, 'Application users and staff being rostered'
+    end
+    tag do
+      key :name, 'events'
+      key :description, 'Occuring at venues between specific times'
+    end
+    tag do
+      key :name, 'roles'
+      key :description, 'Assigned to users to carry out at events'
+    end
+    tag do
+      key :name, 'venues'
+      key :description, 'Places where staff are assigned to events'
     end
     key :host, ENV['API_HOST_NAME'] || 'localhost:3000'
     key :basePath, '/'
