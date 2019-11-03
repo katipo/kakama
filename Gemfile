@@ -8,8 +8,6 @@ gem 'rails', '~> 3.2.0'
 gem 'rake', '0.9.1'
 gem 'active_scaffold', '~> 3.4.7'
 
-#gem 'calendar_date_select', '~> 2.0.0'
-gem 'calendar_date_select', :git => 'git://github.com/paneq/calendar_date_select.git'
 gem 'authlogic', '~> 3.2.0'
 gem 'formtastic', '~> 2.3.1'
 gem 'will_paginate', '~> 3.0'
@@ -39,6 +37,7 @@ gem 'spreadsheet_on_rails', '~> 1.0.0'
 gem 'mysql2', '~> 0.3.10', require: false
 gem 'strong_parameters'
 gem 'active_model_serializers'
+gem 'swagger-blocks'
 
 #Assets
 group :assets do
@@ -61,7 +60,6 @@ group :development do
   gem 'spring-commands-cucumber'
   gem 'annotate'
   gem 'factory_girl_rails', '~> 4.5.0'
-  gem 'swagger-blocks'
 end
 
 #Test group

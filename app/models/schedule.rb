@@ -26,6 +26,7 @@ class Schedule < ActiveRecord::Base
     :month => 'month'
   }
 
+  # TODO: Convert this to the new ActiveScaffold options format
   Types = [
     ['Day(s)', Schedule::Delays[:day]],
     ['Week(s)', Schedule::Delays[:week]],

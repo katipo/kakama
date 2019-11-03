@@ -18,8 +18,10 @@ class DetailType < ActiveRecord::Base
 
   include SoftDelete
 
-  Types = [
-    ['Single Line Value', 'string'],
-    ['Multi Line Value', 'text']
-  ]
+  Types = { options:
+    [
+        ['Single Line Value', 'string'],
+        ['Multi Line Value', 'text']
+    ]
+  }
 end
