@@ -11,6 +11,8 @@
 #
 
 class Role < ActiveRecord::Base
+  include Swagger::Blocks
+
   has_many :staff_roles
   has_many :staff, :through => :staff_roles
 
@@ -20,6 +22,12 @@ class Role < ActiveRecord::Base
   before_destroy :ensure_role_deletable
 
   include SoftDelete
+
+  swagger_schema :Role do
+    key :required, [:name]
+    property :description, type: :string, example: 'description'
+    property :name,        type: :string, example: 'role name'
+  end
 
   def assigned_to_staff?
     staff_roles.size > 0

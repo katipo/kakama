@@ -11,6 +11,8 @@
 #
 
 class Venue < ActiveRecord::Base
+  include Swagger::Blocks
+
   has_many :events
 
   validates_presence_of :name
@@ -19,6 +21,12 @@ class Venue < ActiveRecord::Base
   before_destroy :ensure_no_unfinished_events
 
   include SoftDelete
+
+  swagger_schema :Venue do
+    key :required, [:name]
+    property :description,    type: :string, example: 'description'
+    property :name,  type: :string, example: 'venue name'
+  end
 
   def has_unfinished_events?
     events.count(:conditions => ["end_datetime > ?", Time.now.utc]) > 0

@@ -20,6 +20,7 @@
 #
 
 class Staff < ActiveRecord::Base
+  include Swagger::Blocks
   include ActiveModel::ForbiddenAttributesProtection
 
   has_many :staff_roles
@@ -57,6 +58,32 @@ class Staff < ActiveRecord::Base
 
   scope :administrators, :conditions => { :staff_type => 'admin' }
   scope :members, :conditions => { :staff_type => 'staff' }
+
+  swagger_schema :Staff do
+    key :required, [:username]
+    property :username,    type: :string, example: 'username'
+    property :staff_type,  type: :string, example: 'admin'
+    property :full_name,   type: :string, example: 'User Name'
+    property :email,       type: :string, example: 'user@domain.com', format: :email
+    property :start_date,  type: :string, example: '2016-11-15'
+    property :admin_notes, type: :string, example: 'Free text notes field'
+    property :role_ids,    type: :array, format: :int64 do
+      items type: :integer
+    end
+  end
+
+  swagger_schema :StaffInput do
+    allOf do
+      schema do
+        key :'$ref', :Staff
+      end
+      schema do
+        key :required, [:username]
+        property :password,              type: :string, example: 'password'
+        property :password_confirmation, type: :string, example: 'password'
+      end
+    end
+  end
 
   def self.strong_attributes
     [
